@@ -1,0 +1,12 @@
+#ifndef IALGORITHM_GLOBAL_H
+#define IALGORITHM_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(IALGORITHM_LIBRARY)
+#  define IALGORITHMSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define IALGORITHMSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // IALGORITHM_GLOBAL_H

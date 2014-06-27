@@ -1,0 +1,45 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2014-06-23T14:10:48
+#
+#-------------------------------------------------
+
+QT       += qml sql script scripttools xml xmlpatterns
+
+QT       -= gui
+
+TARGET = Sensors
+TEMPLATE = lib
+
+DEFINES += SENSORS_LIBRARY
+
+SOURCES += sensortemprature.cpp
+
+HEADERS += sensortemprature.h\
+        sensors_global.h
+
+unix {
+    target.path = /usr/lib
+    INSTALLS += target
+}
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SensorBase/release/ -lSensorBase
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SensorBase/debug/ -lSensorBase
+else:unix: LIBS += -L$$OUT_PWD/../SensorBase/ -lSensorBase
+
+INCLUDEPATH += $$PWD/../SensorBase
+DEPENDPATH += $$PWD/../SensorBase
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../DeviceBase/release/ -lDeviceBase
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../DeviceBase/debug/ -lDeviceBase
+else:unix: LIBS += -L$$OUT_PWD/../DeviceBase/ -lDeviceBase
+
+INCLUDEPATH += $$PWD/../DeviceBase
+DEPENDPATH += $$PWD/../DeviceBase
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/release/ -lNotifyPackage
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/debug/ -lNotifyPackage
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/ -lNotifyPackage
+
+INCLUDEPATH += $$PWD/../../sharelibs/NotifyPackage
+DEPENDPATH += $$PWD/../../sharelibs/NotifyPackage

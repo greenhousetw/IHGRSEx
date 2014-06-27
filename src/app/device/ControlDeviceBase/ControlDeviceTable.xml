@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ControlDevice>
+<Device name="Fan" on="313" off="314"/>
+<Device name="UltraSonic" on="314" off="315"/>
+<Device name="WarmingMachine" on="220" off="221"/>
+<Device name="Shield" on="556" off="1413"/>
+<Device name="Light" on="899" off="2234"/>
+</ControlDevice>

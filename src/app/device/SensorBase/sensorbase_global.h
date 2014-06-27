@@ -1,0 +1,12 @@
+#ifndef SENSORBASE_GLOBAL_H
+#define SENSORBASE_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SENSORBASE_LIBRARY)
+#  define SENSORBASESHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define SENSORBASESHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SENSORBASE_GLOBAL_H
