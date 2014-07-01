@@ -13,7 +13,7 @@
 
      qDebug()<<"you get:" + unitIndex + ", now will map to";
 
-     CommonVariables::SensorType tempratureIndex=CommonVariables::Tempratue;
+     CommonVariables::SensorType tempratureIndex=CommonVariables::Temprature;
      CommonVariables::SensorType humidIndex=CommonVariables::Humid;
      CommonVariables::SensorType lightIndex=CommonVariables::Light;
 

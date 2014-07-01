@@ -68,7 +68,7 @@ bool SimpleAlgorithm::ExecuteOperation()
 
             if(key==index)
             {
-                this->dataStore.insert("sensortype", index);
+                this->dataStore.insert("sensortype", QVariant(index));
                 data=this->dataStore[key].toString();
                 qDebug()<<"Value=" + data;
                 isSensor=true;

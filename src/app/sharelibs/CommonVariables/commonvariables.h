@@ -24,7 +24,7 @@ public:
 
     enum SensorType {
 
-        Tempratue,
+        Temprature,
 
         Humid,
 
