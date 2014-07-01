@@ -6,7 +6,7 @@
 #include "../../../app/sharelibs/CommonVariables/commonvariables.h"
 #include "../../../app/device/SensorBase/sensorbase.h"
 #include "../../../app/device/DeviceBase/devicebase.h"
-#include "../../../app/device/Sensors/sensortemprature.h"
+#include "../../../app/device/Sensors/sensorcontroller.h"
 
 class TestSensorsTest : public QObject
 {
@@ -35,7 +35,7 @@ void TestSensorsTest::cleanupTestCase()
 
 void TestSensorsTest::TestSensorInitialization()
 {
-    SensorBase *sensorTemprature=new SensorTemprature("01",SensorBase::Tempratue);
+    //SensorBase *sensorTemprature=new SensorTemprature("01",CommonVariables::Tempratue);
 
     QVERIFY2(true, "Failure");
 }

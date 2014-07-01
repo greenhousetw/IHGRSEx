@@ -24,11 +24,9 @@ void TestSimpleSectionAlgorithmTest::PassTestExecuteOperation()
 {
     IAlgorithm *algorithm=new SimpleAlgorithm;
     QVERIFY(algorithm!=NULL);
-    algorithm->dataStore.insert("sensortype","temprature");
-    algorithm->dataStore.insert("name","Tomato");
+    algorithm->dataStore.insert("Temprature", "100");
     algorithm->dataStore.insert("id","1");
-    algorithm->PreSetup();
-    QVERIFY(algorithm->ExecuteOperation("100")==true);
+    QVERIFY(algorithm->ExecuteOperation()==true);
 }
 
 QTEST_MAIN(TestSimpleSectionAlgorithmTest)

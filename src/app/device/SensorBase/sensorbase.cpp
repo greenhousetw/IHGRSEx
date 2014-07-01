@@ -5,10 +5,9 @@ SensorBase::SensorBase()
 {
 }
 
-SensorBase::SensorBase(QString id, CommonVariables::SensorType sensorType)
+SensorBase::SensorBase(QString id)
 {
     this->id=id;
-    this->sensorType=sensorType;
 }
 
 bool SensorBase::SetAlgorithm(IAlgorithm *algorithm)

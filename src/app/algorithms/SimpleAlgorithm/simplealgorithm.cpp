@@ -2,7 +2,15 @@
 
 SimpleAlgorithm::SimpleAlgorithm()
 {
+    this->scriptIDKeyword="id";
 
+    QMetaObject metaObject = CommonVariables::staticMetaObject;
+    QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
+
+     for (int i=0; i < m.keyCount(); ++i)
+     {
+         this->sensorTypeList.append(QString(m.valueToKey(i)));
+     }
 }
 
 /**
@@ -22,18 +30,13 @@ bool SimpleAlgorithm::PreSetup()
 
     QString algorithmSetupFile="./Algorithm.Simple.Setup.xml";
 
-    this->xmlDoc=XmlHelper::LoadXMLDocument(algorithmSetupFile);
-
-    if(xmlDoc != NULL)
+    if(this->xmlDoc==NULL)
     {
-        qDebug()<<"❤ " + algorithmSetupFile + " has been loaded!";
+        this->xmlDoc=XmlHelper::LoadXMLDocument(algorithmSetupFile);
         result=true;
     }
-    else
-    {
-        qCritical()<<"orz! there is no " + algorithmSetupFile + " in the system";
-    }
 
+    qDebug()<<"❤ " + algorithmSetupFile + " has been loaded!";
     return result;
 }
 
@@ -42,15 +45,42 @@ bool SimpleAlgorithm::PreSetup()
  * @param data
  * @return true for successful execution and false for fail
  */
-bool SimpleAlgorithm::ExecuteOperation(QString data)
+bool SimpleAlgorithm::ExecuteOperation()
 {  
     bool result=false;
 
-    QString id=this->dataStore["id"].toString();
+    this->PreSetup();
+
+    QString id=this->dataStore[this->scriptIDKeyword].toString();
     QString xmlPath="//config/portfolios/set[@id=\""+id+"\"]/@script/string()";
     QString scriptFilePath="";
+    QString data="";
 
-    qDebug()<<"Read script file from xpath=" + xmlPath;
+    qDebug()<<"Read script file from xpath=" + xmlPath;       
+
+    foreach(QString key, this->dataStore.keys())
+    {
+        bool isSensor=false;
+
+        foreach(QString index, this->sensorTypeList)
+        {
+            qDebug()<<"key=" + key + ", index=" + index;
+
+            if(key==index)
+            {
+                this->dataStore.insert("sensortype", index);
+                data=this->dataStore[key].toString();
+                qDebug()<<"Value=" + data;
+                isSensor=true;
+                break;
+            }
+        }
+
+        if(isSensor)
+        {
+            break;
+        }
+    }
 
     if(!this->CheckRequirements())
     {       
@@ -79,8 +109,7 @@ bool SimpleAlgorithm::ExecuteOperation(QString data)
               strScript = stream.readAll();
               scriptFile.close();
 
-              qDebug()<<"Use id of set = " + this->dataStore["id"].toString() + " sensor type=" + this->dataStore["sensortype"].toString();
-              qDebug()<<"Data = " + data;
+              qDebug()<<"Use id of set = " + this->dataStore[scriptIDKeyword].toString() + " sensor type=" + this->dataStore["sensortype"].toString();
               QScriptEngine jsEngine;
               QScriptValue entireJavaScript = jsEngine.evaluate(strScript);
               QScriptValue function=jsEngine.globalObject().property(this->dataStore["sensortype"].toString());
@@ -96,6 +125,9 @@ bool SimpleAlgorithm::ExecuteOperation(QString data)
             }
         }
     }
+
+    this->dataStore.clear();
+    this->dataStore.insert(this->scriptIDKeyword, id);
 
     bye:
     return result;
@@ -133,7 +165,7 @@ bool SimpleAlgorithm::CheckRequirements()
 {
     bool result=false;
 
-    if(this->IsNullOrEmpty("id"))
+    if(this->IsNullOrEmpty(this->scriptIDKeyword))
     {
         qCritical()<<"orz, It has no script id";
         goto orz;

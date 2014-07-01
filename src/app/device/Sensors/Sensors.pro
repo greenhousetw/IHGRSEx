@@ -13,10 +13,12 @@ TEMPLATE = lib
 
 DEFINES += SENSORS_LIBRARY
 
-SOURCES += sensortemprature.cpp
+SOURCES += \
+    sensorcontroller.cpp
 
-HEADERS += sensortemprature.h\
-        sensors_global.h
+HEADERS +=\
+        sensors_global.h \
+    sensorcontroller.h
 
 unix {
     target.path = /usr/lib
@@ -43,3 +45,17 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/ -lNotifyPackage
 
 INCLUDEPATH += $$PWD/../../sharelibs/NotifyPackage
 DEPENDPATH += $$PWD/../../sharelibs/NotifyPackage
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
+
+INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
+DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
+
+INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
+DEPENDPATH += $$PWD/../../sharelibs/CommonVariables

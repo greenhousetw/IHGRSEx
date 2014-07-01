@@ -227,7 +227,7 @@ void ControlHardwareManager::CommandSlotRSQ(QHash<QString, QString> nodeHash)
 void ControlHardwareManager::PassDataToHardwareDevice(QString data)
 {
     data=data+this->GetParityString();
-    // code for sending data through real hardware device
+    // code for sending data through real hardware device   
     qDebug()<<"The data:" + data + " will be sent";
 }
 

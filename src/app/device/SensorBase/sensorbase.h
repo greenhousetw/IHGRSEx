@@ -5,6 +5,7 @@
 #include "../DeviceBase/devicebase.h"
 #include "../../sharelibs/NotifyPackage/notifypackage.h"
 #include "../../algorithms/IAlgorithm/ialgorithm.h";
+#include "../../sharelibs/CommonVariables/commonvariables.h"
 #include <limits>
 
 using namespace std;
@@ -16,7 +17,7 @@ class SENSORBASESHARED_EXPORT SensorBase : public DeviceBase
 public:
 
     SensorBase();
-    SensorBase(QString id, CommonVariables::SensorType sensorType);
+    SensorBase(QString id);
     virtual bool SetAlgorithm(IAlgorithm* algorithm);
 
 public slots:
@@ -27,7 +28,7 @@ protected:
 
     CommonVariables::SensorType sensorType=CommonVariables::NotDefine;
     IAlgorithm* algorithm;
-    double value=std::numeric_limits<double>::min();
+    double value=std::numeric_limits<double>::min();    
 };
 
 #endif // SENSORBASE_H

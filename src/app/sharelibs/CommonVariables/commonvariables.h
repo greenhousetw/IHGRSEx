@@ -4,11 +4,13 @@
 #include "commonvariables_global.h"
 #include <QObject>
 #include <QtCore>
+#include <QHash>
 
 class COMMONVARIABLESSHARED_EXPORT CommonVariables : public QObject
 {
     Q_OBJECT
     Q_ENUMS(CommandType)
+    Q_ENUMS(SensorType)
 
 public:
 
@@ -30,6 +32,8 @@ public:
 
         NotDefine
     };
+
+    static CommonVariables::SensorType GetSensorKindFromUnitIndex(QString unitIndex);
 };
 
 #endif // COMMONVARIABLES_H

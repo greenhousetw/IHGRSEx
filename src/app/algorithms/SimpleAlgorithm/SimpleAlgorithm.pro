@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += sql script scripttools xml xmlpatterns
+QT       += sql script scripttools xml xmlpatterns core
 
 QT       -= gui
 
@@ -42,3 +42,10 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/XmlHelper/ -lXmlHelper
 
 INCLUDEPATH += $$PWD/../../sharelibs/XmlHelper
 DEPENDPATH += $$PWD/../../sharelibs/XmlHelper
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
+
+INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
+DEPENDPATH += $$PWD/../../sharelibs/CommonVariables

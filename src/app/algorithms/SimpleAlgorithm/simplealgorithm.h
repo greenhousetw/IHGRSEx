@@ -6,6 +6,7 @@
 #include <limits>
 #include <QFile>
 #include <QScriptEngine>
+#include <QJsonDocument>
 #include "simplealgorithm_global.h"
 #include "../IAlgorithm/ialgorithm.h"
 #include "../../../app/sharelibs/XmlHelper/xmlhelper.h"
@@ -18,7 +19,7 @@ public:
     SimpleAlgorithm();
     ~SimpleAlgorithm();
     virtual bool PreSetup();
-    virtual bool ExecuteOperation(QString data);
+    virtual bool ExecuteOperation();
     virtual bool StopExecution();
 
 public slots:
@@ -29,6 +30,8 @@ private:
     QXmlQuery* xmlDoc=NULL;
     bool CheckRequirements();
     bool IsNullOrEmpty(QString key);
+    QString scriptIDKeyword;
+    QList<QString> sensorTypeList;
 };
 
 #endif // SIMPLEALGORITHM_H

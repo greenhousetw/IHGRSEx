@@ -31,7 +31,7 @@ public:
 
     Q_ENUMS(SupportCommandType)
 
-    SupportCommandType commandType=ControlHardwareManager::gethardwareQtype;
+    ControlHardwareManager::SupportCommandType commandType=ControlHardwareManager::gethardwareQtype;
 
 signals:
 

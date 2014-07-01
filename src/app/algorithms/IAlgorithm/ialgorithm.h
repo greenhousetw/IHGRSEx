@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QObject>
 #include <QVariant>
+#include "../../sharelibs/CommonVariables/commonvariables.h"
 
 class IALGORITHMSHARED_EXPORT IAlgorithm : public QObject
 {
@@ -13,10 +14,10 @@ class IALGORITHMSHARED_EXPORT IAlgorithm : public QObject
 public:
 
     virtual bool PreSetup()=0;
-    virtual bool ExecuteOperation(QString data)=0;    
+    virtual bool ExecuteOperation()=0;
     virtual bool StopExecution()=0;
 
-    QHash<QString, QVariant> dataStore;
+    QHash<QString, QVariant> dataStore;    
 
 signals:
 
@@ -28,3 +29,4 @@ public slots:
 };
 
 #endif // IALGORITHM_H
+

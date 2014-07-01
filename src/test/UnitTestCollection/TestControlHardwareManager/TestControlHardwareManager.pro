@@ -41,3 +41,17 @@ win32{
         QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEDATAPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
     }
 }
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Sensors/release/ -lSensors
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Sensors/debug/ -lSensors
+else:unix: LIBS += -L$$OUT_PWD/../../../app/device/Sensors/ -lSensors
+
+INCLUDEPATH += $$PWD/../../../app/device/Sensors
+DEPENDPATH += $$PWD/../../../app/device/Sensors
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/NotifyPackage/release/ -lNotifyPackage
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/NotifyPackage/debug/ -lNotifyPackage
+else:unix: LIBS += -L$$OUT_PWD/../../../app/sharelibs/NotifyPackage/ -lNotifyPackage
+
+INCLUDEPATH += $$PWD/../../../app/sharelibs/NotifyPackage
+DEPENDPATH += $$PWD/../../../app/sharelibs/NotifyPackage
