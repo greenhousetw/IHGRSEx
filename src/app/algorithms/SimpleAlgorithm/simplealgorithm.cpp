@@ -148,7 +148,7 @@ bool SimpleAlgorithm::ProcessScriptData(QString value)
 
                 bool ok=false;
                 int minuteDiff=result["minuteDiff"].toString().toInt(&ok, 10);
-                int diff=1;
+                int diff=result["unitseconds"].toString().toInt(&ok, 10);
                 int passMinutes=this->lastTime.secsTo(QDateTime::currentDateTime())/diff;
                 qDebug() << "pass diff time=" + QString::number(passMinutes,10) + " minuteDiff=" + QString::number(minuteDiff,10);
 

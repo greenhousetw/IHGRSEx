@@ -10,7 +10,9 @@ note! if you want to chreate new profile for other stuff~ please follow the form
 
 Name of function means Sensor type, now we support: Temprature, Humid, Light~
 
-{section:integer, minuteDiff:integer, equipments[{'devicename':'status',..}]
+{section:integer, minuteDiff:integer, unitseconds:integer, equipments[{'devicename':'status',..}]
+"unitseconds" means sampling value, if this value is 1: check every second, is 60: means that you
+do check every 1 minute
 
 @author Yu-Hua Tseng
 @version Test.V1 07/02/2014
@@ -21,16 +23,16 @@ function Temprature(value){
     var jsonString="";
 
     if(parseFloat(value) > 99 ){
-            jsonString="{\"section\": \"1\",\"minuteDiff\":\"3\",\"equipments\": [{\"fan\": \"fan.on\"},{\"light\": \"light.on\"}]}";
+            jsonString="{\"section\": \"1\",\"unitseconds\": \"1\",\"minuteDiff\":\"3\",\"equipments\": [{\"fan\": \"fan.on\"},{\"light\": \"light.on\"}]}";
     }
     else if (parseFloat(value)<50 && parseFloat(value) > 0)
     {
-        jsonString="{\"section\": \"2\",\"minuteDiff\":\"5\",\"equipments\": [ {\"fan\": \"fan.off\"},{\"lightingall\": \"lightingall.off\"}]}";
+        jsonString="{\"section\": \"2\",\"unitseconds\": \"1\",\"minuteDiff\":\"5\",\"equipments\": [ {\"fan\": \"fan.off\"},{\"lightingall\": \"lightingall.off\"}]}";
         //jsonString="{\"section\": \"2\",\"lasttime\": \"" + _currenttime + "\"}";
     }
     else if (parseFloat(value) < 0)
     {
-        jsonString="{\"section\": \"3\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"ultrasonic": \"ultrasonic.off\"}]}";
+        jsonString="{\"section\": \"3\",\"unitseconds\": \"1\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"ultrasonic": \"ultrasonic.off\"}]}";
     }
 
     return jsonString;
