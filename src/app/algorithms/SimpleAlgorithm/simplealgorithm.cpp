@@ -65,7 +65,7 @@ bool SimpleAlgorithm::ExecuteOperation()
 {  
     bool result=false;
     QString id=this->dataStore[this->scriptIDKeyword].toString();
-    QString xmlPath="//config/portfolios/set[@id=\""+id+"\"]/@script/string()";
+    QString xmlPath="//config/portfolios/set[@tid=\""+id+"\"]/@script/string()";
     QString scriptFilePath="";
     QString data="";
     qDebug()<<"Read script file from xpath=" + xmlPath;

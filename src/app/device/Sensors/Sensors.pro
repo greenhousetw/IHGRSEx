@@ -14,11 +14,13 @@ TEMPLATE = lib
 DEFINES += SENSORS_LIBRARY
 
 SOURCES += \
-    sensorcontroller.cpp
+    sensorcontroller.cpp \
+    sensortemprature.cpp
 
 HEADERS +=\
         sensors_global.h \
-    sensorcontroller.h
+    sensorcontroller.h \
+    sensortemprature.h
 
 unix {
     target.path = /usr/lib
@@ -59,3 +61,17 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariable
 
 INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
 DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithm/release/ -lIAlgorithm
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithm/debug/ -lIAlgorithm
+else:unix: LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithm/ -lIAlgorithm
+
+INCLUDEPATH += $$PWD/../../algorithms/IAlgorithm
+DEPENDPATH += $$PWD/../../algorithms/IAlgorithm
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/SimpleAlgorithm/release/ -lSimpleAlgorithm
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/SimpleAlgorithm/debug/ -lSimpleAlgorithm
+else:unix: LIBS += -L$$OUT_PWD/../../algorithms/SimpleAlgorithm/ -lSimpleAlgorithm
+
+INCLUDEPATH += $$PWD/../../algorithms/SimpleAlgorithm
+DEPENDPATH += $$PWD/../../algorithms/SimpleAlgorithm
