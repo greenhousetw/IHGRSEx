@@ -25,12 +25,12 @@ function Temprature(value){
     }
     else if (parseFloat(value)<50 && parseFloat(value) > 0)
     {
-        jsonString="{\"section\": \"2\",\"minuteDiff\":\"5\",\"equipments\": [ {\"fan\": \"off\"},{\"Hot\": \"off\"}]}";
+        jsonString="{\"section\": \"2\",\"minuteDiff\":\"5\",\"equipments\": [ {\"fan\": \"fan.off\"},{\"lightingall\": \"lightingall.off\"}]}";
         //jsonString="{\"section\": \"2\",\"lasttime\": \"" + _currenttime + "\"}";
     }
     else if (parseFloat(value) < 0)
     {
-        jsonString="{\"section\": \"3\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"on\"},{\"UltraSonic\": \"off\"}]}";
+        jsonString="{\"section\": \"3\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"ultrasonic": \"ultrasonic.off\"}]}";
     }
 
     return jsonString;
