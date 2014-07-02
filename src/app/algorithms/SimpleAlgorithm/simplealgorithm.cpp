@@ -157,14 +157,14 @@ bool SimpleAlgorithm::ProcessScriptData(QString value)
                     if(!this->isChangeDevice)
                     {
                         qDebug() << "---------------------------change device's status---------------------------";
-
+                        QList<QString> machinestatus;
                         foreach (QVariant device, result["equipments"].toList())
                         {
                             QMap<QString, QVariant> deviceNode=device.toMap();
-                            //send change control code to control hardware manager
                             qDebug()<<"Device=" + deviceNode.keys()[0]+  ", status=" + deviceNode[deviceNode.keys()[0]].toString();
+                            machinestatus.append(deviceNode[deviceNode.keys()[0]].toString());
                         }
-
+                        emit this->EmitDeviceControlCode(machinestatus);
                         qDebug() << "---------------------------------------------------------------------------";
                         this->isChangeDevice=true;
                     }

@@ -1,5 +1,15 @@
-#include "sensorbase.h"
+/********************************************************************************************
+Copyright (C) %YEAR% by IHGRS
 
+sensorbase.cpp
+Purpose:
+this class is sensor based.
+
+@author Yu-Hua Tseng
+@version Test.V1 07/02/2014
+
+********************************************************************************************/
+#include "sensorbase.h"
 
 SensorBase::SensorBase()
 {

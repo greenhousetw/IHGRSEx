@@ -21,7 +21,7 @@ public:
 
 signals:
 
-    bool EmitDeviceControlCode(QHash<QString, QString> controlCodeList);
+    bool EmitDeviceControlCode(QList<QString> controlCodeList);
 
 public slots:
 
