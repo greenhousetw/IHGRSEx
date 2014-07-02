@@ -32,7 +32,7 @@ function Temprature(value){
     }
     else if (parseFloat(value) < 0)
     {
-        jsonString="{\"section\": \"3\",\"unitseconds\": \"1\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"ultrasonic": \"ultrasonic.off\"}]}";
+        jsonString="{\"section\": \"3\",\"unitseconds\": \"1\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"ultrasonic\": \"ultrasonic.off\"}]}";
     }
 
     return jsonString;
