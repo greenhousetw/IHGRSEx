@@ -6,6 +6,7 @@
 #include <limits>
 #include <QFile>
 #include <QScriptEngine>
+#include <QMapNode>
 #include <QJsonDocument>
 #include "simplealgorithm_global.h"
 #include "../IAlgorithm/ialgorithm.h"
@@ -29,9 +30,15 @@ public slots:
 private:
     QXmlQuery* xmlDoc=NULL;
     bool CheckRequirements();
+    void SetSensorType(QString*);
     bool IsNullOrEmpty(QString key);
     QString scriptIDKeyword;
+    QString section;
+    int timeDiff;
+    bool isChangeDevice;
     QList<QString> sensorTypeList;
+    QDateTime lastTime;
+    bool ProcessScriptData(QString value);
 };
 
 #endif // SIMPLEALGORITHM_H

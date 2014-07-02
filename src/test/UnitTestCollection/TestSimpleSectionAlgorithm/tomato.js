@@ -1,39 +1,65 @@
-function Temprature(lastTime, value){
+/********************************************************************************************
+Copyright (C) YuHua
+
+tomato.js
+Purpose:
+This js file focuses on tomato, so if you want to use this js, please add this file into:
+Algorithm.Simple.Setup.xml
+
+note! if you want to chreate new profile for other stuff~ please follow the format~
+
+Name of function means Sensor type, now we support: Temprature, Humid, Light~
+
+{section:integer, minuteDiff:integer, equipments[{'devicename':'status',..}]
+
+@author Yu-Hua Tseng
+@version Test.V1 07/02/2014
+
+********************************************************************************************/
+function Temprature(value){
+
     var jsonString="";
 
-    var timeDiff=0;
-
     if(parseFloat(value) > 99 ){
-
-        if(timeDiff ==0 || timeDiff < 0 )
-        {
-            jsonString="{\"section\": \"1\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"light\": \"light.on\"}]}";
-        }
-        else
-        {
-            jsonString="{\"section\": \"1\",\"lasttime\": \"Time\"}";
-        }
+            jsonString="{\"section\": \"1\",\"minuteDiff\":\"3\",\"equipments\": [{\"fan\": \"fan.on\"},{\"light\": \"light.on\"}]}";
     }
     else if (parseFloat(value)<50 && parseFloat(value) > 0)
     {
-        jsonString="{\"section\": \"2\",\"equipments\": [ {\"fan\": \"on\"},{\"light\": \"off\"}]}";
+        jsonString="{\"section\": \"2\",\"minuteDiff\":\"5\",\"equipments\": [ {\"fan\": \"off\"},{\"Hot\": \"off\"}]}";
+        //jsonString="{\"section\": \"2\",\"lasttime\": \"" + _currenttime + "\"}";
     }
     else if (parseFloat(value) < 0)
     {
-        jsonString="{\"section\": \"3\",\"equipments\": [ {\"fan\": \"off\"},{\"light\": \"off\"}]}";
+        jsonString="{\"section\": \"3\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"on\"},{\"UltraSonic\": \"off\"}]}";
     }
 
     return jsonString;
 };
 
-function Humid(lastTime, value){
+function Humid(value){
     if(parseFloat(value) > 99){
        jsonString="[{'section':'1'},{'equipment':'fan','status':'on'},{'equipment':'light','status':'off'}]";
     }
 };
 
-function Light(lastTime, value){
+function Light(value){
     if(parseFloat(value) > 99){
        jsonString="[{'section':'1'},{'equipment':'fan','status':'on'},{'equipment':'light','status':'off'}]";
     }
 };
+
+/**
+*
+*/
+function getTimeDiff(startDateFormat, endDateFormat){
+    var timeStart = new Date(startDateFormat);
+    var timeEnd = new Date(endDateFormat);
+    var hourDiff = timeEnd - timeStart; //in ms
+    var secDiff = hourDiff / 1000; //in s
+    var minDiff = hourDiff / 60 / 1000; //in minutes
+    var hDiff = hourDiff / 3600 / 1000; //in hours
+
+    var hours = Math.floor(hDiff);
+    var minutes = minDiff - 60 * humanReadable.hours;
+    return minutes;
+}

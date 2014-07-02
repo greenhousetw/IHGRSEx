@@ -1,8 +1,22 @@
+/********************************************************************************************
+Copyright (C) %YEAR% by IHGRS
+
+simplealgorithm.cpp
+Purpose:
+To execute simple section algorithm, it configuration file is Algorithm.Simple.Setup.xml
+and real jugment source is from xxx.js, which based on what profile you use.
+
+@author Yu-Hua Tseng
+@version Test.V1 07/02/2014
+
+********************************************************************************************/
 #include "simplealgorithm.h"
 
 SimpleAlgorithm::SimpleAlgorithm()
 {
     this->scriptIDKeyword="id";
+
+    this->isChangeDevice=false;
 
     QMetaObject metaObject = CommonVariables::staticMetaObject;
     QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
@@ -10,7 +24,9 @@ SimpleAlgorithm::SimpleAlgorithm()
      for (int i=0; i < m.keyCount(); ++i)
      {
          this->sensorTypeList.append(QString(m.valueToKey(i)));
-     }
+     }         
+
+     this->section="";
 }
 
 /**
@@ -48,39 +64,14 @@ bool SimpleAlgorithm::PreSetup()
 bool SimpleAlgorithm::ExecuteOperation()
 {  
     bool result=false;
-
-    this->PreSetup();
-
     QString id=this->dataStore[this->scriptIDKeyword].toString();
     QString xmlPath="//config/portfolios/set[@id=\""+id+"\"]/@script/string()";
     QString scriptFilePath="";
     QString data="";
+    qDebug()<<"Read script file from xpath=" + xmlPath;
 
-    qDebug()<<"Read script file from xpath=" + xmlPath;       
-
-    foreach(QString key, this->dataStore.keys())
-    {
-        bool isSensor=false;
-
-        foreach(QString index, this->sensorTypeList)
-        {
-            qDebug()<<"key=" + key + ", index=" + index;
-
-            if(key==index)
-            {
-                this->dataStore.insert("sensortype", QVariant(index));
-                data=this->dataStore[key].toString();
-                qDebug()<<"Value=" + data;
-                isSensor=true;
-                break;
-            }
-        }
-
-        if(isSensor)
-        {
-            break;
-        }
-    }
+    this->PreSetup();
+    this->SetSensorType(&data);
 
     if(!this->CheckRequirements())
     {       
@@ -108,16 +99,16 @@ bool SimpleAlgorithm::ExecuteOperation()
               QString strScript;
               strScript = stream.readAll();
               scriptFile.close();
-
               qDebug()<<"Use id of set = " + this->dataStore[scriptIDKeyword].toString() + " sensor type=" + this->dataStore["sensortype"].toString();
+
               QScriptEngine jsEngine;
               QScriptValue entireJavaScript = jsEngine.evaluate(strScript);
               QScriptValue function=jsEngine.globalObject().property(this->dataStore["sensortype"].toString());
               QScriptValueList args;
               args << QScriptValue(data);
-              qDebug()<<"Script returns value=" + function.call(QScriptValue(), args).toString();
-
-              result=true;
+              QString scriptReturnValue=function.call(QScriptValue(), args).toString();
+              qDebug()<<"Script returns value=" + scriptReturnValue;
+              result=this->ProcessScriptData(scriptReturnValue);
             }
             catch(const QString& msg)
             {
@@ -130,6 +121,76 @@ bool SimpleAlgorithm::ExecuteOperation()
     this->dataStore.insert(this->scriptIDKeyword, id);
 
     bye:
+    return result;
+}
+
+/**
+ * @brief ProcessScriptData
+ * @param value
+ * @return
+ */
+bool SimpleAlgorithm::ProcessScriptData(QString value)
+{
+    bool result=false;
+
+    QJsonParseError error;
+    QJsonDocument jsonDocument  = QJsonDocument::fromJson(value.toUtf8(), &error);
+
+    if (error.error == QJsonParseError::NoError) {
+        if (jsonDocument .isObject()) {
+
+            QVariantMap result = jsonDocument.toVariant().toMap();
+            qDebug() << "section:" << result["section"].toString();
+
+            if(this->section==result["section"].toString())
+            {
+                qDebug() << "reach alram section";
+
+                bool ok=false;
+                int minuteDiff=result["minuteDiff"].toString().toInt(&ok, 10);
+                int diff=1;
+                int passMinutes=this->lastTime.secsTo(QDateTime::currentDateTime())/diff;
+                qDebug() << "pass diff time=" + QString::number(passMinutes,10) + " minuteDiff=" + QString::number(minuteDiff,10);
+
+                if(passMinutes==minuteDiff)
+                {
+                    if(!this->isChangeDevice)
+                    {
+                        qDebug() << "---------------------------change device's status---------------------------";
+
+                        foreach (QVariant device, result["equipments"].toList())
+                        {
+                            QMap<QString, QVariant> deviceNode=device.toMap();
+                            //send change control code to control hardware manager
+                            qDebug()<<"Device=" + deviceNode.keys()[0]+  ", status=" + deviceNode[deviceNode.keys()[0]].toString();
+                        }
+
+                        qDebug() << "---------------------------------------------------------------------------";
+                        this->isChangeDevice=true;
+                    }
+
+                    this->lastTime=QDateTime::currentDateTime();
+                }
+            }
+            else
+            {
+                this->lastTime=QDateTime::currentDateTime();
+                this->section=result["section"].toString();
+                this->isChangeDevice=false;
+            }
+
+            /*QString format = "ddd,dd MMM yyyy HH:mm:ss";
+            QLocale loc = QLocale(QLocale::English, QLocale::UnitedStates);
+            QDateTime t = QDateTime::currentDateTime();
+            QString timeString=loc.toString( t, format);*/
+        }
+
+        result=true;
+
+    } else {
+        qFatal(error.errorString().toUtf8().constData());
+    }
+
     return result;
 }
 
@@ -155,6 +216,36 @@ void SimpleAlgorithm::OperateDataReceiever(QString data)
 {
 
 
+}
+/**
+ * @brief SimpleAlgorithm::SetSensorType
+ * Get current sensor type, for trigger rleated algorithm
+ */
+void SimpleAlgorithm::SetSensorType(QString* data)
+{
+    foreach(QString key, this->dataStore.keys())
+    {
+        bool isSensor=false;
+
+        foreach(QString sensor, this->sensorTypeList)
+        {
+            qDebug()<<"key=" + key + ", index=" + sensor;
+
+            if(key==sensor)
+            {
+                this->dataStore.insert("sensortype", QVariant(sensor));
+                *data=this->dataStore[key].toString();
+                qDebug()<<"Value=" + this->dataStore[key].toString();
+                isSensor=true;
+                break;
+            }
+        }
+
+        if(isSensor)
+        {
+            break;
+        }
+    }
 }
 
 /**

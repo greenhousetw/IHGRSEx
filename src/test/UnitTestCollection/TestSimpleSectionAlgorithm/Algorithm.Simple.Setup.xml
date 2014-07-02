@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+/********************************************************************************************
+Copyright (C) YuHua
+
+Algorithm.Simple.Setup.xml
+Purpose:
+This cofiguration file is only for SimpleAlgorithm
+
+if you want SimpleAlgorithm can support other stuff~ please follow below format.
+the value of id cannot be duplicated~
+
+@author Yu-Hua Tseng
+@version Test.V1 07/02/2014
+
+********************************************************************************************/
+-->
 <config name="SimpleSection">
 <portfolios>
 <set name="Tomato" id="1" script="tomato.js"/>
