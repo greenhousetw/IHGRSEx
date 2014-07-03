@@ -29,7 +29,10 @@ void SensorController::ControlHWMgrDataSlot(NotifyPackage package)
                 QMetaEnum metaEnum = metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
                 QString selectedSensorType(metaEnum.valueToKey(sensorkindString));
                 this->algorithm->dataStore.insert(selectedSensorType, package.notificationContent[key]);
-                this->algorithm->ExecuteOperation();
+                this->algorithm->ExecuteOperation();                               
+                algorithm->dataStore.insert("Temprature", value);
+                algorithm->dataStore.insert("id","1");
+                qDebug("Hi");
             }
         }
     }

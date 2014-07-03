@@ -20,6 +20,13 @@ SensorBase::SensorBase(QString id)
     this->id=id;
 }
 
+SensorBase::SensorBase(QString id, CommonVariables::SensorType typeOfSensor)
+{
+
+    this->id=id;
+    this->sensorType=typeOfSensor;
+}
+
 bool SensorBase::SetAlgorithm(IAlgorithm *algorithm)
 {
     if(algorithm!=NULL)
@@ -32,7 +39,28 @@ bool SensorBase::SetAlgorithm(IAlgorithm *algorithm)
     }
 }
 
-void SensorBase::ControlHWMgrDataSlot(NotifyPackage package)
+/**
+ * @brief SensorBase::BuildHardwareInputConnection
+ * To make connection between ControlHardwareManager::SignalInternalSubscribers and Sensorbase::ControlHWMgrDataSlot
+ * so if ControlHardwareManager gets data from USB or any other external devices, ControlHardwareManager will emit
+ * message to the slot
+ * @param controlHWMgr
+ * @return
+ */
+bool SensorBase::BuildHardwareInputConnection(ControlHardwareManager *controlHWMgr)
 {
+    bool result=false;
 
+    if(controlHWMgr!=NULL)
+    {
+        qDebug()<<"construct connection with ControlHardwareManager for data receieving";
+        connect(controlHWMgr, SIGNAL(SignalInternalSubscribers(NotifyPackage)), this, SLOT(ControlHWMgrDataSlot(NotifyPackage)));
+        result=true;
+    }
+
+    return result;
+}
+
+void SensorBase::ControlHWMgrDataSlot(NotifyPackage package)
+{   
 }

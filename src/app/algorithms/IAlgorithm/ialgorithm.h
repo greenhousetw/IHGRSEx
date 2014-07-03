@@ -25,7 +25,7 @@ signals:
 
 public slots:
 
-    virtual void OperateDataReceiever(QString data)=0;
+    virtual void OperateDataReceiever(QVariant data)=0;
 };
 
 #endif // IALGORITHM_H

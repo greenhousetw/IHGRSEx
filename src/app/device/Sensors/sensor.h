@@ -6,13 +6,13 @@
 #include "../../algorithms/SimpleAlgorithm/simplealgorithm.h"
 #include "../SensorBase/sensorbase.h"
 
-class SENSORSSHARED_EXPORT SensorTemprature : public SensorBase
+class SENSORSSHARED_EXPORT Sensor : public SensorBase
 {
     Q_OBJECT
 
 public:
-    SensorTemprature();
-    SensorTemprature(QString id);
+    Sensor();
+    Sensor(QString id, CommonVariables::SensorType typeOfSensor);
 
 public slots:
 

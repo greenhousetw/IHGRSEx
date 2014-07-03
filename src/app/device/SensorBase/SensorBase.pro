@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += script scripttools
 
 TARGET = SensorBase
 TEMPLATE = lib
@@ -48,3 +49,10 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariable
 
 INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
 DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ControlHardwareManager/release/ -lControlHardwareManager
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ControlHardwareManager/debug/ -lControlHardwareManager
+else:unix: LIBS += -L$$OUT_PWD/../ControlHardwareManager/ -lControlHardwareManager
+
+INCLUDEPATH += $$PWD/../ControlHardwareManager
+DEPENDPATH += $$PWD/../ControlHardwareManager

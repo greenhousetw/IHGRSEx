@@ -25,12 +25,12 @@ public:
 
 public slots:
 
-    virtual void OperateDataReceiever(QString data);
+    virtual void OperateDataReceiever(QVariant data);
 
 private:
     QXmlQuery* xmlDoc=NULL;
     bool CheckRequirements();
-    void SetSensorType(QString*);
+    bool SetSensorType(QString*);
     bool IsNullOrEmpty(QString key);
     QString scriptIDKeyword;
     QString section;

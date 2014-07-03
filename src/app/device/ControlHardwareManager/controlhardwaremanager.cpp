@@ -86,7 +86,9 @@ bool ControlHardwareManager::ParseHardwareInputDataStream(QString dataStream)
                   continue;
               }
 
-              this->EncapsulatePackage(dataList[i].split(parityString)[0].remove(regExpression));
+              QString realData=dataList[i].split(parityString)[0].remove(regExpression);
+              qDebug()<<"Start to encapsulate data:" + realData;
+              this->EncapsulatePackage(realData);
           }
 
           result=true;

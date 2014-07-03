@@ -15,12 +15,12 @@ DEFINES += SENSORS_LIBRARY
 
 SOURCES += \
     sensorcontroller.cpp \
-    sensortemprature.cpp
+    sensor.cpp
 
 HEADERS +=\
         sensors_global.h \
     sensorcontroller.h \
-    sensortemprature.h
+    sensor.h
 
 unix {
     target.path = /usr/lib

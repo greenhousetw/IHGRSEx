@@ -22,17 +22,17 @@ function Temprature(value){
 
     var jsonString="";
 
-    if(parseFloat(value) > 99 ){
-            jsonString="{\"section\": \"1\",\"unitseconds\": \"1\",\"minuteDiff\":\"3\",\"equipments\": [{\"fan\": \"fan.on\"},{\"light\": \"light.on\"}]}";
+    if(parseFloat(value) >= 99 ){
+            jsonString="{\"section\": \"1\",\"unitseconds\": \"1\",\"minuteDiff\":\"3\",\"equipments\": [{\"coolingfan\": \"coolingfan.on\"},{\"internalantisun\": \"internalantisun.on\"}]}";
     }
-    else if (parseFloat(value)<50 && parseFloat(value) > 0)
+    else if (parseFloat(value)<=50 && parseFloat(value) >= 0)
     {
-        jsonString="{\"section\": \"2\",\"unitseconds\": \"1\",\"minuteDiff\":\"5\",\"equipments\": [ {\"fan\": \"fan.off\"},{\"lightingall\": \"lightingall.off\"}]}";
+        jsonString="{\"section\": \"2\",\"unitseconds\": \"1\",\"minuteDiff\":\"5\",\"equipments\": [ {\"coolingfan\": \"coolingfan.off\"},{\"mixer\": \"mixer.off\"}]}";
         //jsonString="{\"section\": \"2\",\"lasttime\": \"" + _currenttime + "\"}";
     }
     else if (parseFloat(value) < 0)
     {
-        jsonString="{\"section\": \"3\",\"unitseconds\": \"1\",\"minuteDiff\":\"9\",\"equipments\": [ {\"fan\": \"fan.on\"},{\"ultrasonic\": \"ultrasonic.off\"}]}";
+        jsonString="{\"section\": \"3\",\"unitseconds\": \"1\",\"minuteDiff\":\"9\",\"equipments\": [ {\"coolingfan\": \"fan.on\"},{\"mixer\": \"mixer.off\"}]}";
     }
 
     return jsonString;

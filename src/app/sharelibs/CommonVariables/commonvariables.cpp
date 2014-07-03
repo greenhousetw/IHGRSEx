@@ -11,8 +11,6 @@
  {
      CommonVariables::SensorType sensorKind=CommonVariables::NotDefine;
 
-     qDebug()<<"you get:" + unitIndex + ", now will map to";
-
      CommonVariables::SensorType tempratureIndex=CommonVariables::Temprature;
      CommonVariables::SensorType humidIndex=CommonVariables::Humid;
      CommonVariables::SensorType lightIndex=CommonVariables::Light;
@@ -34,7 +32,7 @@
          {
              isGet=true;
              sensorKind=hash[unitIndex];
-             qDebug()<<"Map to " + key;
+             qDebug()<< key + " maps to sensor type successfully";
              break;
          }
      }

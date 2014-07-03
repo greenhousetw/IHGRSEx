@@ -6,7 +6,11 @@
 #include "../../sharelibs/NotifyPackage/notifypackage.h"
 #include "../../algorithms/IAlgorithm/ialgorithm.h";
 #include "../../sharelibs/CommonVariables/commonvariables.h"
+#include "../../device/ControlHardwareManager/controlhardwaremanager.h"
+#include <QObject>
 #include <limits>
+#include <QHash>
+#include <QVariant>
 
 using namespace std;
 
@@ -18,7 +22,13 @@ public:
 
     SensorBase();
     SensorBase(QString id);
+    SensorBase(QString id, CommonVariables::SensorType);
     virtual bool SetAlgorithm(IAlgorithm* algorithm);
+    bool BuildHardwareInputConnection(ControlHardwareManager* controlHWMgr);
+
+signals:
+
+    void FreeSignal(QVariant package);
 
 public slots:
 

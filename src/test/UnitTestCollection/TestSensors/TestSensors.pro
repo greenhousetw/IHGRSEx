@@ -59,3 +59,10 @@ else:unix: LIBS += -L$$OUT_PWD/../../../app/device/DeviceBase/ -lDeviceBase
 
 INCLUDEPATH += $$PWD/../../../app/device/DeviceBase
 DEPENDPATH += $$PWD/../../../app/device/DeviceBase
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/ControlHardwareManager/release/ -lControlHardwareManager
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/ControlHardwareManager/debug/ -lControlHardwareManager
+else:unix: LIBS += -L$$OUT_PWD/../../../app/device/ControlHardwareManager/ -lControlHardwareManager
+
+INCLUDEPATH += $$PWD/../../../app/device/ControlHardwareManager
+DEPENDPATH += $$PWD/../../../app/device/ControlHardwareManager

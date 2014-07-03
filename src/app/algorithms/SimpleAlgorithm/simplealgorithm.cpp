@@ -64,14 +64,19 @@ bool SimpleAlgorithm::PreSetup()
 bool SimpleAlgorithm::ExecuteOperation()
 {  
     bool result=false;
-    QString id=this->dataStore[this->scriptIDKeyword].toString();
-    QString xmlPath="//config/portfolios/set[@tid=\""+id+"\"]/@script/string()";
+    QString id=this->scriptIDKeyword;
+    QString xmlPath="//config/portfolios/set[@id=\""+id+"\"]/@script/string()";
     QString scriptFilePath="";
     QString data="";
-    qDebug()<<"Read script file from xpath=" + xmlPath;
+    qDebug()<<"Use Algorithm.Simple.Setup.xml's xpath=" + xmlPath + " to locate execution script";
 
     this->PreSetup();
-    this->SetSensorType(&data);
+
+    if(!this->SetSensorType(&data))
+    {
+        qCritical()<<"SimpleAlgorithm cannot get sensor type";
+        goto bye;
+    }
 
     if(!this->CheckRequirements())
     {       
@@ -212,30 +217,29 @@ bool SimpleAlgorithm::StopExecution()
  * @brief SimpleAlgorithm::OperateDataReceiever
  * @param data
  */
-void SimpleAlgorithm::OperateDataReceiever(QString data)
+void SimpleAlgorithm::OperateDataReceiever(QVariant data)
 {
-
-
+    this->scriptIDKeyword=data.toString();
 }
 /**
  * @brief SimpleAlgorithm::SetSensorType
  * Get current sensor type, for trigger rleated algorithm
  */
-void SimpleAlgorithm::SetSensorType(QString* data)
+bool SimpleAlgorithm::SetSensorType(QString* data)
 {
+    bool result=false;
+
     foreach(QString key, this->dataStore.keys())
     {
         bool isSensor=false;
 
         foreach(QString sensor, this->sensorTypeList)
         {
-            qDebug()<<"key=" + key + ", index=" + sensor;
-
             if(key==sensor)
             {
                 this->dataStore.insert("sensortype", QVariant(sensor));
                 *data=this->dataStore[key].toString();
-                qDebug()<<"Value=" + this->dataStore[key].toString();
+                qDebug()<< sensor + "'s value=" + this->dataStore[key].toString();
                 isSensor=true;
                 break;
             }
@@ -243,9 +247,17 @@ void SimpleAlgorithm::SetSensorType(QString* data)
 
         if(isSensor)
         {
+            result=true;
             break;
-        }
+        }      
     }
+
+    if(!result)
+    {
+       qDebug()<< "Unknown sensor type";
+    }
+
+    return result;
 }
 
 /**
@@ -256,7 +268,9 @@ bool SimpleAlgorithm::CheckRequirements()
 {
     bool result=false;
 
-    if(this->IsNullOrEmpty(this->scriptIDKeyword))
+    QString data=this->scriptIDKeyword;
+
+    if(this->IsNullOrEmpty(data))
     {
         qCritical()<<"orz, It has no script id";
         goto orz;
@@ -275,11 +289,9 @@ bool SimpleAlgorithm::CheckRequirements()
  */
 bool SimpleAlgorithm::IsNullOrEmpty(QString key)
 {
-    bool result=false;
+    bool result=false;   
 
-    QString data=this->dataStore[key].toString();
-
-    if(NULL==data || 0==data.length())
+    if(NULL==key || 0==key.length())
     {
         qCritical()<<"orz! Requirement data:" + key + " is null or empty";
         result=true;
