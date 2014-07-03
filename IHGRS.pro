@@ -6,4 +6,5 @@ SUBDIRS += \
     src/test/TestSharelibs \
     src/app/device \
     src/test/UnitTestCollection \
-    src/app/Repository
+    src/app/Repository \
+    src/app/console
