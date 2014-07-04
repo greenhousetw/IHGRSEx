@@ -28,8 +28,10 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariable
 INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
 DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
 
-PROJECTNAME=IAlgorithm
-message(PROJECT NAME=$$PROJECTNAME)
-message(PRO Path=$$_PRO_FILE_PWD_)
-message(PROJECT SOURCE CODE PATH=$$PWD)
-message(-L$$OUT_PWD/../../sharelibs/CommonVariables/)
+
+
+message(NAME=$$TARGET)
+message(OUTPUT=$$OUT_PWD)
+message($$shadowed($$OUT_PWD))
+#message(PROJECT SOURCE CODE PATH=$$PWD)
+#message(-L$$OUT_PWD/../../sharelibs/CommonVariables/)

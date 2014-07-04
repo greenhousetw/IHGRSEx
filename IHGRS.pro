@@ -10,3 +10,4 @@ SUBDIRS += \
     src/test/UnitTestCollection \
 
 CONFIG += ordered
+
