@@ -11,9 +11,9 @@
 #define HTML5APPLICATIONVIEWER_H
 
 #include <QWidget>
-#include <QDesktopWidget>
 #include <QUrl>
 #include <QMessageBox>
+#include <QDesktopWidget>
 
 class QGraphicsWebView;
 
