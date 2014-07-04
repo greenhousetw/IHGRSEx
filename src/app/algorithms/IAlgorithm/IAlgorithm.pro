@@ -21,16 +21,15 @@ unix {
     INSTALLS += target
 }
 
-PROJECTNAME=IAlgorithm
-message(PROJECT NAME=$$PROJECTNAME)
-message(PRO Path=$$_PRO_FILE_PWD_)
-message(PROJECT SOURCE CODE PATH=$$PWD)
-message(OUTPUT Directory Path=$$OUT_PWD)
-
-
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
 else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
 
 INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
 DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+PROJECTNAME=IAlgorithm
+message(PROJECT NAME=$$PROJECTNAME)
+message(PRO Path=$$_PRO_FILE_PWD_)
+message(PROJECT SOURCE CODE PATH=$$PWD)
+message(-L$$OUT_PWD/../../sharelibs/CommonVariables/)

@@ -2,9 +2,11 @@ TEMPLATE=subdirs
 
 SUBDIRS += \
     src/app/sharelibs \
-    src/app/algorithms \
-    src/test/TestSharelibs \
-    src/app/device \
-    src/test/UnitTestCollection \
+    src/app/algorithms \    
+    src/app/device \    
     src/app/Repository \
-    src/app/console
+    src/app/console \
+    src/test/TestSharelibs \
+    src/test/UnitTestCollection \
+
+CONFIG += ordered

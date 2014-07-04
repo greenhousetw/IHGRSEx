@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    XmlHelper \
+SUBDIRS += \    
+    CommonVariables \
     NotifyPackage \
-    CommonVariables
+    XmlHelper \
+
+CONFIG += ordered

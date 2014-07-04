@@ -2,7 +2,9 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     DeviceBase \
-    SensorBase \
-    Sensors \
     ControlHardwareManager \
+    SensorBase \     
+    Sensors \
     DevicePortal
+
+CONFIG += ordered

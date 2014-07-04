@@ -1,5 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
+    IAlgorithm \
     SimpleAlgorithm \
-    IAlgorithm
+
+
+CONFIG += ordered
