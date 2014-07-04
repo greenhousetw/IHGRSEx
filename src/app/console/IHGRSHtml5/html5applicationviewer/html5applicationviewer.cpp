@@ -1135,6 +1135,7 @@ void Html5ApplicationViewerPrivate::ShowMessage(QString data)
 QString Html5ApplicationViewerPrivate::CommuByJSON(const QString &param)
 {
     //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
+
     return QString(param);
 }
 
