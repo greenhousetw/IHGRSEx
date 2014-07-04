@@ -61,43 +61,50 @@ QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DEST
 #[Share algorithm portion]
 #-------------------------------------------------------------------------
 # 1. copy IAlgorithm.dll
-FILENAME=*.dll
+FILENAME=IAlgorithm.dll
 SOURCEPATH=../../../app/algorithms/IAlgorithm/$$BuildTarget/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/algorithms/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 # 2. copy SimpleAlgorithm.dll
-FILENAME=*.dll
+FILENAME=SimpleAlgorithm.dll
 SOURCEPATH=../../../app/algorithms/SimpleAlgorithm/$$BuildTarget/$$FILENAME
-#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+FILENAME=Algorithm.Simple.Setup.xml
+SOURCEPATH=../../../app/algorithms/SimpleAlgorithm/$$BuildTarget/$$FILENAME
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+FILENAME=tomato.js
+SOURCEPATH=../../../app/algorithms/SimpleAlgorithm/$$BuildTarget/$$FILENAME
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 #-------------------------------------------------------------------------
 #[Share devices portion]
 #-------------------------------------------------------------------------
 # 1. copy ControlHardwareManager.dll
-FILENAME=*.dll
+FILENAME=ControlHardwareManager.dll
 SOURCEPATH=../../../app/device/ControlHardwareManager/$$BuildTarget/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
-#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+FILENAME=HardwareControlTable.js
+SOURCEPATH=../../../app/device/ControlHardwareManager/$$BuildTarget/$$FILENAME
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 # 2. copy DeviceBase.dll
-FILENAME=*.dll
+FILENAME=DeviceBase.dll
 SOURCEPATH=../../../app/device/DeviceBase/$$BuildTarget/$$FILENAME
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 # 3. copy SensorBase.dll
-FILENAME=*.dll
+FILENAME=SensorBase.dll
 SOURCEPATH=../../../app/device/SensorBase/$$BuildTarget/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 # 4. copy Sensors.dll
-FILENAME=*.dll
+FILENAME=Sensors.dll
 SOURCEPATH=../../../app/device/Sensors/$$BuildTarget/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
