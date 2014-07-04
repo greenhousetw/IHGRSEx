@@ -35,8 +35,9 @@ DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
 # copy needed dll
 #-------------------------------------------------------------------------
 win32{
-
+#-------------------------------------------------------------------------
 #[Share library portion]
+#-------------------------------------------------------------------------
 # 1. copy XmlHelper.dll
 FILENAME=XmlHelper.dll
 SOURCEPATH=../../../app/sharelibs/XmlHelper/$$BuildTarget/$$FILENAME
@@ -47,15 +48,58 @@ QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DEST
 # 2. copy CommonVariables.dll
 FILENAME=CommonVariables.dll
 SOURCEPATH=../../../app/sharelibs/CommonVariables/$$BuildTarget/$$FILENAME
-DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/sharelibs/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
-# 2. copy NotifyPackage.dll
+# 3. copy NotifyPackage.dll
 FILENAME=NotifyPackage.dll
 SOURCEPATH=../../../app/sharelibs/NotifyPackage/$$BuildTarget/$$FILENAME
-DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/sharelibs/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
+#-------------------------------------------------------------------------
+#[Share algorithm portion]
+#-------------------------------------------------------------------------
+# 1. copy IAlgorithm.dll
+FILENAME=*.dll
+SOURCEPATH=../../../app/algorithms/IAlgorithm/$$BuildTarget/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/algorithms/
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+# 2. copy SimpleAlgorithm.dll
+FILENAME=*.dll
+SOURCEPATH=../../../app/algorithms/SimpleAlgorithm/$$BuildTarget/$$FILENAME
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+#-------------------------------------------------------------------------
+#[Share devices portion]
+#-------------------------------------------------------------------------
+# 1. copy ControlHardwareManager.dll
+FILENAME=*.dll
+SOURCEPATH=../../../app/device/ControlHardwareManager/$$BuildTarget/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+# 2. copy DeviceBase.dll
+FILENAME=*.dll
+SOURCEPATH=../../../app/device/DeviceBase/$$BuildTarget/$$FILENAME
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+# 3. copy SensorBase.dll
+FILENAME=*.dll
+SOURCEPATH=../../../app/device/SensorBase/$$BuildTarget/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+# 4. copy Sensors.dll
+FILENAME=*.dll
+SOURCEPATH=../../../app/device/Sensors/$$BuildTarget/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 }
