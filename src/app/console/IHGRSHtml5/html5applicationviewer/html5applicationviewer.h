@@ -12,8 +12,6 @@
 
 #include <QWidget>
 #include <QUrl>
-#include <QMessageBox>
-#include <QDesktopWidget>
 
 class QGraphicsWebView;
 

@@ -1056,9 +1056,8 @@ public:
     static QString adjustPath(const QString &path);
 
 public slots:
+    QString NotifyEngine(QString data);
     void quit();
-    void ShowMessage(QString data);
-    QString CommuByJSON(const QString &param);
 
 private slots:
     void addToJavaScript();
@@ -1120,23 +1119,16 @@ QString Html5ApplicationViewerPrivate::adjustPath(const QString &path)
     return QFileInfo(path).absoluteFilePath();
 }
 
+QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
+{
+    this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
+
+    return data;
+}
+
 void Html5ApplicationViewerPrivate::quit()
 {
     emit quitRequested();
-}
-
-void Html5ApplicationViewerPrivate::ShowMessage(QString data)
-{
-    QMessageBox msgBox;
-    msgBox.setText(data);
-    msgBox.exec();
-}
-
-QString Html5ApplicationViewerPrivate::CommuByJSON(const QString &param)
-{
-    //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
-
-    return QString(param);
 }
 
 void Html5ApplicationViewerPrivate::addToJavaScript()
@@ -1207,16 +1199,14 @@ void Html5ApplicationViewer::setOrientation(ScreenOrientation orientation)
 
 void Html5ApplicationViewer::showExpanded()
 {
-#if defined(Q_WS_MAEMO_5)
-   // showMaximized();
-#else
-   // show();
-#endif
+    //this->setFixedSize(mainScreenSize.width()*, mainScreenSize.height()*0.7);
 
-    QDesktopWidget desktopWidget;
-    QRect mainScreenSize = desktopWidget.availableGeometry(desktopWidget.primaryScreen());
-    this->setFixedSize(mainScreenSize.width()*0.7, mainScreenSize.height()*0.7);
-    show();
+#if defined(Q_WS_MAEMO_5)
+    showMaximized();
+#else
+    //show();
+    showMaximized();
+#endif
 }
 
 QGraphicsWebView *Html5ApplicationViewer::webView() const

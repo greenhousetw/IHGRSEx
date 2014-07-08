@@ -54,7 +54,7 @@
      $('#btnSend').click(function()
      {       
         //alert($('#textCMD').val());
-        var sensor=JSON.parse(Qt.CommuByJSON($('#textCMD').val()));
+        var sensor=JSON.parse(Qt.NotifyEngine($('#textCMD').val()));
         alert(sensor.id);
      });
 
