@@ -110,3 +110,28 @@ DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 }
+
+#-------------------------------------------------------------------------
+#[Share repository portion]
+#-------------------------------------------------------------------------
+# 1. copy IRepository.dll
+FILENAME=IRepository.dll
+SOURCEPATH=../../../app/Repository/IRepository/$$BuildTarget/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/repository/
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+FILENAME=IHGRS.db
+SOURCEPATH=../../../app/Repository/IRepository/$$BuildTarget/$$FILENAME
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+# 2. copy SQLiter.dll
+FILENAME=SQLiter.dll
+SOURCEPATH=../../../app/Repository/SQLiter/$$BuildTarget/$$FILENAME
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+
+
+# 3. copy RepositoryManager.dll
+FILENAME=RepositoryManager.dll
+SOURCEPATH=../../../app/Repository/RepositoryManager/$$BuildTarget/$$FILENAME
+#QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
+QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))

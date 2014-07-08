@@ -1,4 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    IRepository
+    IRepository \
+    SQLiter \
+    RepositoryManager
+
+CONFIG += ordered

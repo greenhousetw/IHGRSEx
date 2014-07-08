@@ -22,3 +22,25 @@ unix {
     target.path = /usr/lib
     INSTALLS += target
 }
+
+OTHER_FILES += \
+    IHGRS.db
+
+BUILDTARGET=debug
+
+CONFIG(release, debug|release){
+    $$BUILDTARGET=release
+}
+
+#-------------------------------------------------
+# copy test data to output dir
+#-------------------------------------------------
+win32{
+
+    for(FILE,OTHER_FILES){
+        SOURCEDATAPATH=$$PWD/$${FILE}
+        DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$${FILE}
+        QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEDATAPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+    }
+
+}
