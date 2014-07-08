@@ -5,8 +5,9 @@
 #include "../IRepository/irepository.h"
 #include "../SQLiter/sqliter.h"
 
-class REPOSITORYMANAGERSHARED_EXPORT RepositoryManager
+class REPOSITORYMANAGERSHARED_EXPORT RepositoryManager : public QObject
 {
+    Q_OBJECT
 
 public:
     RepositoryManager();

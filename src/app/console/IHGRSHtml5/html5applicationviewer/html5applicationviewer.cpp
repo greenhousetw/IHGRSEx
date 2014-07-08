@@ -17,7 +17,9 @@
 #include <QGraphicsScene>
 #include <QGraphicsLinearLayout>
 #include <QGraphicsWebView>
+#include <QPluginLoader>
 #include <QWebFrame>
+#include "../../Repository/RepositoryManager/repositorymanager.h"
 
 #ifdef TOUCH_OPTIMIZED_NAVIGATION
 #include <QTimer>
@@ -1122,6 +1124,9 @@ QString Html5ApplicationViewerPrivate::adjustPath(const QString &path)
 QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 {
     this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
+
+    QPluginLoader  pluginLoader("../repository/RepositoryManager.dll");
+    QObject *plugin = pluginLoader.instance();
 
     return data;
 }

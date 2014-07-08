@@ -7,6 +7,7 @@
 
 class SQLITERSHARED_EXPORT SQLiter : public IRepository
 {
+   Q_OBJECT
 
 public:
     SQLiter(QString dbName);

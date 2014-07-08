@@ -6,8 +6,9 @@
 #include <QtSql>
 #include "irepository_global.h"
 
-class IREPOSITORYSHARED_EXPORT IRepository
+class IREPOSITORYSHARED_EXPORT IRepository : public QObject
 {
+   Q_OBJECT
 
 public:
     IRepository();
