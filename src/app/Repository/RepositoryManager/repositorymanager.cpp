@@ -1,17 +1,21 @@
 #include "repositorymanager.h"
 
+Q_PLUGIN_METADATA(IID "fr.inria.tstPlugin")
 
-RepositoryManager::RepositoryManager()
-{
-}
-
-bool RepositoryManager::LoadDBInstance(QString dbName, RepositoryManager::DataBaseType dbType)
+/**
+ * @brief RepositoryManager::LoadDBInstance
+ * @param dbName
+ * @param dbType
+ * @return
+ */
+bool RepositoryManager::LoadDBInstance(QString config, IRepositoryManager::DataBaseType dbType)
 {
     bool result=false;
 
-    if(dbType==RepositoryManager::SQLite)
+    if(dbType==IRepositoryManager::SQLite)
     {
-        this->databaseInstance=new SQLiter(dbName);
+        qDebug()<<"Current database option is SQLite";
+        this->databaseInstance=new SQLiter(config);
     }
 
     result=true;

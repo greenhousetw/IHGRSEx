@@ -3,6 +3,9 @@ TEMPLATE = subdirs
 SUBDIRS += \
     IRepository \
     SQLiter \
-    RepositoryManager
+    RepositoryManager \
+    IRepositoryManager
 
 CONFIG += ordered
+
+CONFIG += plugin

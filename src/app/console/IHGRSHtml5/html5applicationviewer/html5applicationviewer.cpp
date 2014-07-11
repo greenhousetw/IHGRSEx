@@ -9,8 +9,10 @@
 
 #include "html5applicationviewer.h"
 
+#include <QApplication>
 #include <QCoreApplication>
 #include <QDir>
+#include <QDebug>
 #include <QFileInfo>
 #include <QVBoxLayout>
 #include <QGraphicsView>
@@ -19,6 +21,7 @@
 #include <QGraphicsWebView>
 #include <QPluginLoader>
 #include <QWebFrame>
+#include <QPluginLoader>
 #include "../../Repository/RepositoryManager/repositorymanager.h"
 
 #ifdef TOUCH_OPTIMIZED_NAVIGATION
@@ -1123,11 +1126,17 @@ QString Html5ApplicationViewerPrivate::adjustPath(const QString &path)
 
 QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 {
-    this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
+    //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
 
-    QPluginLoader  pluginLoader("../repository/RepositoryManager.dll");
+    QString plugInFile="plugins/RepositoryManager";
+
+    QPluginLoader pluginLoader(plugInFile);
+    QStringList list;
+    list.append("./plugins");
+    QApplication::setLibraryPaths(list);
+    QCoreApplication::setLibraryPaths(list);
+    pluginLoader.load();
     QObject *plugin = pluginLoader.instance();
-
     return data;
 }
 

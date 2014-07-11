@@ -4,9 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += sql xml xmlpatterns
+QT       += sql xml xmlpatterns widgets
 
 QT       -= gui
+
+CONFIG   += plugin
 
 TARGET = RepositoryManager
 TEMPLATE = lib
@@ -36,3 +38,13 @@ else:unix: LIBS += -L$$OUT_PWD/../SQLiter/ -lSQLiter
 
 INCLUDEPATH += $$PWD/../SQLiter
 DEPENDPATH += $$PWD/../SQLiter
+
+OTHER_FILES += \
+    RepositoryManagerPlungIn.json
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../IRepositoryManager/release/ -lIRepositoryManager
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../IRepositoryManager/debug/ -lIRepositoryManager
+else:unix: LIBS += -L$$OUT_PWD/../IRepositoryManager/ -lIRepositoryManager
+
+INCLUDEPATH += $$PWD/../IRepositoryManager
+DEPENDPATH += $$PWD/../IRepositoryManager
