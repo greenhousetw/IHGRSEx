@@ -5,6 +5,9 @@ SUBDIRS += \
     ControlHardwareManager \
     SensorBase \     
     Sensors \
-    DevicePortal
+    DevicePortal \
+    Hardware \
+    SensorRoot \
+    SensorUnit
 
 CONFIG += ordered

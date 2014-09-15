@@ -1,13 +1,17 @@
 #include <QString>
 #include <QtTest>
 #include <QCoreApplication>
-#include "../../../app/algorithms/IAlgorithm/ialgorithm.h"
+#include <QPluginLoader>
+#include <QDebug>
+/*#include "../../../app/algorithms/IAlgorithm/ialgorithm.h"
 #include "../../../app/algorithms/SimpleAlgorithm/simplealgorithm.h"
 #include "../../../app/sharelibs/CommonVariables/commonvariables.h"
 #include "../../../app/device/SensorBase/sensorbase.h"
 #include "../../../app/device/DeviceBase/devicebase.h"
 #include "../../../app/device/Sensors/sensor.h"
-#include "../../../app/device/ControlHardwareManager/controlhardwaremanager.h"
+#include "../../../app/device/ControlHardwareManager/controlhardwaremanager.h"*/
+
+#include "../../../app/device/SensorRoot/sensorroot.h"
 
 class TestSensorsTest : public QObject
 {
@@ -40,7 +44,29 @@ void TestSensorsTest::cleanupTestCase()
 
 void TestSensorsTest::TestSensorInitialization()
 {
-    SensorBase *sensor=new Sensor("01",CommonVariables::Temprature);
+
+    QDir pluginsDir(qApp->applicationDirPath());
+
+    qDebug()<<pluginsDir.dirName().toLower();
+
+    QString fileName="SensorUnit";
+
+    QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+
+    QObject *plugin = pluginLoader.instance();
+
+    if (plugin) {
+
+      /*  SensorRoot* sensor = qobject_cast<SensorRoot *>(plugin);
+
+        if (sensor)
+        {
+            sensor->SetSensorInfo("001", CommonVariables::Humid);
+           // qDebug()<<sensor->GetSensorID();
+        }*/
+    }
+
+    /*SensorBase *sensor=new Sensor("01",CommonVariables::Temprature);
     IAlgorithm *algorithm=new SimpleAlgorithm;
     ControlHardwareManager controlMananger;
     connect(this, SIGNAL(TestForHardwareReceieverSlot(QString)), &controlMananger, SLOT(HardwareReceieverSlot(QString)));
@@ -75,7 +101,7 @@ void TestSensorsTest::TestSensorInitialization()
         QThread::sleep(sleepSeconds);
     }
 
-    QVERIFY2(true, "Failure");
+    QVERIFY2(true, "Failure");*/
 }
 
 QTEST_MAIN(TestSensorsTest)

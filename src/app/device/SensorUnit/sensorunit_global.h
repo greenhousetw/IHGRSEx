@@ -1,0 +1,12 @@
+#ifndef SENSORUNIT_GLOBAL_H
+#define SENSORUNIT_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SENSORUNIT_LIBRARY)
+#  define SENSORUNITSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define SENSORUNITSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SENSORUNIT_GLOBAL_H

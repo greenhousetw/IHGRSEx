@@ -1,0 +1,12 @@
+#ifndef SENSORROOT_GLOBAL_H
+#define SENSORROOT_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SENSORROOT_LIBRARY)
+#  define SENSORROOTSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define SENSORROOTSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SENSORROOT_GLOBAL_H
