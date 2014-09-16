@@ -7,7 +7,6 @@ SUBDIRS += \
     Sensors \
     DevicePortal \
     Hardware \
-    SensorRoot \
     SensorUnit
 
 CONFIG += ordered

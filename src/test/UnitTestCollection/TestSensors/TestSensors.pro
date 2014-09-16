@@ -79,7 +79,13 @@ DEPENDPATH += $$PWD/../../../app/device/ControlHardwareManager
 #-------------------------------------------------------------------------
 win32{
 
-# 1. copy XmlHelper.dll
+# 1. copy SensorUnit.dll
+FILENAME=Hardware.dll
+SOURCEPATH=../../../app/device/Hardware/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 2. copy IHardware.dll
 FILENAME=SensorUnit.dll
 SOURCEPATH=../../../app/device/SensorUnit/$$BUILDTARGET/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME

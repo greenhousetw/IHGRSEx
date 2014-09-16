@@ -1,11 +1,6 @@
 #include "sensorroot.h"
 
 
-SensorRoot::SensorRoot()
-{
-    this->id="";
-}
-
 void SensorRoot::SetSensorInfo(QString id, CommonVariables::SensorType type)
 {
     this->id=id;

@@ -8,14 +8,14 @@
 class SensorRoot : public IHardware
 {   
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "IHardware" FILE "info.json")
+    Q_INTERFACES(IHardware)
 
 public:
 
-    SensorRoot();    
-
-    void SetSensorInfo(QString id, CommonVariables::SensorType);
-    QString GetSensorID();
-    CommonVariables::SensorType GetSensorType();
+    virtual void SetSensorInfo(QString id, CommonVariables::SensorType);
+    virtual QString GetSensorID();
+    virtual CommonVariables::SensorType GetSensorType();
 
 public slots:
 
@@ -27,5 +27,5 @@ protected:
     double value=std::numeric_limits<double>::min();
     CommonVariables::SensorType sensorType=CommonVariables::NotDefine;
 };
-Q_DECLARE_INTERFACE(SensorRoot,"SensorRoot")
+//Q_DECLARE_INTERFACE(SensorRoot,"SensorRoot")
 #endif // SENSORROOT_H

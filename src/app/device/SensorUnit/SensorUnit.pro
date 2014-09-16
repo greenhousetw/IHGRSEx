@@ -13,10 +13,12 @@ TEMPLATE = lib
 
 DEFINES += SENSORUNIT_LIBRARY
 
-SOURCES += sensorunit.cpp
+SOURCES += \
+    sensor.cpp
 
-HEADERS += sensorunit.h\
-        sensorunit_global.h
+HEADERS +=\
+        sensorunit_global.h \
+    sensor.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Hardware/release/ -lHardware
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Hardware/debug/ -lHardware
@@ -25,6 +27,13 @@ else:unix: LIBS += -L$$OUT_PWD/../Hardware/ -lHardware
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/release/ -lSensorRoot
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/debug/ -lSensorRoot
 else:unix: LIBS += -L$$OUT_PWD/../SensorRoot/ -lSensorRoot
+
+INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
+DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
 
 unix {
     target.path = /usr/lib

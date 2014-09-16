@@ -11,7 +11,7 @@
 #include "../../../app/device/Sensors/sensor.h"
 #include "../../../app/device/ControlHardwareManager/controlhardwaremanager.h"*/
 
-#include "../../../app/device/SensorRoot/sensorroot.h"
+#include "../../../app/device/Hardware/hardware.h"
 
 class TestSensorsTest : public QObject
 {
@@ -42,28 +42,88 @@ void TestSensorsTest::cleanupTestCase()
 {
 }
 
-void TestSensorsTest::TestSensorInitialization()
+bool LoadPlugin()
 {
-
     QDir pluginsDir(qApp->applicationDirPath());
 
-    qDebug()<<pluginsDir.dirName().toLower();
+#if defined(Q_OS_WIN)
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+        pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS") {
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+    }
+#endif
+    pluginsDir.cd("plugins");
 
-    QString fileName="SensorUnit";
+    pluginsDir.cd("debug");
 
-    QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
 
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        qDebug() << "File Name=" + fileName;
+        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
+        QObject *plugin = pluginLoader.instance();
+        if (plugin) {
+            IHardware* echoInterface = qobject_cast<IHardware *>(plugin);
+            if (echoInterface)
+            {//sensortype
+                QMap<QString, QVariant> data;
+                QVariant id(QString("01"));
+                QVariant sensorType(QString("Temprature"));
+                data.insert("id", id);
+                data.insert("sensortype", sensorType);
+
+                echoInterface->SetHardware(data);
+                qDebug()<<echoInterface->GetDeviceID();
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+void TestSensorsTest::TestSensorInitialization()
+{
+    QDir pluginsDir(qApp->applicationDirPath());
+
+    #if defined(Q_OS_WIN)
+        if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+            pluginsDir.cdUp();
+    #elif defined(Q_OS_MAC)
+        if (pluginsDir.dirName() == "MacOS") {
+            pluginsDir.cdUp();
+            pluginsDir.cdUp();
+            pluginsDir.cdUp();
+        }
+    #endif
+        pluginsDir.cd("plugins");
+
+    pluginsDir.cd("debug");
+
+
+    QString file="SensorUnit.dll";
+    QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(file));
     QObject *plugin = pluginLoader.instance();
 
     if (plugin) {
 
-      /*  SensorRoot* sensor = qobject_cast<SensorRoot *>(plugin);
+        IHardware* sensor = qobject_cast<IHardware *>(plugin);
 
         if (sensor)
         {
-            sensor->SetSensorInfo("001", CommonVariables::Humid);
-           // qDebug()<<sensor->GetSensorID();
-        }*/
+            QMap<QString, QVariant> data;
+            QVariant id(QString("01"));
+            QVariant sensorType(QString("Temprature"));
+
+            data.insert("id", id);
+            data.insert("sensortype", sensorType);
+            sensor->SetHardware(data);
+
+            qDebug()<<sensor->GetDeviceType();
+        }
     }
 
     /*SensorBase *sensor=new Sensor("01",CommonVariables::Temprature);
