@@ -5,19 +5,16 @@
 
 class CoreOne : public ICore
 {
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "ICore" FILE "info.json")
+    Q_PLUGIN_METADATA(IID "{84fe3d35-1aad-4ed9-bdc0-de6bca42a0b7}" FILE "info.json")
     Q_INTERFACES(ICore)
 
 public:
 
-    QString GetCoreName();
+    virtual QString GetCoreName();
 
-    void CoreDataCollectBus(DataPacket data);
+public slots:
 
-signals:
-
-    virtual void CoreBus(DataPacket data);
+  virtual void CoreDataCollectBus(DataPacket data);
 };
 
 #endif // COREONE_H

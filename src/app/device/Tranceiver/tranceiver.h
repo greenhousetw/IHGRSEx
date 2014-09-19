@@ -1,17 +1,18 @@
-#ifndef SENSORUNIT_H
-#define SENSORUNIT_H
+#ifndef TRANCEIVER_H
+#define TRANCEIVER_H
+
 
 #include <QVariant>
 #include <QMap>
 #include "../../device/Hardware/hardware.h"
 #include "../../sharelibs/CommonVariables/commonvariables.h"
 
-class Sensor : public IHardware
+class Tranceiver : public IHardware
 {
 
 public:
 
-    Sensor();
+    Tranceiver();
 
 public slots:
 
@@ -29,8 +30,8 @@ public:
 private:
 
     QString id="";
-    CommonVariables::SensorType sensorType=CommonVariables::NotDefine;
+    CommonVariables::TranceiverType trancieverType=CommonVariables::NotDefineDevice;
     double value=std::numeric_limits<double>::min();
 };
 
-#endif // SENSORUNIT_H
+#endif // TRANCEIVER_H

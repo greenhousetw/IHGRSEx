@@ -45,3 +45,43 @@
      bye:
      return sensorKind;
  }
+
+
+
+ /**
+   * @brief CommonVariables::GetSensorKindFromUnitIndex
+   * return sensor kind index string, like: input=CP / FP
+   * you will get temprature, if input=H, you will get humid
+   * @param unitIndex
+   * @return tranciever kind string
+   */
+ CommonVariables::TranceiverType CommonVariables::GetTrancieverByIndex(QString unitIndex)
+ {
+     CommonVariables::TranceiverType trancieverKind=CommonVariables::NotDefineDevice;
+
+     CommonVariables::TranceiverType serialPort=CommonVariables::SerialPort;
+
+     QHash<QString,  CommonVariables::TranceiverType>  hash;
+     hash.insert("SerialPort", serialPort);
+
+     bool isGet=false;
+
+     foreach(QString key, hash.keys())
+     {
+         if(unitIndex==key)
+         {
+             isGet=true;
+             trancieverKind=hash[unitIndex];
+             qDebug()<< key + " maps to tranceiver type successfully";
+             break;
+         }
+     }
+
+     if(!isGet)
+     {
+         qWarning()<<"Unknown type";
+     }
+
+     bye:
+     return trancieverKind;
+ }

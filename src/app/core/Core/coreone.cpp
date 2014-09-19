@@ -1,5 +1,6 @@
 #include "coreone.h"
 #include <QtPlugin>
+#include <QDebug>
 
 QString CoreOne::GetCoreName()
 {
@@ -8,5 +9,5 @@ QString CoreOne::GetCoreName()
 
 void CoreOne::CoreDataCollectBus(DataPacket data)
 {
-
+    qDebug()<< "You got value=" + data.packetData.value;
 }

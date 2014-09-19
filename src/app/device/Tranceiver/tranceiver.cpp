@@ -1,12 +1,11 @@
-#include "sensor.h"
+#include "tranceiver.h"
 
 
-Sensor::Sensor()
+Tranceiver::Tranceiver()
 {
-
 }
 
-bool Sensor::CoreConnector(QObject& coreIn)
+bool Tranceiver::CoreConnector(QObject& coreIn)
 {
     bool result=false;
 
@@ -20,7 +19,7 @@ bool Sensor::CoreConnector(QObject& coreIn)
     return result;
 }
 
-bool Sensor::DiconnectCoreConnector(QObject& coreIn)
+bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 {
     bool result=false;
 
@@ -33,28 +32,28 @@ bool Sensor::DiconnectCoreConnector(QObject& coreIn)
     return result;
 }
 
-void Sensor::ReceieveData(DataPacket data)
+void Tranceiver::ReceieveData(DataPacket data)
 {
     this->value=data.packetData.value.toDouble();
 
-    qDebug()<<"sensor id gets the value:" + QString::number(this->value);
+    qDebug()<<"tranciever id gets the value:" + QString::number(this->value);
 }
 
 
-bool Sensor::SetHardware(QMap<QString, QVariant> config)
+bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
 {
     bool result=false;
 
     this->id=config["id"].toString();
 
     QMetaObject metaObject = CommonVariables::staticMetaObject;
-    QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
+    QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("TranceiverType"));
 
      for (int i=0; i < m.keyCount(); ++i)
      {
-         if(config["sensortype"].toString() == QString(m.valueToKey(i)))
+         if(config["TranceiverType"].toString() == QString(m.valueToKey(i)))
          {
-            this->sensorType=(CommonVariables::SensorType) m.keyToValue(config["sensortype"].toString().toLocal8Bit().data());
+            this->trancieverType=(CommonVariables::TranceiverType) m.keyToValue(config["TranceiverType"].toString().toLocal8Bit().data());
             qDebug()<<"This device type=" + config["sensortype"].toString() + ", its index=" + QString::number(i);
             break;
          }
@@ -65,29 +64,28 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
     return result;
 }
 
-QString Sensor::GetDeviceValue()
+QString Tranceiver::GetDeviceValue()
 {
   return QString::number(this->value);
 }
 
-QString Sensor::GetDeviceID()
+QString Tranceiver::GetDeviceID()
 {
   return this->id;
 }
 
-QString Sensor::GetDeviceType()
+QString Tranceiver::GetDeviceType()
 {
   QString deviceType="";
 
-  if(this->sensorType != CommonVariables::NotDefine)
+  if(this->trancieverType != CommonVariables::NotDefineDevice)
   {
       QMetaObject metaObject = CommonVariables::staticMetaObject;
-      QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
-      deviceType=m.valueToKey(this->sensorType);
+      QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("TranceiverType"));
+      deviceType=m.valueToKey(this->trancieverType);
   }
 
-  qDebug()<<"Sensor Type=" + deviceType;
+  qDebug()<<"Tranciever Type=" + deviceType;
 
   return deviceType;
 }
-

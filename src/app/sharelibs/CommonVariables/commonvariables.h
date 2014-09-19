@@ -33,7 +33,16 @@ public:
         NotDefine
     };
 
+    enum TranceiverType {
+
+        SerialPort,
+
+        NotDefineDevice
+    };
+
     static CommonVariables::SensorType GetSensorKindFromUnitIndex(QString unitIndex);
+
+    static CommonVariables::TranceiverType GetTrancieverByIndex(QString unitIndex);
 };
 
 #endif // COMMONVARIABLES_H

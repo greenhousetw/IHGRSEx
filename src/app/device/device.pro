@@ -4,6 +4,8 @@ SUBDIRS += \
     Hardware \
     SensorUnit \
     IDeviceFactory \
-    SensorPlugInLoader
+    SensorPlugInLoader \
+    Tranceiver \
+    TrancieverLoader
 
 CONFIG += ordered

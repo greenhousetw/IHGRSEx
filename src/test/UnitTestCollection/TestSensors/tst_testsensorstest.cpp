@@ -11,6 +11,8 @@
 #include "../../../app/device/IDeviceFactory/idevicefactory.h"
 #include "../../../app/device/SensorUnit/sensor.h"
 #include "../../../app/device/SensorPlugInLoader/sensorpluginloader.h"
+#include "../../../app/device/Tranceiver/tranceiver.h"
+#include "../../../app/device/TrancieverLoader/trancieverloader.h"
 #include "../../../app/sharelibs/PluginHelper/pluginhelper.h"
 
 class TestSensorsTest : public QObject
@@ -27,8 +29,8 @@ signals:
 private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
-    void TestSensorCoreConnection();
-    void TestSensorCreation();
+    void TestSensorRight();
+    //void TestSensorCreation();
 };
 
 TestSensorsTest::TestSensorsTest()
@@ -43,17 +45,24 @@ void TestSensorsTest::cleanupTestCase()
 {
 }
 
-void TestSensorsTest::TestSensorCoreConnection()
+void TestSensorsTest::TestSensorRight()
 {
     IDeviceFactory* factory=NULL;
+    IDeviceFactory* tranceiverfactory=NULL;
 
     QPluginLoader loader;
 
+    QPluginLoader tranceiverLoader;
+
     CoreOne core;
 
-    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll")) {
+    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll") &&
+        PluginHelper::GetPlugIn(tranceiverLoader, "TrancieverLoader.dll")
+            ) {
 
         factory = qobject_cast<IDeviceFactory *>(loader.instance());
+
+        tranceiverfactory = qobject_cast<IDeviceFactory *>(tranceiverLoader.instance());
 
         QMap<QString, QVariant> info;
 
@@ -73,45 +82,32 @@ void TestSensorsTest::TestSensorCoreConnection()
         }
 
         QVERIFY(sensorList.at(1)->GetDeviceType()=="Humid");
-    }
 
-    loader.unload();
-}
+        info.clear();
+        info.insert("id", QVariant(QString("01")));
+        info.insert("TranceiverType", QVariant(QString("SerialPort")));
+        Tranceiver* tranceiver = (Tranceiver*) tranceiverfactory->GetDevice(info);
+        tranceiver->SetHardware(info);
+        tranceiver->CoreConnector(core);
 
-void TestSensorsTest::TestSensorCreation()
-{
-    IDeviceFactory* factory=NULL;
-
-    QPluginLoader loader;
-
-    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll")) {
-
-        factory = qobject_cast<IDeviceFactory *>(loader.instance());
-
-        QMap<QString, QVariant> info;
-
-        QString dataMetrix[3][2]={{"01","Temprature"},{"02","Humid"},{"03","Light"}};
-
-        QList<Sensor*> sensorList;
-
-        for(int i=0;i<3;i++)
+        foreach(Sensor* sensor, sensorList)
         {
-            info.insert("id", QVariant(QString(dataMetrix[i][0])));
-            info.insert("sensortype", QVariant(QString(dataMetrix[i][1])));
-            Sensor* sensor = (Sensor*) factory->GetDevice(info);
-            sensor->SetHardware(info);
-            sensorList.push_back(sensor);
-            info.clear();
-        }
+            DataPacket datapacket;
+            datapacket.packetData.value="12";
+            emit sensor->SendData(datapacket);
 
-        QVERIFY(sensorList.at(1)->GetDeviceType()=="Humid");
+            if(sensor->DiconnectCoreConnector(core))
+            {
+               qDebug()<<"Core detached";
+               delete sensor;
+            }
+        }
     }
 
     loader.unload();
 
     QVERIFY2(true, "Failure");
 }
-
 
 QTEST_MAIN(TestSensorsTest)
 

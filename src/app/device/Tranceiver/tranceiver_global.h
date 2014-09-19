@@ -1,0 +1,12 @@
+#ifndef TRANCEIVER_GLOBAL_H
+#define TRANCEIVER_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(TRANCEIVER_LIBRARY)
+#  define TRANCEIVERSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define TRANCEIVERSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // TRANCEIVER_GLOBAL_H

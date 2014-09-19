@@ -24,9 +24,6 @@ CONFIG(release, debug|release){
     $$BUILDTARGET=release
 }
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../../app/core/Core/release/ -lCore
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/core/Core/debug/ -lCore
-else:unix: LIBS += -L$$OUT_PWD/../../../../../app/core/Core/ -lCore
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/algorithms/IAlgorithm/release/ -lIAlgorithm
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/algorithms/IAlgorithm/debug/ -lIAlgorithm
@@ -84,6 +81,34 @@ else:unix: LIBS += -L$$OUT_PWD/../../../app/sharelibs/PluginHelper/ -lPluginHelp
 INCLUDEPATH += $$PWD/../../../app/sharelibs/PluginHelper
 DEPENDPATH += $$PWD/../../../app/sharelibs/PluginHelper
 
+INCLUDEPATH += $$PWD/../../../app/core/Core
+DEPENDPATH += $$PWD/../../../app/core/Core
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/core/Core/release/ -lCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/core/Core/debug/ -lCore
+else:unix: LIBS += -L$$OUT_PWD/../../../../../app/core/Core/ -lCore
+
+INCLUDEPATH += $$PWD/../../../app/device/Hardware
+DEPENDPATH += $$PWD/../../../app/device/Hardware
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Hardware/release/ -lHardware
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Hardware/debug/ -lHardware
+else:unix: LIBS += -L$$OUT_PWD/../../../../../app/device/Hardware/ -lHardware
+
+INCLUDEPATH += $$PWD/../../../app/device/Tranceiver
+DEPENDPATH += $$PWD/../../../app/device/Tranceiver
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Tranceiver/release/ -lTranceiver
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Tranceiver/debug/ -lTranceiver
+else:unix: LIBS += -L$$OUT_PWD/../../../../../app/device/Hardware/ -lTranceiver
+
+INCLUDEPATH += $$PWD/../../../app/device/TrancieverLoader
+DEPENDPATH += $$PWD/../../../app/device/TrancieverLoader
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/TrancieverLoader/release/ -lTrancieverLoader
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/TrancieverLoader/debug/ -lTrancieverLoader
+else:unix: LIBS += -L$$OUT_PWD/../../../../../app/device/TrancieverLoader/ -lTrancieverLoader
+
 #------------------------------------------------------------------------
 # copy needed dll
 #-------------------------------------------------------------------------
@@ -122,6 +147,24 @@ QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDA
 # 6. copy CommonVariables.dll
 FILENAME=CommonVariables.dll
 SOURCEPATH=../../../app/sharelibs/CommonVariables/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 7. copy Core.dll
+FILENAME=Core.dll
+SOURCEPATH=../../../app/core/Core/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 8. copy Tranceiver.dll
+FILENAME=Tranceiver.dll
+SOURCEPATH=../../../app/device/Tranceiver/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 8. copy Tranceiver.dll
+FILENAME=TrancieverLoader.dll
+SOURCEPATH=../../../app/device/TrancieverLoader/$$BUILDTARGET/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 

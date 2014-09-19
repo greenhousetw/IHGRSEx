@@ -16,7 +16,7 @@ public:
 
 signals:
 
-  virtual void CoreBus(DataPacket data);
+  void CoreBus(DataPacket data);
 
 public slots:
 
@@ -24,6 +24,6 @@ public slots:
 
 };
 
-Q_DECLARE_INTERFACE(ICore,"ICore")
+Q_DECLARE_INTERFACE(ICore,"{a1b108b3-af7e-4138-907d-55552b5d75c2}")
 
 #endif // CORE_H
