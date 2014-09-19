@@ -3,7 +3,7 @@
 
 QString CoreOne::GetCoreName()
 {
-    return QString("Hi");
+    return QString("Core One");
 }
 
 void CoreOne::CoreDataCollectBus(DataPacket data)

@@ -6,8 +6,25 @@ Sensor::Sensor()
 
 }
 
+bool Sensor::CoreConnector(QObject& coreIn)
+{
+    bool result=false;
+
+    ICore* core= (ICore*) &coreIn;
+
+    connect(core, SIGNAL(CoreBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
+    connect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
+
+    result=true;
+
+    return result;
+}
+
 void Sensor::ReceieveData(DataPacket data)
 {
+    this->value=data.packetData.value.toDouble();
+
+    qDebug()<<"sensor id gets the value:" + QString::number(this->value);
 }
 
 

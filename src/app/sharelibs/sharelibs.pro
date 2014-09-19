@@ -4,5 +4,6 @@ SUBDIRS += \
     CommonVariables \
     NotifyPackage \
     XmlHelper \
+    PluginHelper
 
 CONFIG += ordered

@@ -3,15 +3,15 @@
 #include <QCoreApplication>
 #include <QPluginLoader>
 #include <QDebug>
-/*#include "../../../app/algorithms/IAlgorithm/ialgorithm.h"
-#include "../../../app/algorithms/SimpleAlgorithm/simplealgorithm.h"
-#include "../../../app/sharelibs/CommonVariables/commonvariables.h"
-#include "../../../app/device/SensorBase/sensorbase.h"
-#include "../../../app/device/DeviceBase/devicebase.h"
-#include "../../../app/device/Sensors/sensor.h"
-#include "../../../app/device/ControlHardwareManager/controlhardwaremanager.h"*/
+#include <QList>
 
+#include "../../../app/core/Core/core.h"
+#include "../../../app/core/Core/coreone.h"
 #include "../../../app/device/Hardware/hardware.h"
+#include "../../../app/device/IDeviceFactory/idevicefactory.h"
+#include "../../../app/device/SensorUnit/sensor.h"
+#include "../../../app/device/SensorPlugInLoader/sensorpluginloader.h"
+#include "../../../app/sharelibs/PluginHelper/pluginhelper.h"
 
 class TestSensorsTest : public QObject
 {
@@ -27,11 +27,12 @@ signals:
 private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
-    void TestSensorInitialization();
+    void TestSensorCoreConnection();
+    void TestSensorCreation();
 };
 
 TestSensorsTest::TestSensorsTest()
-{
+{   
 }
 
 void TestSensorsTest::initTestCase()
@@ -42,127 +43,75 @@ void TestSensorsTest::cleanupTestCase()
 {
 }
 
-bool LoadPlugin()
+void TestSensorsTest::TestSensorCoreConnection()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+    IDeviceFactory* factory=NULL;
 
-#if defined(Q_OS_WIN)
-    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-        pluginsDir.cdUp();
-#elif defined(Q_OS_MAC)
-    if (pluginsDir.dirName() == "MacOS") {
-        pluginsDir.cdUp();
-        pluginsDir.cdUp();
-        pluginsDir.cdUp();
-    }
-#endif
-    pluginsDir.cd("plugins");
+    QPluginLoader loader;
 
-    pluginsDir.cd("debug");
+    CoreOne core;
 
+    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll")) {
 
-    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        qDebug() << "File Name=" + fileName;
-        QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(fileName));
-        QObject *plugin = pluginLoader.instance();
-        if (plugin) {
-            IHardware* echoInterface = qobject_cast<IHardware *>(plugin);
-            if (echoInterface)
-            {//sensortype
-                QMap<QString, QVariant> data;
-                QVariant id(QString("01"));
-                QVariant sensorType(QString("Temprature"));
-                data.insert("id", id);
-                data.insert("sensortype", sensorType);
+        factory = qobject_cast<IDeviceFactory *>(loader.instance());
 
-                echoInterface->SetHardware(data);
-                qDebug()<<echoInterface->GetDeviceID();
-                return true;
-            }
+        QMap<QString, QVariant> info;
+
+        QString dataMetrix[3][2]={{"01","Temprature"},{"02","Humid"},{"03","Light"}};
+
+        QList<Sensor*> sensorList;
+
+        for(int i=0;i<3;i++)
+        {
+            info.insert("id", QVariant(QString(dataMetrix[i][0])));
+            info.insert("sensortype", QVariant(QString(dataMetrix[i][1])));
+            Sensor* sensor = (Sensor*) factory->GetDevice(info);
+            sensor->SetHardware(info);
+            sensor->CoreConnector(core);
+            sensorList.push_back(sensor);
+            info.clear();
         }
+
+        QVERIFY(sensorList.at(1)->GetDeviceType()=="Humid");
     }
 
-    return false;
+    loader.unload();
 }
 
-void TestSensorsTest::TestSensorInitialization()
+void TestSensorsTest::TestSensorCreation()
 {
-    QDir pluginsDir(qApp->applicationDirPath());
+    IDeviceFactory* factory=NULL;
 
-    #if defined(Q_OS_WIN)
-        if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-            pluginsDir.cdUp();
-    #elif defined(Q_OS_MAC)
-        if (pluginsDir.dirName() == "MacOS") {
-            pluginsDir.cdUp();
-            pluginsDir.cdUp();
-            pluginsDir.cdUp();
-        }
-    #endif
-        pluginsDir.cd("plugins");
+    QPluginLoader loader;
 
-    pluginsDir.cd("debug");
+    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll")) {
 
+        factory = qobject_cast<IDeviceFactory *>(loader.instance());
 
-    QString file="SensorUnit.dll";
-    QPluginLoader pluginLoader(pluginsDir.absoluteFilePath(file));
-    QObject *plugin = pluginLoader.instance();
+        QMap<QString, QVariant> info;
 
-    if (plugin) {
+        QString dataMetrix[3][2]={{"01","Temprature"},{"02","Humid"},{"03","Light"}};
 
-        IHardware* sensor = qobject_cast<IHardware *>(plugin);
+        QList<Sensor*> sensorList;
 
-        if (sensor)
+        for(int i=0;i<3;i++)
         {
-            QMap<QString, QVariant> data;
-            QVariant id(QString("01"));
-            QVariant sensorType(QString("Temprature"));
-
-            data.insert("id", id);
-            data.insert("sensortype", sensorType);
-            sensor->SetHardware(data);
-
-            qDebug()<<sensor->GetDeviceType();
+            info.insert("id", QVariant(QString(dataMetrix[i][0])));
+            info.insert("sensortype", QVariant(QString(dataMetrix[i][1])));
+            Sensor* sensor = (Sensor*) factory->GetDevice(info);
+            sensor->SetHardware(info);
+            sensorList.push_back(sensor);
+            info.clear();
         }
+
+        QVERIFY(sensorList.at(1)->GetDeviceType()=="Humid");
     }
 
-    /*SensorBase *sensor=new Sensor("01",CommonVariables::Temprature);
-    IAlgorithm *algorithm=new SimpleAlgorithm;
-    ControlHardwareManager controlMananger;
-    connect(this, SIGNAL(TestForHardwareReceieverSlot(QString)), &controlMananger, SLOT(HardwareReceieverSlot(QString)));
-    connect(sensor, SIGNAL(FreeSignal(QVariant)), algorithm, SLOT(OperateDataReceiever(QVariant)));
-    connect(algorithm, SIGNAL(EmitDeviceControlCode(QList<QString>)), &controlMananger, SLOT(CommandSlotC(QList<QString>)));
+    loader.unload();
 
-    sensor->BuildHardwareInputConnection(&controlMananger);
-    sensor->SetAlgorithm(algorithm);
-    QVariant freeData="1" ;
-    emit sensor->FreeSignal(freeData);
-
-    QString data="Q01CP35AA*";
-    int timepassby=0;
-    int sleepSeconds=1;
-
-    while(timepassby!=60)
-    {
-        qDebug()<<"-----------------[" + QString::number(timepassby,10) +  "]-----------------";
-
-        if(timepassby == 12)
-        {
-            data="Q01CP199AA*";
-        }
-        else if(timepassby == 23)
-        {
-            data="Q01CN199AA*";
-        }
-
-        emit this->TestForHardwareReceieverSlot(data);
-
-        timepassby++;
-        QThread::sleep(sleepSeconds);
-    }
-
-    QVERIFY2(true, "Failure");*/
+    QVERIFY2(true, "Failure");
 }
+
 
 QTEST_MAIN(TestSensorsTest)
 

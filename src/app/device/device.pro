@@ -1,12 +1,9 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    DeviceBase \
-    ControlHardwareManager \
-    SensorBase \     
-    Sensors \
-    DevicePortal \
     Hardware \
-    SensorUnit
+    SensorUnit \
+    IDeviceFactory \
+    SensorPlugInLoader
 
 CONFIG += ordered

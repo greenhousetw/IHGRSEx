@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QtPlugin>
 #include <QString>
-#include <datapacket.h>
+#include "datapacket.h"
 
 class ICore : public QObject
 {    
@@ -16,7 +16,7 @@ public:
 
 signals:
 
-  void CoreBus(DataPacket data);
+  virtual void CoreBus(DataPacket data);
 
 public slots:
 

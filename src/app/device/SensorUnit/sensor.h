@@ -9,10 +9,6 @@
 class Sensor : public IHardware
 {
 
-    Q_OBJECT
-    Q_PLUGIN_METADATA(IID "{a021a317-d070-4789-9935-89c2a8b4ddac}" FILE "info.json")
-    Q_INTERFACES(IHardware)
-
 public:
 
     Sensor();
@@ -27,6 +23,7 @@ public:
     virtual QString GetDeviceValue();
     virtual QString GetDeviceID();
     virtual QString GetDeviceType();
+    virtual bool CoreConnector(QObject&);
 
 private:
 

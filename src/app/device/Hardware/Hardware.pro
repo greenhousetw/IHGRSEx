@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT       += xml xmlpatterns
-CONFIG   += plugin
 QT       -= gui
 
 TARGET = Hardware

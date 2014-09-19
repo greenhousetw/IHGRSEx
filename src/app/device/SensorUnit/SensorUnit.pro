@@ -5,7 +5,6 @@
 #-------------------------------------------------
 
 QT       += network sql script xml xmlpatterns
-CONFIG   +=plugin
 QT       -= gui
 
 TARGET = SensorUnit
@@ -23,6 +22,13 @@ HEADERS +=\
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Hardware/release/ -lHardware
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Hardware/debug/ -lHardware
 else:unix: LIBS += -L$$OUT_PWD/../Hardware/ -lHardware
+
+INCLUDEPATH += $$PWD/../../core/Core
+DEPENDPATH += $$PWD/../../core/Core
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../core/Core/release/ -lCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../core/Core/debug/ -lCore
+else:unix: LIBS += -L$$OUT_PWD/../../core/Core/ -lCore
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/release/ -lSensorRoot
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/debug/ -lSensorRoot

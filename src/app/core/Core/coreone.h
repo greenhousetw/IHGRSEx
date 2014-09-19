@@ -14,6 +14,10 @@ public:
     QString GetCoreName();
 
     void CoreDataCollectBus(DataPacket data);
+
+signals:
+
+    virtual void CoreBus(DataPacket data);
 };
 
 #endif // COREONE_H
