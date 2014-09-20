@@ -11,6 +11,8 @@ class COMMONVARIABLESSHARED_EXPORT CommonVariables : public QObject
     Q_OBJECT
     Q_ENUMS(CommandType)
     Q_ENUMS(SensorType)
+    Q_ENUMS(TranceiverType)
+
 
 public:
 

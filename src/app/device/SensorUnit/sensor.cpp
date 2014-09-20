@@ -35,9 +35,12 @@ bool Sensor::DiconnectCoreConnector(QObject& coreIn)
 
 void Sensor::ReceieveData(DataPacket data)
 {
-    this->value=data.packetData.value.toDouble();
+    if(data.packetData.payload.toString()=="Tranceiver")
+    {
+        //this->value=data.packetData.value.toDouble();
 
-    qDebug()<<"sensor id gets the value:" + QString::number(this->value);
+        qDebug()<<"sensor id gets the value:" + data.packetData.value;
+    }
 }
 
 

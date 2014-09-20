@@ -33,10 +33,12 @@ bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 }
 
 void Tranceiver::ReceieveData(DataPacket data)
-{
-    this->value=data.packetData.value.toDouble();
-
-    qDebug()<<"tranciever id gets the value:" + QString::number(this->value);
+{   
+    if(data.packetData.payload.toString()=="Sensor")
+    {
+        this->value=data.packetData.value.toDouble();
+        qDebug()<<"tranciever id gets the value:" + QString::number(this->value);
+    }
 }
 
 
@@ -54,7 +56,7 @@ bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
          if(config["TranceiverType"].toString() == QString(m.valueToKey(i)))
          {
             this->trancieverType=(CommonVariables::TranceiverType) m.keyToValue(config["TranceiverType"].toString().toLocal8Bit().data());
-            qDebug()<<"This device type=" + config["sensortype"].toString() + ", its index=" + QString::number(i);
+            qDebug()<<"This device type=" + config["TranceiverType"].toString() + ", its index=" + QString::number(i);
             break;
          }
      }

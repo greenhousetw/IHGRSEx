@@ -6,6 +6,7 @@ SUBDIRS += \
     IDeviceFactory \
     SensorPlugInLoader \
     Tranceiver \
-    TrancieverLoader
+    TrancieverLoader \
+    DeviceManager
 
 CONFIG += ordered

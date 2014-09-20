@@ -9,5 +9,7 @@ QString CoreOne::GetCoreName()
 
 void CoreOne::CoreDataCollectBus(DataPacket data)
 {
-    qDebug()<< "You got value=" + data.packetData.value;
+    qDebug()<< "CoreOne gets the value:" + data.packetData.value;
+
+    emit this->CoreBus(data);
 }

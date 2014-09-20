@@ -30,9 +30,9 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../core/Core/rel
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../core/Core/debug/ -lCore
 else:unix: LIBS += -L$$OUT_PWD/../../core/Core/ -lCore
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/release/ -lSensorRoot
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/debug/ -lSensorRoot
-else:unix: LIBS += -L$$OUT_PWD/../SensorRoot/ -lSensorRoot
+#win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/release/ -lSensorRoot
+#else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../SensorRoot/debug/ -lSensorRoot
+#else:unix: LIBS += -L$$OUT_PWD/../SensorRoot/ -lSensorRoot
 
 INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
 DEPENDPATH += $$PWD/../../sharelibs/CommonVariables

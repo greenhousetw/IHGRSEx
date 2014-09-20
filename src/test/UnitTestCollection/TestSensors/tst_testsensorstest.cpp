@@ -29,8 +29,8 @@ signals:
 private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
-    void TestSensorRight();
-    //void TestSensorCreation();
+    void TestGreenSensorInitialization();
+    void TestGreenSensorEmitData();
 };
 
 TestSensorsTest::TestSensorsTest()
@@ -45,24 +45,18 @@ void TestSensorsTest::cleanupTestCase()
 {
 }
 
-void TestSensorsTest::TestSensorRight()
+void TestSensorsTest::TestGreenSensorInitialization()
 {
     IDeviceFactory* factory=NULL;
-    IDeviceFactory* tranceiverfactory=NULL;
 
     QPluginLoader loader;
 
-    QPluginLoader tranceiverLoader;
-
     CoreOne core;
 
-    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll") &&
-        PluginHelper::GetPlugIn(tranceiverLoader, "TrancieverLoader.dll")
-            ) {
+    if (PluginHelper::GetPlugIn(loader, "SensorPlugInLoader.dll"))
+    {
 
         factory = qobject_cast<IDeviceFactory *>(loader.instance());
-
-        tranceiverfactory = qobject_cast<IDeviceFactory *>(tranceiverLoader.instance());
 
         QMap<QString, QVariant> info;
 
@@ -79,34 +73,75 @@ void TestSensorsTest::TestSensorRight()
             sensor->CoreConnector(core);
             sensorList.push_back(sensor);
             info.clear();
+
+            QVERIFY(sensorList.at(i)->GetDeviceID()==QString(dataMetrix[i][0]));
+            QVERIFY(sensorList.at(i)->GetDeviceType()==QString(dataMetrix[i][1]));
         }
 
-        QVERIFY(sensorList.at(1)->GetDeviceType()=="Humid");
-
-        info.clear();
-        info.insert("id", QVariant(QString("01")));
-        info.insert("TranceiverType", QVariant(QString("SerialPort")));
-        Tranceiver* tranceiver = (Tranceiver*) tranceiverfactory->GetDevice(info);
-        tranceiver->SetHardware(info);
-        tranceiver->CoreConnector(core);
 
         foreach(Sensor* sensor, sensorList)
         {
-            DataPacket datapacket;
-            datapacket.packetData.value="12";
-            emit sensor->SendData(datapacket);
 
-            if(sensor->DiconnectCoreConnector(core))
-            {
+           if(sensor->DiconnectCoreConnector(core))
+           {
                qDebug()<<"Core detached";
                delete sensor;
-            }
+           }
         }
     }
 
     loader.unload();
+}
 
-    QVERIFY2(true, "Failure");
+void TestSensorsTest::TestGreenSensorEmitData()
+{
+        CoreOne core;
+
+        QPluginLoader sensorLoader, tranceiverLoader;
+
+        PluginHelper::GetPlugIn(sensorLoader, "SensorPlugInLoader.dll");
+        PluginHelper::GetPlugIn(tranceiverLoader, "TrancieverLoader.dll");
+
+        IDeviceFactory* sensorFactory=NULL;
+        IDeviceFactory* tranceiverfactory=NULL;
+
+        sensorFactory=(IDeviceFactory*) qobject_cast<IDeviceFactory *>(sensorLoader.instance());
+        tranceiverfactory=(IDeviceFactory*) qobject_cast<IDeviceFactory *>(tranceiverLoader.instance());
+
+
+        QMap<QString, QVariant> info;
+        info.insert("id", QVariant(QString("01")));
+        info.insert("TranceiverType", QVariant(QString("SerialPort")));
+
+        Tranceiver* tranceiver = (Tranceiver*) tranceiverfactory->GetDevice(info);
+        tranceiver->SetHardware(info);    
+        tranceiver->CoreConnector(core);
+
+        info.clear();
+        info.insert("id", QVariant(QString("01")));
+        info.insert("sensortype", QVariant(QString("Temprature")));
+
+        Sensor* sensor = (Sensor*) sensorFactory->GetDevice(info);
+        sensor->SetHardware(info);
+        sensor->CoreConnector(core);
+
+        DataPacket packet;
+        packet.packetData.value=QString::number(12.225);
+
+        packet.packetData.payload=QVariant("Sensor");
+        emit sensor->SendData(packet);
+
+        packet.packetData.value="Q01A3005";
+        packet.packetData.payload=QVariant("Tranceiver");
+        emit tranceiver->SendData(packet);
+
+        sensor->DiconnectCoreConnector(core);
+        tranceiver->DiconnectCoreConnector(core);
+
+        delete sensor;
+        delete tranceiver;
+        sensorLoader.unload();
+        tranceiverLoader.unload();
 }
 
 QTEST_MAIN(TestSensorsTest)
