@@ -1,0 +1,19 @@
+{
+    "ControlBox":{
+        "sensor":{
+            "id":"01",
+            "typ":"temprature",
+            "value":"min"
+        },
+        "sensor":{
+            "id":"02",
+            "typ":"Humid",
+            "value":"min"
+        },
+        "sensor":{
+            "id":"03",
+            "typ":"Light",
+            "value":"min"
+        }
+    }
+}

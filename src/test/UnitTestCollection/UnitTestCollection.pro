@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
     TestSimpleSectionAlgorithm \
     TestControlHardwareManager \
-    TestSensors
+    TestSensors \
+    TestDeviceManager
