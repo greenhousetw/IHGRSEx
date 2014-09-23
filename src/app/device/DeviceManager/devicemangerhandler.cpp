@@ -63,7 +63,8 @@ bool DeviceMangerHandler::GetSensors()
        foreach(QVariant value, controlBoxList)
        {
          //  QObject o=list;
-/*
+
+           /*
            for(int i=0;i<list.count();i++)
            {
                QMap<QString,QVariant> sensorMap=list.at(i).toMap();
