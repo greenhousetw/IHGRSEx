@@ -2,6 +2,7 @@
 #define DEVICEMANGERHANDLER_H
 
 #include "./devicemanager.h"
+#include <QMap>
 
 class DeviceMangerHandler : public IDeviceManager
 {
@@ -14,18 +15,17 @@ public:
     virtual bool SetCore();
     virtual bool LoadSensors();
     virtual bool LoadTranceievers();
-    virtual QList<IHardware*> GetSensors();
-    virtual QList<IHardware*> GetTranceievers();
+    virtual bool GetSensors();
+    virtual bool GetTranceievers();
 
 private:
 
 
     ICore *core=NULL;
 
-    QList<IHardware*> sensorList;
+    QMap<QString,QMap<QString, IHardware*> > controlBox;
     QList<IHardware*> tranceieverList;
-
-    QJsonObject sensorconfigJson;
+    QJsonObject jsonObject;
     QString sensorConfigLocation;
     bool LoadConfig(QString);
 };

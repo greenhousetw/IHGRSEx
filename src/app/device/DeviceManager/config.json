@@ -1,4 +1,4 @@
 {
-    "sensorconfigfile" : "./data/sensorconfig.json",
-    "tranceieverconfigfile" : "./data/tranceieverconfig.json"
+    "sensorconfigfile" : "sensorconfig.json",
+    "tranceieverconfigfile" : "tranceieverconfig.json"
 }

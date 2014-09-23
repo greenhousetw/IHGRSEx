@@ -30,44 +30,83 @@ bool DeviceMangerHandler::LoadTranceievers()
     return result;
 }
 
-QList<IHardware*> DeviceMangerHandler::GetSensors()
+bool DeviceMangerHandler::GetSensors()
 {
-    QDir pluginsDir(QCoreApplication::applicationDirPath());
+    bool result=false;
 
-    QString sensorConfigs=pluginsDir.absoluteFilePath("config.json");
+    QString sensorConfigLocation="";
 
-    qDebug()<<"Sensor config file=" + sensorConfigs;
+    QVariantMap jsonMap;
 
-    if(this->LoadConfig(sensorConfigs))
+    if(!this->LoadConfig("config.json"))
     {
-        QString sensorConfigLocation = this->sensorconfigJson["sensorconfigfile"].toString();
-
-        qDebug() << sensorConfigLocation;
+        qCritical()<<"System cannot load config.json";
+        goto bye;
     }
 
-    return this->sensorList;
+    sensorConfigLocation = this->jsonObject["sensorconfigfile"].toString();
+
+    qDebug() << "sensor configuration file's path:" + sensorConfigLocation;
+
+    if(!this->LoadConfig(sensorConfigLocation))
+    {
+        qCritical()<<"System cannot load config.json";
+        goto bye;
+    }
+
+    jsonMap = this->jsonObject.toVariantMap();
+
+    foreach(QString value, jsonMap.keys())
+    {
+       QVariantList controlBoxList= jsonMap[value].toList();
+
+       foreach(QVariant value, controlBoxList)
+       {
+         //  QObject o=list;
+/*
+           for(int i=0;i<list.count();i++)
+           {
+               QMap<QString,QVariant> sensorMap=list.at(i).toMap();
+
+               foreach(QString key, sensorMap.keys())
+               {
+                   qDebug()<< key;
+               }
+           }
+           */
+       }
+    }
+
+    result=true;
+
+    bye:
+    return result;
 }
 
-QList<IHardware*> DeviceMangerHandler::GetTranceievers()
+bool DeviceMangerHandler::GetTranceievers()
 {
-    return this->tranceieverList;
+    return false;
 }
 
 bool DeviceMangerHandler::LoadConfig(QString fileName)
 {
     bool result=false;
 
-    QFile loadFile(fileName);
+    QDir dir(QCoreApplication::applicationDirPath());
+
+    QFile loadFile(dir.absoluteFilePath(fileName));
 
     if (!loadFile.open(QIODevice::ReadOnly)) {
-        qWarning("Couldn't open save file.");
-    }
-    else
-    {
-        this->sensorconfigJson=QJsonDocument::fromJson(loadFile.readAll()).object();
-        result=true;
+        qWarning() << "Couldn't open file:" + fileName;
+        goto bye;
     }
 
+    this->jsonObject=QJsonDocument::fromJson(loadFile.readAll()).object();
+
+    result=true;
+
     loadFile.close();
+
+    bye:
     return result;
 }
