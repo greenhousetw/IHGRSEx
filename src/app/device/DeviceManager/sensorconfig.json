@@ -1,12 +1,12 @@
 {
   "ControlBox": [
     {
-      "id":"d078030d-6256-4300-b28e-41c65a0b840f",
+      "id":"01",
       "sensors":
        [
             {
               "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
-              "typ":"temprature",
+              "typ":"Temprature",
               "value":"min"
             },
             {
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "id":"bde17929-2641-431e-9022-454604f737c8",
+      "id":"02",
       "sensors":
       [
            {

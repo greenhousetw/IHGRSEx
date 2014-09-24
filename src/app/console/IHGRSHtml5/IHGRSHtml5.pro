@@ -97,18 +97,18 @@ SOURCEPATH=../../../app/device/DeviceBase/$$BuildTarget/$$FILENAME
 QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 # 3. copy SensorBase.dll
-FILENAME=SensorBase.dll
-SOURCEPATH=../../../app/device/SensorBase/$$BuildTarget/$$FILENAME
-DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
+#FILENAME=SensorBase.dll
+#SOURCEPATH=../../../app/device/SensorBase/$$BuildTarget/$$FILENAME
+#DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
-QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+#QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 
 # 4. copy Sensors.dll
-FILENAME=Sensors.dll
-SOURCEPATH=../../../app/device/Sensors/$$BuildTarget/$$FILENAME
-DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
+#FILENAME=Sensors.dll
+#SOURCEPATH=../../../app/device/Sensors/$$BuildTarget/$$FILENAME
+#DESTIDATAPATH=$$OUT_PWD/$$BuildTarget/device/
 #QMAKE_POST_LINK +=$$quote(mkdir $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t))
-QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
+#QMAKE_POST_LINK +=$$quote(xcopy "$$shell_path($$SOURCEPATH)" $$shell_path($$DESTIDATAPATH) /e /c /i /y $$escape_expand(\\n\\t))
 }
 
 #-------------------------------------------------------------------------

@@ -38,6 +38,10 @@ bool DeviceMangerHandler::GetSensors()
 
     QVariantMap jsonMap;
 
+    QMap<QString,QVariant> controlMap, sensorMap;
+
+    QVariantList controlBoxList, sensorList;
+
     if(!this->LoadConfig("config.json"))
     {
         qCritical()<<"System cannot load config.json";
@@ -58,23 +62,33 @@ bool DeviceMangerHandler::GetSensors()
 
     foreach(QString value, jsonMap.keys())
     {
-       QVariantList controlBoxList= jsonMap[value].toList();
+       controlBoxList = jsonMap[value].toList();
 
-       foreach(QVariant value, controlBoxList)
+       foreach(QVariant controlBox, controlBoxList)
        {
-         //  QObject o=list;
+          controlMap = controlBox.toMap();
 
-           /*
-           for(int i=0;i<list.count();i++)
-           {
-               QMap<QString,QVariant> sensorMap=list.at(i).toMap();
+          foreach(QString key, controlMap.keys())
+          {
+             if(key=="id")
+             {
+                  qDebug()<< "control box id=" + controlMap[key].toString();
+             }
+             else if(key=="sensors")
+             {
+                sensorList=controlMap[key].toList();
 
-               foreach(QString key, sensorMap.keys())
-               {
-                   qDebug()<< key;
-               }
-           }
-           */
+                foreach(QVariant sensor, sensorList)
+                {
+                    sensorMap=sensor.toMap();
+
+                    foreach(QString sensorid, sensorMap.keys())
+                    {
+                        //qDebug()<<sensorid;
+                    }
+                }
+             }
+          }
        }
     }
 
