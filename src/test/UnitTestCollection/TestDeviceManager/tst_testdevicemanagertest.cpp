@@ -38,7 +38,11 @@ void TestDeviceManagerTest::TestDeviceManagerRight()
     if (PluginHelper::GetPlugIn(loader, "DeviceManager.dll"))
     {
          IDeviceManager* deviceManager = qobject_cast<IDeviceManager *>(loader.instance());
-         deviceManager->GetSensors();
+
+         if(deviceManager->SetCore())
+         {
+            deviceManager->GetSensors();
+         }
     }
     else
     {

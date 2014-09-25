@@ -7,15 +7,7 @@ bool DeviceMangerHandler::SetCore()
 {
     bool result=false;
 
-    return result;
-}
-
-bool DeviceMangerHandler::LoadSensors()
-{
-    bool result=false;
-
-    QString sensorConfigs="./config.json";
-
+    QString filePathOfConfig="./config.json";
     QString sensorPlugInLoaderName="SensorPlugInLoader.dll";
 
     if(!this->loader.isLoaded())
@@ -27,13 +19,20 @@ bool DeviceMangerHandler::LoadSensors()
                this->sensorFactory = qobject_cast<IDeviceFactory *>(this->loader.instance());
            }
 
-           result=this->LoadConfig(sensorConfigs);
+           result=this->LoadConfig(filePathOfConfig);
        }
        else
        {
            qCritical()<<"system cannot load:" + sensorPlugInLoaderName;
        }
     }
+
+    return result;
+}
+
+bool DeviceMangerHandler::LoadSensors()
+{
+    bool result=false;
 
     return result;
 }
@@ -87,11 +86,7 @@ bool DeviceMangerHandler::GetSensors()
 
           foreach(QString key, controlMap.keys())
           {
-             if(key=="controlboxid")
-             {
-                  qDebug()<< "control box id=" + controlMap[key].toString();
-             }
-             else if(key=="sensors")
+             if(key=="sensors")
              {
                 sensorList=controlMap[key].toList();
 
@@ -110,7 +105,7 @@ bool DeviceMangerHandler::GetSensors()
                     info.clear();
                 }
 
-                this->controlBox.insert(controlMap[key].toString(), sensorSet);
+                this->controlBox.insert(controlMap["controlboxid"].toString(), sensorSet);
              }
           }
        }
