@@ -3,7 +3,6 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 
-
 bool DeviceMangerHandler::SetCore()
 {
     bool result=false;
@@ -17,8 +16,24 @@ bool DeviceMangerHandler::LoadSensors()
 
     QString sensorConfigs="./config.json";
 
-    this->LoadConfig(sensorConfigs);
+    QString sensorPlugInLoaderName="SensorPlugInLoader.dll";
 
+    if(!this->loader.isLoaded())
+    {
+       if (PluginHelper::GetPlugIn(this->loader, sensorPlugInLoaderName))
+       {
+           if(this->sensorFactory == NULL)
+           {
+               this->sensorFactory = qobject_cast<IDeviceFactory *>(this->loader.instance());
+           }
+
+           result=this->LoadConfig(sensorConfigs);
+       }
+       else
+       {
+           qCritical()<<"system cannot load:" + sensorPlugInLoaderName;
+       }
+    }
 
     return result;
 }
@@ -68,9 +83,11 @@ bool DeviceMangerHandler::GetSensors()
        {
           controlMap = controlBox.toMap();
 
+          QMap<QString, IHardware*> sensorSet;
+
           foreach(QString key, controlMap.keys())
           {
-             if(key=="id")
+             if(key=="controlboxid")
              {
                   qDebug()<< "control box id=" + controlMap[key].toString();
              }
@@ -78,21 +95,30 @@ bool DeviceMangerHandler::GetSensors()
              {
                 sensorList=controlMap[key].toList();
 
+                QMap<QString, QVariant> info;
+
                 foreach(QVariant sensor, sensorList)
                 {
-                    sensorMap=sensor.toMap();
+                    sensorMap=sensor.toMap();   
 
-                    foreach(QString sensorid, sensorMap.keys())
-                    {
-                        //qDebug()<<sensorid;
-                    }
+                    info.insert("id", QVariant(sensorMap["id"].toString()));
+                    info.insert("sensortype", QVariant(sensorMap["type"].toString()));
+
+                    Sensor* sensorObject = (Sensor*) this->sensorFactory->GetDevice(info);
+                    sensorObject->SetHardware(info);
+                    sensorSet.insert(sensorMap["id"].toString(), sensorObject);
+                    info.clear();
                 }
+
+                this->controlBox.insert(controlMap[key].toString(), sensorSet);
              }
           }
        }
     }
 
     result=true;
+
+    qDebug()<<"Size of ControlBox set=" + QString::number(this->controlBox.count());
 
     bye:
     return result;

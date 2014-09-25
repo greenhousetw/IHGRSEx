@@ -3,6 +3,9 @@
 
 #include "./devicemanager.h"
 #include <QMap>
+#include "../../sharelibs/PluginHelper/pluginhelper.h"
+#include "../IDeviceFactory/idevicefactory.h"
+#include "../SensorUnit/sensor.h"
 
 class DeviceMangerHandler : public IDeviceManager
 {
@@ -22,6 +25,9 @@ private:
 
 
     ICore *core=NULL;
+
+    QPluginLoader loader;
+    IDeviceFactory* sensorFactory=NULL;
 
     QMap<QString,QMap<QString, IHardware*> > controlBox;
     QList<IHardware*> tranceieverList;

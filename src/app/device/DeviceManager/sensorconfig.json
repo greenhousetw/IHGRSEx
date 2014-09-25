@@ -1,43 +1,43 @@
 {
   "ControlBox": [
     {
-      "id":"01",
+      "controlboxid":"01",
       "sensors":
        [
             {
               "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
-              "typ":"Temprature",
+              "type":"Temprature",
               "value":"min"
             },
             {
               "id":"9465da62-8f7e-4b66-9029-f4dac5d4d394",
-              "typ":"Humid",
+              "type":"Humid",
               "value":"min"
             },
             {
               "id":"1f01e3b4-f028-49e1-92c2-f12b22a4734c",
-              "typ":"Light",
+              "type":"Light",
               "value":"min"
             }
       ]
     },
     {
-      "id":"02",
+      "controlboxid":"02",
       "sensors":
       [
            {
                "id":"80c815a1-0fad-4e26-b40c-fdf7d485b04a",
-               "typ":"temprature",
+               "type":"temprature",
                "value":"min"
            },
            {
                "id":"4a350895-c32e-401f-8f9b-ccacb992594a",
-               "typ":"Humid",
+               "type":"Humid",
                "value":"min"
            },
            {
                "id":"a4c67bbe-2e1c-4a36-8976-bc6b2c2405e3",
-               "typ":"Light",
+               "type":"Light",
                "value":"min"
            }
      ]

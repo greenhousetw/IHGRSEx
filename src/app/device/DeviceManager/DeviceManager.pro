@@ -24,6 +24,10 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../Hardware/release/ -
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../Hardware/debug/ -lHardware
 else:unix: LIBS += -L$$OUT_PWD/../Hardware/ -lHardware
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/release/ -lPluginHelper
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/debug/ -lPluginHelper
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/ -lPluginHelper
+
 INCLUDEPATH += $$PWD/../../core/Core
 DEPENDPATH += $$PWD/../../core/Core
 
