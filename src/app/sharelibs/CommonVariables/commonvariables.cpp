@@ -39,7 +39,7 @@
 
      if(!isGet)
      {
-         qWarning()<<"Unknown type";
+         //qWarning()<<"Unknown type";
      }
 
      bye:
