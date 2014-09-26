@@ -7,6 +7,7 @@ SUBDIRS += \
     SensorPlugInLoader \
     Tranceiver \
     TrancieverLoader \
-    DeviceManager
+    DeviceManager \
+    qextserialport
 
 CONFIG += ordered

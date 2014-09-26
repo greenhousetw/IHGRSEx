@@ -162,7 +162,7 @@ void To_Log_File(char* string)
 
     QTextStream out(&LogFile);
 
-    out <<"["<<DT.currentDateTime().toString("yyyy.MM.dd hh:mm:ss").toAscii().data()<< "]"<<":"<<string<<"\n";
+    out <<"["<<DT.currentDateTime().toString("yyyy.MM.dd hh:mm:ss").toLocal8Bit().data()<< "]"<<":"<<string<<"\n";
 
 //   qDebug("%s",string);
 }
@@ -362,7 +362,7 @@ bool Win_QextSerialPort::open(OpenMode mode)
     if (!isOpen())
     {
 
-        Win_Handle=CreateFileA(port.toAscii(), GENERIC_READ|GENERIC_WRITE,
+        Win_Handle=CreateFileA(port.toLatin1(), GENERIC_READ|GENERIC_WRITE,
                                FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, OPEN_EXISTING, dwFlagsAndAttributes, NULL);
         if (Win_Handle!=INVALID_HANDLE_VALUE)
         {
