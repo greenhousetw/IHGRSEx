@@ -42,6 +42,7 @@ void TestDeviceManagerTest::TestDeviceManagerRight()
          if(deviceManager->SetCore())
          {
             deviceManager->GetSensors();
+            deviceManager->GetTranceievers();
          }
     }
     else

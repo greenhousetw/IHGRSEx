@@ -4,7 +4,9 @@
 #include <QList>
 #include <QObject>
 #include "../../core/Core/core.h"
+#include "../../core/Core/coreone.h"
 #include "../../device/Hardware/hardware.h"
+#include "../Tranceiver/tranceiver.h"
 #include "../../sharelibs/CommonVariables/commonvariables.h"
 
 class IDeviceManager : public QObject
@@ -13,6 +15,7 @@ class IDeviceManager : public QObject
 public:
 
     virtual bool SetCore()=0;
+    virtual bool ReleaseCore()=0;
     virtual bool LoadSensors()=0;
     virtual bool LoadTranceievers()=0;
     virtual bool GetSensors()=0;

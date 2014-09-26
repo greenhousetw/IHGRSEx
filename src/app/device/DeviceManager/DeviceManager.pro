@@ -28,6 +28,10 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/Plugin
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/debug/ -lPluginHelper
 else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/ -lPluginHelper
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../core/Core/release/ -lCore
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../core/Core/debug/ -lCore
+else:unix: LIBS += -L$$OUT_PWD/../../core/Core/ -lCore
+
 INCLUDEPATH += $$PWD/../../core/Core
 DEPENDPATH += $$PWD/../../core/Core
 
@@ -39,4 +43,5 @@ unix {
 OTHER_FILES += \
     info.json \
     config.json \
-    sensorconfig.json
+    sensorconfig.json \
+    tranceieverconfig.json

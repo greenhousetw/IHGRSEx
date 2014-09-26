@@ -150,4 +150,10 @@ SOURCEPATH=../../../../../../src/app/device/DeviceManager/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
+# 11. copy tranceieverconfig.json
+FILENAME=tranceieverconfig.json
+SOURCEPATH=../../../../../../src/app/device/DeviceManager/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
 }

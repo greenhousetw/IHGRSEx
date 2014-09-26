@@ -3,6 +3,7 @@
 
 #include "./devicemanager.h"
 #include <QMap>
+
 #include "../../sharelibs/PluginHelper/pluginhelper.h"
 #include "../IDeviceFactory/idevicefactory.h"
 #include "../SensorUnit/sensor.h"
@@ -20,6 +21,7 @@ public:
     virtual bool LoadTranceievers();
     virtual bool GetSensors();
     virtual bool GetTranceievers();
+    virtual bool ReleaseCore();
 
 private:
 
@@ -27,13 +29,20 @@ private:
     ICore *core=NULL;
 
     QPluginLoader loader;
+    QPluginLoader trancieverLoader;
     IDeviceFactory* sensorFactory=NULL;
+    IDeviceFactory* tranceiverFactory=NULL;
 
     QMap<QString,QMap<QString, IHardware*> > controlBox;
-    QList<IHardware*> tranceieverList;
+    QMap<QString,QMap<QString, IHardware*> > trancieverControlBox;
+
     QJsonObject jsonObject;
+    QString tranceieverLocation;
     QString sensorConfigLocation;
     bool LoadConfig(QString);
+
+    template <typename T>
+    bool SetupDevices(IDeviceFactory*, QMap<QString,QMap<QString, IHardware*> > *, QString, QString);
 };
 
 #endif // DEVICEMANGERHANDLER_H

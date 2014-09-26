@@ -5,27 +5,73 @@
 
 bool DeviceMangerHandler::SetCore()
 {
+    bool result=false;          
+
+    this->ReleaseCore();
+
+    if(!this->LoadConfig("config.json"))
+    {
+        qCritical()<<"System cannot load config.json";
+        goto orz;
+    }
+
+    if (!PluginHelper::GetPlugIn(this->loader, this->jsonObject["sensorloader"].toString()))
+    {
+      qCritical()<<"system cannot load:" + this->jsonObject["sensorloader"].toString();
+      goto orz;
+    }
+
+    if (!PluginHelper::GetPlugIn(this->trancieverLoader, this->jsonObject["tranceiverloader"].toString()))
+    {
+      qCritical()<<"system cannot load:" + this->jsonObject["tranceiverloader"].toString();
+      goto orz;
+    }
+
+    this->sensorFactory = qobject_cast<IDeviceFactory *>(this->loader.instance());
+    this->tranceiverFactory = qobject_cast<IDeviceFactory *>(this->trancieverLoader.instance());
+    this->core=new CoreOne;
+    this->tranceieverLocation= this->jsonObject["tranceieverconfigfile"].toString();
+    this->sensorConfigLocation = this->jsonObject["sensorconfigfile"].toString();
+
+    result=true;
+
+    orz:
+    return result;
+}
+
+bool DeviceMangerHandler::ReleaseCore()
+{
     bool result=false;
 
-    QString filePathOfConfig="./config.json";
-    QString sensorPlugInLoaderName="SensorPlugInLoader.dll";
-
-    if(!this->loader.isLoaded())
+    if(this->core)
     {
-       if (PluginHelper::GetPlugIn(this->loader, sensorPlugInLoaderName))
-       {
-           if(this->sensorFactory == NULL)
-           {
-               this->sensorFactory = qobject_cast<IDeviceFactory *>(this->loader.instance());
-           }
-
-           result=this->LoadConfig(filePathOfConfig);
-       }
-       else
-       {
-           qCritical()<<"system cannot load:" + sensorPlugInLoaderName;
-       }
+        delete this->core;
+        this->core=NULL;
     }
+
+    if(this->loader.isLoaded())
+    {
+        this->loader.unload();
+    }
+
+    if(this->trancieverLoader.isLoaded())
+    {
+        trancieverLoader.unload();
+    }
+
+    if(this->sensorFactory)
+    {
+        delete this->sensorFactory;
+        this->sensorFactory=NULL;
+    }
+
+    if(this->tranceiverFactory)
+    {
+        delete this->tranceiverFactory;
+        this->tranceiverFactory=NULL;
+    }
+
+    result=true;
 
     return result;
 }
@@ -42,86 +88,6 @@ bool DeviceMangerHandler::LoadTranceievers()
     bool result=false;
 
     return result;
-}
-
-bool DeviceMangerHandler::GetSensors()
-{
-    bool result=false;
-
-    QString sensorConfigLocation="";
-
-    QVariantMap jsonMap;
-
-    QMap<QString,QVariant> controlMap, sensorMap;
-
-    QVariantList controlBoxList, sensorList;
-
-    if(!this->LoadConfig("config.json"))
-    {
-        qCritical()<<"System cannot load config.json";
-        goto bye;
-    }
-
-    sensorConfigLocation = this->jsonObject["sensorconfigfile"].toString();
-
-    qDebug() << "sensor configuration file's path:" + sensorConfigLocation;
-
-    if(!this->LoadConfig(sensorConfigLocation))
-    {
-        qCritical()<<"System cannot load config.json";
-        goto bye;
-    }
-
-    jsonMap = this->jsonObject.toVariantMap();
-
-    foreach(QString value, jsonMap.keys())
-    {
-       controlBoxList = jsonMap[value].toList();
-
-       foreach(QVariant controlBox, controlBoxList)
-       {
-          controlMap = controlBox.toMap();
-
-          QMap<QString, IHardware*> sensorSet;
-
-          foreach(QString key, controlMap.keys())
-          {
-             if(key=="sensors")
-             {
-                sensorList=controlMap[key].toList();
-
-                QMap<QString, QVariant> info;
-
-                foreach(QVariant sensor, sensorList)
-                {
-                    sensorMap=sensor.toMap();   
-
-                    info.insert("id", QVariant(sensorMap["id"].toString()));
-                    info.insert("sensortype", QVariant(sensorMap["type"].toString()));
-
-                    Sensor* sensorObject = (Sensor*) this->sensorFactory->GetDevice(info);
-                    sensorObject->SetHardware(info);
-                    sensorSet.insert(sensorMap["id"].toString(), sensorObject);
-                    info.clear();
-                }
-
-                this->controlBox.insert(controlMap["controlboxid"].toString(), sensorSet);
-             }
-          }
-       }
-    }
-
-    result=true;
-
-    qDebug()<<"Size of ControlBox set=" + QString::number(this->controlBox.count());
-
-    bye:
-    return result;
-}
-
-bool DeviceMangerHandler::GetTranceievers()
-{
-    return false;
 }
 
 bool DeviceMangerHandler::LoadConfig(QString fileName)
@@ -142,6 +108,109 @@ bool DeviceMangerHandler::LoadConfig(QString fileName)
     result=true;
 
     loadFile.close();
+
+    bye:
+    return result;
+}
+
+bool DeviceMangerHandler::GetSensors()
+{
+
+    bool result=this->SetupDevices<Sensor>(this->sensorFactory, &this->controlBox,
+                       this->sensorConfigLocation, "sensors");
+
+    if(result)
+    {
+        qDebug()<<" count of sensor ControlBox=" + QString::number(this->controlBox.count());
+    }
+
+    return result;
+}
+
+bool DeviceMangerHandler::GetTranceievers()
+{
+    bool result=this->SetupDevices<Tranceiver>(this->tranceiverFactory, &this->trancieverControlBox,
+                       this->tranceieverLocation, "tranciever");
+
+    if(result)
+    {
+        qDebug()<<" count of Tranciever ControlBox=" + QString::number(this->trancieverControlBox.count());
+    }
+
+    return result;
+}
+
+template <typename T>
+bool DeviceMangerHandler::SetupDevices(IDeviceFactory* factory, QMap<QString,QMap<QString, IHardware*> > *controlBoxInstance, QString configurationFile, QString loadType)
+{
+    bool result=false;
+
+    QVariantMap jsonMap;
+
+    QMap<QString,QVariant> controlMap, innerDeviceMap;
+
+    QVariantList boxList, innerDeviceList;
+
+    if(this->jsonObject.count()==0)
+    {
+        qWarning()<<"Please execute SetCore first";
+        goto bye;
+    }
+
+    qDebug() << "configuration file's path:" + configurationFile;
+
+    if(!this->LoadConfig(configurationFile))
+    {
+        qCritical()<<"orz! system cannot load tranceieverconfig.json";
+        goto bye;
+    }
+
+    jsonMap = this->jsonObject.toVariantMap();
+
+    foreach(QString value, jsonMap.keys())
+    {
+       boxList = jsonMap[value].toList();
+
+       foreach(QVariant controlBox, boxList)
+       {
+          controlMap = controlBox.toMap();
+
+          QMap<QString, IHardware*> internalDeviceSet;
+
+          foreach(QString key, controlMap.keys())
+          {
+             if(key==loadType)
+             {
+                innerDeviceList=controlMap[key].toList();
+
+                QMap<QString, QVariant> info;
+
+                foreach(QVariant innerDevice, innerDeviceList)
+                {
+                    innerDeviceMap=innerDevice.toMap();
+
+                    QString id="id";
+                    QString type="type";
+
+                    info.insert(id, QVariant(innerDeviceMap[id].toString()));
+                    info.insert(type, QVariant(innerDeviceMap[type].toString()));
+
+                    T* deviceObject = (T*) factory->GetDevice(info);
+                    deviceObject->SetHardware(info);
+                    deviceObject->CoreConnector(*this->core);
+                    internalDeviceSet.insert(innerDeviceMap[id].toString(), deviceObject);
+                    info.clear();
+                }
+
+                controlBoxInstance->insert(controlMap["controlboxid"].toString(), internalDeviceSet);
+             }
+          }
+       }
+    }
+
+    result=true;
+
+    qDebug()<<"Size of ControlBox set=" + QString::number(controlBoxInstance->count());
 
     bye:
     return result;
