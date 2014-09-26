@@ -2,7 +2,7 @@
 
 
 Tranceiver::Tranceiver()
-{
+{   
 }
 
 bool Tranceiver::CoreConnector(QObject& coreIn)
@@ -33,12 +33,7 @@ bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 }
 
 void Tranceiver::ReceieveData(DataPacket data)
-{   
-    if(data.packetData.payload.toString()=="Sensor")
-    {
-        this->value=data.packetData.value.toDouble();
-        qDebug()<<"tranciever id gets the value:" + QString::number(this->value);
-    }    
+{        
 }
 
 void Tranceiver::ReceieveData(NotifyPackage data)

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * @file qextserialenumerator.cpp
  * @author Michał Policht
  * @see QextSerialEnumerator
@@ -8,7 +8,7 @@
 
 #include <objbase.h>
 #include <initguid.h>
-
+#include <ntddser.h>
 
 #ifdef _TTY_WIN_
 	//this is serial port GUID

@@ -6,6 +6,7 @@
 #include <QMap>
 #include "../../device/Hardware/hardware.h"
 #include "../../sharelibs/CommonVariables/commonvariables.h"
+#include "../qextserialport/qextserialport.h"
 
 class Tranceiver : public IHardware
 {
@@ -30,6 +31,7 @@ public:
 
 private:
 
+    QextSerialPort serialPort;
     QString id="";
     CommonVariables::TranceiverType trancieverType=CommonVariables::NotDefineDevice;
     double value=std::numeric_limits<double>::min();

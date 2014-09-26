@@ -1,0 +1,33 @@
+<html>
+<head></head>
+<body>
+<pre>
+1 'class QString' has no member named 'toAscii'
+toAscii 替换为 toLatin1
+
+
+2 错误:undefined reference to `GUID_DEVINTERFACE_COMPORT'
+#include <ntddser.h>
+在文件qextserialenumerator.cpp中添加上面这个头文件引用语句
+
+
+3 错误:'PHYSICAL_ADDRESS' does not name a type
+#undef PHYSICAL_ADDRESS
+#define PHYSICAL_ADDRESS LARGE_INTEGER
+添加上面两行到文件ntddser.h中
+
+
+4 错误:undefined reference to `GUID_DEVINTERFACE_COMPORT'
+#include <ntddser.h>
+在文件qextserialenumerator.cpp中将这个头文件引用位置放在另一个
+头文件#include <initguid.h>引用的下方, 这个错误是头文件引用顺序
+不对导致的.
+
+
+
+
+QQ群: 113 148 289
+欢迎大家在群里讨论QT开发问题
+</pre>
+</body>
+</html>

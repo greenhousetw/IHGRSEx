@@ -47,3 +47,6 @@ CONFIG(debug, debug|release) {
 }
 
 unix:VERSION            = 1.2.0
+
+OTHER_FILES += \
+    Note.Qt5.html

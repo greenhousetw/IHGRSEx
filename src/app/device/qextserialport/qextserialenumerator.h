@@ -17,6 +17,7 @@
 #endif /*_TTY_WIN_*/
 
 
+
 /*!
  * Structure containing port information.
  */
