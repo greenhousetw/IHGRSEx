@@ -40,7 +40,10 @@ void Sensor::ReceieveData(DataPacket data)
 
 void Sensor::ReceieveData(NotifyPackage package)
 {
-
+    if(package.target==this->controlBoxId)
+    {
+        qDebug() << "sensor id=" + this->id;
+    }
 }
 
 bool Sensor::SetHardware(QMap<QString, QVariant> config)

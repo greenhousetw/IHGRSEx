@@ -23,6 +23,9 @@ public:
     virtual QObject* GetTranceievers();
     virtual bool ReleaseCore();
 
+    QMap<QString,QMap<QString, IHardware*> > controlBox;
+    QMap<QString,QMap<QString, IHardware*> > trancieverControlBox;
+
 private:
 
 
@@ -32,9 +35,6 @@ private:
     QPluginLoader trancieverLoader;
     IDeviceFactory* sensorFactory=NULL;
     IDeviceFactory* tranceiverFactory=NULL;
-
-    QMap<QString,QMap<QString, IHardware*> > controlBox;
-    QMap<QString,QMap<QString, IHardware*> > trancieverControlBox;
 
     QJsonObject jsonObject;
     QString tranceieverLocation;

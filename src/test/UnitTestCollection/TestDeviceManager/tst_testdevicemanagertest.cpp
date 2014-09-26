@@ -34,7 +34,6 @@ void TestDeviceManagerTest::TestDeviceManagerRight()
 
     CoreOne core;
 
-
     if (PluginHelper::GetPlugIn(loader, "DeviceManager.dll"))
     {
          IDeviceManager* deviceManager = qobject_cast<IDeviceManager *>(loader.instance());
@@ -43,7 +42,13 @@ void TestDeviceManagerTest::TestDeviceManagerRight()
          {
             if(deviceManager->LoadSensors() && deviceManager->LoadTranceievers())
             {
+                DeviceMangerHandler* deviceManagerHandler= (DeviceMangerHandler*) deviceManager;
+                Tranceiver* tranciever= (Tranceiver*) deviceManagerHandler->trancieverControlBox.value("01").value("71bf7839-9720-4da0-87e7-4c6fe776c323");
 
+                DataPacket packet;
+                packet.packetData.value="Q01CP5677*";
+                packet.packetData.payload=QVariant("Tranceiver");
+                emit tranciever->SendData(packet);
             }
          }
     }
