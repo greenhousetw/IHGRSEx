@@ -26,6 +26,17 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/Se
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/device/SensorUnit/debug/ -lSensorUnit
 else:unix: LIBS += -L$$OUT_PWD/../../../app/device/SensorUnit/ -lSensorUnit
 
+INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
+DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/release/ -lNotifyPackage
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/debug/ -lNotifyPackage
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lNotifyPackage
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

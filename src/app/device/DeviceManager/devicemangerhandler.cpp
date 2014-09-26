@@ -35,6 +35,7 @@ bool DeviceMangerHandler::SetCore()
 
     result=true;
 
+    qDebug()<<"Core set successfully";
     orz:
     return result;
 }
@@ -45,6 +46,9 @@ bool DeviceMangerHandler::ReleaseCore()
 
     if(this->core)
     {
+        this->DisconnectCore<Sensor>(&this->controlBox);
+        this->DisconnectCore<Tranceiver>(&this->trancieverControlBox);
+
         delete this->core;
         this->core=NULL;
     }
@@ -71,6 +75,8 @@ bool DeviceMangerHandler::ReleaseCore()
         this->tranceiverFactory=NULL;
     }
 
+
+
     result=true;
 
     return result;
@@ -78,14 +84,26 @@ bool DeviceMangerHandler::ReleaseCore()
 
 bool DeviceMangerHandler::LoadSensors()
 {
-    bool result=false;
+    bool result=this->SetupDevices<Sensor>(this->sensorFactory, &this->controlBox,
+                       this->sensorConfigLocation, "sensors");
+
+    if(result)
+    {
+        qDebug()<<" count of sensor ControlBox=" + QString::number(this->controlBox.count());
+    }
 
     return result;
 }
 
 bool DeviceMangerHandler::LoadTranceievers()
 {
-    bool result=false;
+    bool result=this->SetupDevices<Tranceiver>(this->tranceiverFactory, &this->trancieverControlBox,
+                       this->tranceieverLocation, "tranciever");
+
+    if(result)
+    {
+        qDebug()<<" count of Tranciever ControlBox=" + QString::number(this->trancieverControlBox.count());
+    }
 
     return result;
 }
@@ -113,31 +131,29 @@ bool DeviceMangerHandler::LoadConfig(QString fileName)
     return result;
 }
 
-bool DeviceMangerHandler::GetSensors()
+QObject* DeviceMangerHandler::GetSensors()
 {
-
-    bool result=this->SetupDevices<Sensor>(this->sensorFactory, &this->controlBox,
-                       this->sensorConfigLocation, "sensors");
-
-    if(result)
-    {
-        qDebug()<<" count of sensor ControlBox=" + QString::number(this->controlBox.count());
-    }
-
-    return result;
+    return NULL;
 }
 
-bool DeviceMangerHandler::GetTranceievers()
+QObject* DeviceMangerHandler::GetTranceievers()
 {
-    bool result=this->SetupDevices<Tranceiver>(this->tranceiverFactory, &this->trancieverControlBox,
-                       this->tranceieverLocation, "tranciever");
+   return NULL;
+}
 
-    if(result)
+template <typename T>
+bool DeviceMangerHandler::DisconnectCore(QMap<QString,QMap<QString, IHardware*> > *controlBox)
+{
+    foreach(QString id, controlBox->keys())
     {
-        qDebug()<<" count of Tranciever ControlBox=" + QString::number(this->trancieverControlBox.count());
-    }
+        QMap<QString, IHardware*> record= controlBox->value(id);
 
-    return result;
+        foreach (QString sid, record.keys())
+        {
+            T* device=(T*) record[sid];
+            device->DiconnectCoreConnector(*this->core);
+        }
+    }
 }
 
 template <typename T>
@@ -191,9 +207,11 @@ bool DeviceMangerHandler::SetupDevices(IDeviceFactory* factory, QMap<QString,QMa
 
                     QString id="id";
                     QString type="type";
+                    QString controlboxId="controlBoxid";
 
                     info.insert(id, QVariant(innerDeviceMap[id].toString()));
                     info.insert(type, QVariant(innerDeviceMap[type].toString()));
+                    info.insert(controlboxId, QVariant(innerDeviceMap[controlboxId].toString()));
 
                     T* deviceObject = (T*) factory->GetDevice(info);
                     deviceObject->SetHardware(info);

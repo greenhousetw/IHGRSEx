@@ -5,6 +5,7 @@
 #include <QMap>
 #include "../../core/Core/core.h"
 #include "../../core/Core/datapacket.h"
+#include "../../sharelibs/NotifyPackage/notifypackage.h"
 
 class IHardware : public QObject
 {
@@ -17,6 +18,7 @@ signals:
 public slots:
 
   virtual void ReceieveData(DataPacket data)=0;
+  virtual void ReceieveData(NotifyPackage data)=0;
 
 public:
 

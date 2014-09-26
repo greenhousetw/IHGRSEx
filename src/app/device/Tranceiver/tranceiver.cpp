@@ -11,8 +11,8 @@ bool Tranceiver::CoreConnector(QObject& coreIn)
 
     ICore* core= (ICore*) &coreIn;
 
-    connect(core, SIGNAL(CoreBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
-    connect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
+    connect(core, SIGNAL(CoreTrancieverBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
+    connect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreTrancieverCollectBus(DataPacket)));
 
     result=true;
 
@@ -25,7 +25,7 @@ bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 
     ICore* core= (ICore*) &coreIn;
 
-    disconnect(core, SIGNAL(CoreBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
+    disconnect(core, SIGNAL(CoreTrancieverBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
     disconnect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
     result=true;
 
@@ -38,9 +38,13 @@ void Tranceiver::ReceieveData(DataPacket data)
     {
         this->value=data.packetData.value.toDouble();
         qDebug()<<"tranciever id gets the value:" + QString::number(this->value);
-    }
+    }    
 }
 
+void Tranceiver::ReceieveData(NotifyPackage data)
+{
+    qDebug()<<"will not  use this method";
+}
 
 bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
 {

@@ -32,6 +32,8 @@ public:
 
         Light,
 
+        AllInOne,
+
         NotDefine
     };
 

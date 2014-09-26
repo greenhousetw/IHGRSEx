@@ -5,6 +5,7 @@
 #include <QtPlugin>
 #include <QString>
 #include "datapacket.h"
+#include "../../sharelibs/NotifyPackage/notifypackage.h"
 
 class ICore : public QObject
 {    
@@ -16,12 +17,13 @@ public:
 
 signals:
 
-  void CoreBus(DataPacket data);
+  void CoreTrancieverBus(DataPacket data);
+  void CoreSensorBus(NotifyPackage data);
 
 public slots:
 
-  virtual void CoreDataCollectBus(DataPacket data)=0;
-
+  virtual void CoreTrancieverCollectBus(DataPacket data)=0;
+  virtual void CoreSensorCollectBus(DataPacket data)=0;
 };
 
 Q_DECLARE_INTERFACE(ICore,"{a1b108b3-af7e-4138-907d-55552b5d75c2}")

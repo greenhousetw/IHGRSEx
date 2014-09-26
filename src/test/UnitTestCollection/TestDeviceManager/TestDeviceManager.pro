@@ -28,8 +28,8 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/CommonVariables/debug/ -lCommonVariables
 else:unix: LIBS += -L$$OUT_PWD/../../../app/sharelibs/CommonVariables/ -lCommonVariables
 
-INCLUDEPATH += $$PWD/../../../app/sharelibs/CommonVariables
-DEPENDPATH += $$PWD/../../../app/sharelibs/CommonVariables
+#INCLUDEPATH += $$PWD/../../../app/sharelibs/CommonVariables
+#DEPENDPATH += $$PWD/../../../app/sharelibs/CommonVariables
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/PluginHelper/release/ -lPluginHelper
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/PluginHelper/debug/ -lPluginHelper
@@ -150,10 +150,17 @@ SOURCEPATH=../../../../../../src/app/device/DeviceManager/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
-# 11. copy tranceieverconfig.json
+# 12. copy tranceieverconfig.json
 FILENAME=tranceieverconfig.json
 SOURCEPATH=../../../../../../src/app/device/DeviceManager/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 13. copy NotifyPackage.dll
+FILENAME=NotifyPackage.dll
+SOURCEPATH=../../../app/sharelibs/NotifyPackage/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
 
 }

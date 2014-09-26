@@ -12,7 +12,7 @@ bool Sensor::CoreConnector(QObject& coreIn)
 
     ICore* core= (ICore*) &coreIn;
 
-    connect(core, SIGNAL(CoreBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
+    connect(core, SIGNAL(CoreSensorBus(NotifyPackage)), this, SLOT(ReceieveData(NotifyPackage)));
     connect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
 
     result=true;
@@ -26,7 +26,7 @@ bool Sensor::DiconnectCoreConnector(QObject& coreIn)
 
     ICore* core= (ICore*) &coreIn;
 
-    disconnect(core, SIGNAL(CoreBus(DataPacket)), this, SLOT(ReceieveData(DataPacket)));
+    disconnect(core, SIGNAL(CoreSensorBus(NotifyPackage)), this, SLOT(ReceieveData(NotifyPackage)));
     disconnect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
     result=true;
 
@@ -35,20 +35,20 @@ bool Sensor::DiconnectCoreConnector(QObject& coreIn)
 
 void Sensor::ReceieveData(DataPacket data)
 {
-    if(data.packetData.payload.toString()=="Tranceiver")
-    {
-        //this->value=data.packetData.value.toDouble();
-
-        qDebug()<<"sensor id gets the value:" + data.packetData.value;
-    }
+    qDebug()<<"this method will not use";
 }
 
+void Sensor::ReceieveData(NotifyPackage package)
+{
+
+}
 
 bool Sensor::SetHardware(QMap<QString, QVariant> config)
 {
     bool result=false;
 
     this->id=config["id"].toString();
+    this->controlBoxId=config["controlBoxid"].toString();
 
     QMetaObject metaObject = CommonVariables::staticMetaObject;
     QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));

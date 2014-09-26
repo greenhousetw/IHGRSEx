@@ -6,7 +6,8 @@
        [
             {
               "id":"71bf7839-9720-4da0-87e7-4c6fe776c323",
-              "type":"SerialPort"
+              "type":"SerialPort",
+              "controlBoxid":"01"
             }
       ]
     }

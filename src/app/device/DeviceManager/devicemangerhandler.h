@@ -19,8 +19,8 @@ public:
     virtual bool SetCore();
     virtual bool LoadSensors();
     virtual bool LoadTranceievers();
-    virtual bool GetSensors();
-    virtual bool GetTranceievers();
+    virtual QObject* GetSensors();
+    virtual QObject* GetTranceievers();
     virtual bool ReleaseCore();
 
 private:
@@ -40,6 +40,9 @@ private:
     QString tranceieverLocation;
     QString sensorConfigLocation;
     bool LoadConfig(QString);
+
+    template <typename T>
+    bool DisconnectCore(QMap<QString,QMap<QString, IHardware*> > *);
 
     template <typename T>
     bool SetupDevices(IDeviceFactory*, QMap<QString,QMap<QString, IHardware*> > *, QString, QString);

@@ -14,7 +14,13 @@ public:
 
 public slots:
 
-  virtual void CoreDataCollectBus(DataPacket data);
+    virtual void CoreTrancieverCollectBus(DataPacket data);
+    virtual void CoreSensorCollectBus(DataPacket data);
+
+private:
+
+    bool ParseDataStream(QString, QString* realData);
+    bool GetNotifyPackage(QString, NotifyPackage*);
 };
 
 #endif // COREONE_H
