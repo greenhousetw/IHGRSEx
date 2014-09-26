@@ -42,7 +42,24 @@ void Sensor::ReceieveData(NotifyPackage package)
 {
     if(package.target==this->controlBoxId)
     {
-        qDebug() << "sensor id=" + this->id;
+       bool isMe=false;
+
+       foreach(QString key, package.notificationContent.keys())
+       {
+           CommonVariables::SensorType sensorKind=CommonVariables::GetSensorKindFromUnitIndex(key);
+
+           if(this->sensorType == sensorKind)
+           {
+              isMe=true;
+              this->value=package.notificationContent[key].toDouble();
+              break;
+           }
+       }
+
+       if(isMe)
+       {
+           qDebug()<<"value=" + QString::number(this->value);
+       }
     }
 }
 
@@ -56,12 +73,14 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
     QMetaObject metaObject = CommonVariables::staticMetaObject;
     QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
 
+    QString type="type";
+
      for (int i=0; i < m.keyCount(); ++i)
      {
-         if(config["sensortype"].toString() == QString(m.valueToKey(i)))
+         if(config[type].toString() == QString(m.valueToKey(i)))
          {
-            this->sensorType=(CommonVariables::SensorType) m.keyToValue(config["sensortype"].toString().toLocal8Bit().data());
-            qDebug()<<"This device type=" + config["sensortype"].toString() + ", its index=" + QString::number(i);
+            this->sensorType=(CommonVariables::SensorType) m.keyToValue(config[type].toString().toLocal8Bit().data());
+            qDebug()<<"This device type=" + config[type].toString() + ", its index=" + QString::number(i);
             break;
          }
      }

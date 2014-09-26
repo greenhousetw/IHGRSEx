@@ -46,7 +46,7 @@ void TestDeviceManagerTest::TestDeviceManagerRight()
                 Tranceiver* tranciever= (Tranceiver*) deviceManagerHandler->trancieverControlBox.value("01").value("71bf7839-9720-4da0-87e7-4c6fe776c323");
 
                 DataPacket packet;
-                packet.packetData.value="Q01CP5677*";
+                packet.packetData.value="Q01CP56H77B150000AQ*";
                 packet.packetData.payload=QVariant("Tranceiver");
                 emit tranciever->SendData(packet);
             }
