@@ -31,10 +31,14 @@ public:
 
 private:
 
-    QextSerialPort serialPort;
+    QextSerialPort *serialPort=NULL;
+    QJsonObject jsonObject;
     QString id="";
     CommonVariables::TranceiverType trancieverType=CommonVariables::NotDefineDevice;
     double value=std::numeric_limits<double>::min();
+    bool SendSerialDataToHardware(QString);
+    bool ReceiveDataFromHardware();
+    bool LoadConfig(QString);
 };
 
 #endif // TRANCEIVER_H

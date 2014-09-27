@@ -1,5 +1,9 @@
 #include "commonvariables.h"
 
+const QString CommonVariables::IHGRSSTOPWORKING="IHGRSSTOPWORKING";
+const QString CommonVariables::TRANCIEVERHARDWARESENDMESSAGE="TRANCIEVERHARDWARESENDMESSAGE";
+const QString CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE="TRANCIEVERHARDWARERECEIEVEMESSAGE";
+
 /**
   * @brief CommonVariables::GetSensorKindFromUnitIndex
   * return sensor kind index string, like: input=CP / FP

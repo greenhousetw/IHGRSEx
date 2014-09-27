@@ -162,5 +162,17 @@ SOURCEPATH=../../../app/sharelibs/NotifyPackage/$$BUILDTARGET/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
+# copy ihgrs.qserialport.json
+FILENAME=ihgrs.qserialport.json
+SOURCEPATH=../../../../../../src/app/device/Tranceiver/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+
+# 13. copy qextserialportd.dll
+FILENAME=qextserialportd.dll
+SOURCEPATH=../../../app/device/qextserialport/build/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
 }

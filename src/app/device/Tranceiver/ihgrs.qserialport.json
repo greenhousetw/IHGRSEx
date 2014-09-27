@@ -1,0 +1,8 @@
+{
+    "Port":"COM6",
+    "Baudrate":"BAUD9600",
+    "Flowcontrol":"FLOW_OFF",
+    "Parity":"PAR_NONE",
+    "DataBits":"DATA_8",
+    "StopBits":"STOP_1"
+}

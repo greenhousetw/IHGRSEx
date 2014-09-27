@@ -44,9 +44,18 @@ public:
         NotDefineDevice
     };
 
+
+
     static CommonVariables::SensorType GetSensorKindFromUnitIndex(QString unitIndex);
 
     static CommonVariables::TranceiverType GetTrancieverByIndex(QString unitIndex);
+
+    static const QString IHGRSSTOPWORKING;
+
+    static const QString TRANCIEVERHARDWARESENDMESSAGE;
+
+    static const QString TRANCIEVERHARDWARERECEIEVEMESSAGE;
+
 };
 
 #endif // COMMONVARIABLES_H

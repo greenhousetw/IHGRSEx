@@ -34,11 +34,27 @@ bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 
 void Tranceiver::ReceieveData(DataPacket data)
 {        
+    if(data.packetData.value==CommonVariables::IHGRSSTOPWORKING)
+    {
+        if(this->serialPort)
+        {
+            this->serialPort->close();
+            qDebug()<<"Serial port has been closed, port number=" + this->jsonObject["Port"].toString();
+        }
+    }
+    else if(data.packetData.value==CommonVariables::TRANCIEVERHARDWARESENDMESSAGE)
+    {
+        this->SendSerialDataToHardware(data.packetData.payload.toString());
+    }
+    else if(data.packetData.value==CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE)
+    {
+        this->SendSerialDataToHardware(data.packetData.payload.toString());
+    }
 }
 
 void Tranceiver::ReceieveData(NotifyPackage data)
 {
-    qDebug()<<"will not  use this method";
+    qDebug()<<"will not use this method";
 }
 
 bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
@@ -60,8 +76,36 @@ bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
          }
      }
 
+    if(!this->LoadConfig("ihgrs.qserialport.json"))
+    {
+        qCritical()<<"cannot find configruation file: ihgrs.qserialport.json";
+        goto orz;
+    }
+
+    if(this->serialPort == NULL)
+    {
+        this->serialPort=new QextSerialPort(this->jsonObject["Port"].toString());
+        this->serialPort->setBaudRate(BAUD9600);
+        this->serialPort->setFlowControl(FLOW_OFF);
+        this->serialPort->setParity(PAR_NONE);
+        this->serialPort->setDataBits(DATA_8);
+        this->serialPort->setStopBits(STOP_1);
+
+        int portopeningSuccessful=1;
+
+        if(this->serialPort->open(QIODevice::ReadWrite|QIODevice::Unbuffered) == portopeningSuccessful)
+        {
+            qDebug()<<"Open com port=" + this->jsonObject["Port"].toString() + " is successful";
+        }
+        else
+        {
+            qDebug()<<"Open com port=" + this->jsonObject["Port"].toString() + " is fail";
+        }
+    }
+
     result=true;
 
+    orz:
     return result;
 }
 
@@ -89,4 +133,98 @@ QString Tranceiver::GetDeviceType()
   qDebug()<<"Tranciever Type=" + deviceType;
 
   return deviceType;
+}
+
+bool Tranceiver::LoadConfig(QString fileName)
+{
+    bool result=false;
+
+    QDir dir(QCoreApplication::applicationDirPath());
+
+    QFile loadFile(dir.absoluteFilePath(fileName));
+
+    if (!loadFile.open(QIODevice::ReadOnly)) {
+        qWarning() << "Couldn't open file:" + fileName;
+        goto bye;
+    }
+
+    this->jsonObject=QJsonDocument::fromJson(loadFile.readAll()).object();
+
+    result=true;
+
+    loadFile.close();
+
+    bye:
+    return result;
+}
+
+bool Tranceiver::SendSerialDataToHardware(QString data)
+{
+    bool result=false;
+
+    int returnLength = -1;
+
+    int realReturnLength=this->serialPort->write(data.toLatin1(),data.toLatin1().length());
+
+    if(realReturnLength==returnLength)
+    {
+        qWarning()<<"QSerialPort Error number=" + QString::number(this->serialPort->lastError());
+        goto orz;
+    }
+
+    qDebug()<< "Data:" + data +" has been sent";
+
+    result=true;
+
+    orz:
+    return result;
+}
+
+bool Tranceiver::ReceiveDataFromHardware()
+{
+    bool result=false;
+
+    const int charSize=1024;
+
+    const int checkReadLenght=-1;
+
+    char buff[charSize];
+
+    int numBytes = this->serialPort->bytesAvailable();
+
+    qDebug()<<"IHGRS has read data length=" + QString::number(numBytes);
+
+    if(numBytes > 0)
+    {
+        if(numBytes > charSize)
+        {
+          numBytes = charSize;
+        }
+
+        int index = this->serialPort->read(buff, numBytes);
+
+        if (index != checkReadLenght)
+        {
+           buff[index] = '\0';
+        }
+        else
+        {
+          buff[0] = '\0';
+        }
+
+        QString messageBox = QString::fromLatin1(buff);
+        QByteArray qbyteArray=messageBox.toLatin1();
+
+        DataPacket packet;
+        packet.packetData.value=QString(qbyteArray);
+
+        emit this->SendData(packet);
+
+        messageBox.clear();
+        qbyteArray.clear();
+    }
+
+    result=true;
+
+    return result;
 }

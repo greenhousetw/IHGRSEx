@@ -50,4 +50,5 @@ unix {
 }
 
 OTHER_FILES += \
-    info.json
+    info.json \
+    ihgrs.qserialport.json
