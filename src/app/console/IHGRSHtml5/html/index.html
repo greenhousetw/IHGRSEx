@@ -33,6 +33,15 @@
     <div id="div1">
         <a id="quit">X</a>
     </div>
+     <div id="experimentationalDiv">
+        <table>
+	        <tr>
+	            <td>Control Menu</td>
+	            <td><input id="btnStart" type="button" value="Start"/></td>
+	            <td><input id="btnEnd" type="button" value="Stop"/></td>
+	        </tr>	      
+      <table>
+    </div>
     <div id="centerDiv">
     <table>
         <tr>
@@ -58,8 +67,14 @@
         alert(sensor.id);
      });
 
-    function test(){
-        alert("goo");
+     $('#btnStart').click(function()
+     {
+        var data=Qt.NotifyEngine('StartDeviceManager');
+        alert(data);
+     });
+
+    function test(data){
+        alert(data);
     }
 
     </script>

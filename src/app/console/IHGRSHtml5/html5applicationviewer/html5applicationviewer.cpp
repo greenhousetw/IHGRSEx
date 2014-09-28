@@ -21,8 +21,18 @@
 #include <QGraphicsWebView>
 #include <QPluginLoader>
 #include <QWebFrame>
-#include <QPluginLoader>
-#include "../../Repository/RepositoryManager/repositorymanager.h"
+
+#include "../../../app/core/Core/core.h"
+#include "../../../app/core/Core/coreone.h"
+#include "../../../app/device/Hardware/hardware.h"
+#include "../../../app/device/IDeviceFactory/idevicefactory.h"
+#include "../../../app/device/DeviceManager/devicemanager.h"
+#include "../../../app/device/DeviceManager/devicemangerhandler.h"
+#include "../../../app/device/SensorUnit/sensor.h"
+#include "../../../app/device/SensorPlugInLoader/sensorpluginloader.h"
+#include "../../../app/device/Tranceiver/tranceiver.h"
+#include "../../../app/device/TrancieverLoader/trancieverloader.h"
+#include "../../../app/sharelibs/PluginHelper/pluginhelper.h"
 
 #ifdef TOUCH_OPTIMIZED_NAVIGATION
 #include <QTimer>
@@ -1067,6 +1077,12 @@ public slots:
 private slots:
     void addToJavaScript();
 
+private:
+
+    IDeviceManager* deviceManager;
+
+    bool LoadDeviceManager();
+
 signals:
     void quitRequested();
 
@@ -1128,16 +1144,45 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 {
     //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
 
-    QString plugInFile="plugins/RepositoryManager";
+    if(data=="StartDeviceManager")
+    {
+        data=this->LoadDeviceManager()==true?"successfully setup device manager":"load DeviceManager fail";
+    }
 
-    QPluginLoader pluginLoader(plugInFile);
-    QStringList list;
-    list.append("./plugins");
-    QApplication::setLibraryPaths(list);
-    QCoreApplication::setLibraryPaths(list);
-    pluginLoader.load();
-    QObject *plugin = pluginLoader.instance();
-    return data;
+    QString result="{\"result\":\"" + data + "\"}";
+
+    //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test(" + result + ")"));
+
+    return result;
+}
+
+bool Html5ApplicationViewerPrivate::LoadDeviceManager()
+{
+    bool result=false;
+
+    QPluginLoader loader;
+
+    IDeviceManager* deviceManager = NULL;
+
+    if (!PluginHelper::GetPlugIn(loader, "DeviceManager.dll"))
+    {
+        goto orz;
+    }
+
+    deviceManager = qobject_cast<IDeviceManager *>(loader.instance());
+
+    if(!deviceManager->SetCore())
+    {
+        goto orz;
+    }
+
+    if(deviceManager->LoadSensors() && deviceManager->LoadTranceievers())
+    {
+        result=true;
+    }
+
+    orz:
+    return result;
 }
 
 void Html5ApplicationViewerPrivate::quit()

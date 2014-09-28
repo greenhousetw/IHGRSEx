@@ -21,7 +21,7 @@ signals:
   void CoreSensorBus(NotifyPackage data);
 
 public slots:
-
+  virtual void CoreDataCollectBus(DataPacket data)=0;
   virtual void CoreTrancieverCollectBus(DataPacket data)=0;
   virtual void CoreSensorCollectBus(DataPacket data)=0;
 };

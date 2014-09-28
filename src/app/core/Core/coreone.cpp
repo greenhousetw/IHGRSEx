@@ -11,6 +11,10 @@ void CoreOne::CoreSensorCollectBus(DataPacket data)
 {      
 }
 
+void CoreOne::CoreDataCollectBus(DataPacket data)
+{
+}
+
 void CoreOne::CoreTrancieverCollectBus(DataPacket data)
 {
      qDebug()<< "CoreOne gets the value:" + data.packetData.value;

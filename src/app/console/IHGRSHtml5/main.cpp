@@ -8,15 +8,12 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    //QStringList list;
-    //list.append("./plugins");
-    //app.setLibraryPaths(list);
-    //QCoreApplication::setLibraryPaths(list);
+    QString applicationPath=QCoreApplication::applicationDirPath();
 
     Html5ApplicationViewer viewer;
     viewer.setOrientation(Html5ApplicationViewer::ScreenOrientationAuto);
     viewer.showExpanded();
-    viewer.loadFile(QLatin1String("html/index.html"));
+    viewer.loadFile(QLatin1String(applicationPath.toLatin1() + "/html/index.html"));
 
     return app.exec();
 }
