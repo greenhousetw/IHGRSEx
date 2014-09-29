@@ -26,6 +26,11 @@ public:
     QMap<QString,QMap<QString, IHardware*> > controlBox;
     QMap<QString,QMap<QString, IHardware*> > trancieverControlBox;
 
+public slots:
+
+  virtual void DeviceManagerCoreSlot(DataPacket data);
+  virtual void DeviceManagerUISlot(DataPacket data);
+
 private:
 
 

@@ -17,6 +17,7 @@ public slots:
     virtual void CoreDataCollectBus(DataPacket data);
     virtual void CoreTrancieverCollectBus(DataPacket data);
     virtual void CoreSensorCollectBus(DataPacket data);
+    virtual void CoreDeviceManagerCollectionBus(DataPacket data);
 
 private:
 

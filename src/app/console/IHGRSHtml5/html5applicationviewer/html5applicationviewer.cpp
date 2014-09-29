@@ -33,6 +33,7 @@
 #include "../../../app/device/Tranceiver/tranceiver.h"
 #include "../../../app/device/TrancieverLoader/trancieverloader.h"
 #include "../../../app/sharelibs/PluginHelper/pluginhelper.h"
+#include "../../../app/core/Core/datapacket.h"
 
 #ifdef TOUCH_OPTIMIZED_NAVIGATION
 #include <QTimer>
@@ -1072,6 +1073,7 @@ public:
 
 public slots:
     QString NotifyEngine(QString data);
+    void UIDeviceManagerSlot(DataPacket packet);
     void quit();
 
 private slots:
@@ -1085,6 +1087,7 @@ private:
 
 signals:
     void quitRequested();
+    void UIDeviceManagerSignal(DataPacket packet);
 
 public:
     QGraphicsWebView *m_webView;
@@ -1147,6 +1150,18 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
     if(data=="StartDeviceManager")
     {
         data=this->LoadDeviceManager()==true?"successfully setup device manager":"load DeviceManager fail";
+
+        if(this->deviceManager)
+        {
+            connect(this, SIGNAL(UIDeviceManagerSignal(DataPacket)), this->deviceManager, SLOT(DeviceManagerUISlot(DataPacket)));
+            connect(this->deviceManager, SIGNAL(DeviceManagerUISignal(DataPacket)), this, SLOT(UIDeviceManagerSlot(DataPacket)));
+        }
+    }
+    else
+    {
+       DataPacket packet;
+       packet.packetData.value=data;
+       emit this->UIDeviceManagerSignal(packet);
     }
 
     QString result="{\"result\":\"" + data + "\"}";
@@ -1156,27 +1171,32 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
     return result;
 }
 
+void Html5ApplicationViewerPrivate::UIDeviceManagerSlot(DataPacket packet)
+{
+
+}
+
 bool Html5ApplicationViewerPrivate::LoadDeviceManager()
 {
     bool result=false;
 
     QPluginLoader loader;
 
-    IDeviceManager* deviceManager = NULL;
+    this->deviceManager = NULL;
 
     if (!PluginHelper::GetPlugIn(loader, "DeviceManager.dll"))
     {
         goto orz;
     }
 
-    deviceManager = qobject_cast<IDeviceManager *>(loader.instance());
+    this->deviceManager = qobject_cast<IDeviceManager *>(loader.instance());
 
-    if(!deviceManager->SetCore())
+    if(!this->deviceManager->SetCore())
     {
         goto orz;
     }
 
-    if(deviceManager->LoadSensors() && deviceManager->LoadTranceievers())
+    if(this->deviceManager->LoadSensors() && this->deviceManager->LoadTranceievers())
     {
         result=true;
     }

@@ -13,6 +13,20 @@ void CoreOne::CoreSensorCollectBus(DataPacket data)
 
 void CoreOne::CoreDataCollectBus(DataPacket data)
 {
+    this->CoreTrancieverBus(data);
+}
+
+void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
+{
+    qDebug()<<"Get data from DeviceManager";
+
+    if(data.packetData.payload.toString()=="ToTranciever")
+    {
+        data.packetData.payload=QVariant(data.packetData.value);
+        qDebug()<<"CoreOne will send data:" + data.packetData.payload.toString();
+        data.packetData.value=CommonVariables::TRANCIEVERHARDWARESENDMESSAGE;
+        emit this->CoreTrancieverBus(data);
+    }
 }
 
 void CoreOne::CoreTrancieverCollectBus(DataPacket data)

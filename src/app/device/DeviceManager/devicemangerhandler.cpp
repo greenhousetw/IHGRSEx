@@ -33,6 +33,9 @@ bool DeviceMangerHandler::SetCore()
     this->tranceieverLocation= this->jsonObject["tranceieverconfigfile"].toString();
     this->sensorConfigLocation = this->jsonObject["sensorconfigfile"].toString();
 
+    connect(this, SIGNAL(DeviceManagerCoreSignal(DataPacket)), this->core, SLOT(CoreDeviceManagerCollectionBus(DataPacket)));
+    connect(this->core, SIGNAL(CoreDeviceManagerSignal(DataPacket)), this, SLOT(DeviceManagerCoreSlot(DataPacket)));
+
     result=true;
 
     qDebug()<<"Core set successfully";
@@ -129,6 +132,27 @@ bool DeviceMangerHandler::LoadConfig(QString fileName)
 
     bye:
     return result;
+}
+
+void DeviceMangerHandler::DeviceManagerCoreSlot(DataPacket data)
+{
+
+}
+
+void DeviceMangerHandler::DeviceManagerUISlot(DataPacket data)
+{
+   QStringList contentList=data.packetData.value.split(';');
+
+    foreach(QString content, contentList)
+    {
+        if(content.length()!=0)
+        {
+            DataPacket packet;
+            packet.packetData.payload=QVariant("ToTranciever");
+            packet.packetData.value=content;
+            emit this->DeviceManagerCoreSignal(packet);
+        }
+    }
 }
 
 QObject* DeviceMangerHandler::GetSensors()

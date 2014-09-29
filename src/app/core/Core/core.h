@@ -19,8 +19,11 @@ signals:
 
   void CoreTrancieverBus(DataPacket data);
   void CoreSensorBus(NotifyPackage data);
+  void CoreDeviceManagerSignal(DataPacket data);
 
 public slots:
+
+  virtual void CoreDeviceManagerCollectionBus(DataPacket data)=0;
   virtual void CoreDataCollectBus(DataPacket data)=0;
   virtual void CoreTrancieverCollectBus(DataPacket data)=0;
   virtual void CoreSensorCollectBus(DataPacket data)=0;

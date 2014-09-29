@@ -12,6 +12,13 @@
 class IDeviceManager : public QObject
 {
 
+    Q_OBJECT
+
+signals:
+
+    void DeviceManagerCoreSignal(DataPacket);
+    void DeviceManagerUISignal(DataPacket);
+
 public:
 
     virtual bool SetCore()=0;
@@ -20,6 +27,11 @@ public:
     virtual bool LoadTranceievers()=0;
     virtual QObject* GetSensors()=0;
     virtual QObject* GetTranceievers()=0;
+
+public slots:
+
+  virtual void DeviceManagerCoreSlot(DataPacket data)=0;
+  virtual void DeviceManagerUISlot(DataPacket data)=0;
 };
 
 Q_DECLARE_INTERFACE(IDeviceManager, "{4a34bcdf-1458-4d7f-ba81-f2f0fa509ae9}")

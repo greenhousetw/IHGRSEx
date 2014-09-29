@@ -59,6 +59,9 @@ void Sensor::ReceieveData(NotifyPackage package)
        if(isMe)
        {
            qDebug()<<"value=" + QString::number(this->value);
+           DataPacket dataPacket;
+           dataPacket.packetData.payload=QVariant("D");
+           emit this->SendData(dataPacket);
        }
     }
 }
