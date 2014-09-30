@@ -18,13 +18,11 @@ void CoreOne::CoreDataCollectBus(DataPacket data)
 
 void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
 {
-    qDebug()<<"Get data from DeviceManager";
+    qDebug()<<"CoreOne gets data from DeviceManager";
 
     if(data.packetData.payload.toString()=="ToTranciever")
     {
-        data.packetData.payload=QVariant(data.packetData.value);
-        qDebug()<<"CoreOne will send data:" + data.packetData.payload.toString();
-        data.packetData.value=CommonVariables::TRANCIEVERHARDWARESENDMESSAGE;
+        data.packetData.payload=CommonVariables::TRANCIEVERHARDWARESENDMESSAGE;
         emit this->CoreTrancieverBus(data);
     }
 }
@@ -51,7 +49,7 @@ bool CoreOne::ParseDataStream(QString dataStream, QString* realData)
 
     try{
           QString endingChar="*";
-          qDebug()<<"incoming string=" + dataStream;
+          qDebug()<<"CoreOne starts to parse incoming string=" + dataStream;
           QStringList dataList=dataStream.split(endingChar);
           QRegExp regExpression;
 

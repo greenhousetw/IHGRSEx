@@ -34,7 +34,7 @@ bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 
 void Tranceiver::ReceieveData(DataPacket data)
 {        
-    if(data.packetData.value==CommonVariables::IHGRSSTOPWORKING)
+    if(data.packetData.payload.toString()==CommonVariables::IHGRSSTOPWORKING)
     {
         if(this->serialPort)
         {
@@ -42,13 +42,13 @@ void Tranceiver::ReceieveData(DataPacket data)
             qDebug()<<"Serial port has been closed, port number=" + this->jsonObject["Port"].toString();
         }
     }
-    else if(data.packetData.value==CommonVariables::TRANCIEVERHARDWARESENDMESSAGE)
+    else if(data.packetData.payload.toString()==CommonVariables::TRANCIEVERHARDWARESENDMESSAGE)
     {
-        this->SendSerialDataToHardware(data.packetData.payload.toString());
+        this->SendSerialDataToHardware(data.packetData.value);
     }
-    else if(data.packetData.value==CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE)
+    else if(data.packetData.payload.toString()==CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE)
     {
-        this->SendSerialDataToHardware(data.packetData.payload.toString());
+        this->SendSerialDataToHardware(data.packetData.value);
     }
 }
 

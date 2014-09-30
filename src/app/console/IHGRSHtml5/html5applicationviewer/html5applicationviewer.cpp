@@ -1161,7 +1161,7 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
     {
        DataPacket packet;
        packet.packetData.value=data;
-       emit this->UIDeviceManagerSignal(packet);
+       emit  this->UIDeviceManagerSignal(packet);
     }
 
     QString result="{\"result\":\"" + data + "\"}";
