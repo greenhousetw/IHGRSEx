@@ -1173,7 +1173,11 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 
 void Html5ApplicationViewerPrivate::UIDeviceManagerSlot(DataPacket packet)
 {
-
+    if(packet.packetData.payload.toString()==CommonVariables::SensorUISettingString)
+    {
+        QVariant variant=this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("updateSensor(\"" + packet.packetData.value + "\")"));
+        qDebug()<<variant.toString();
+    }
 }
 
 bool Html5ApplicationViewerPrivate::LoadDeviceManager()

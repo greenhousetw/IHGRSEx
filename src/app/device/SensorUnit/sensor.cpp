@@ -60,7 +60,9 @@ void Sensor::ReceieveData(NotifyPackage package)
        {
            qDebug()<<"value=" + QString::number(this->value);
            DataPacket dataPacket;
-           dataPacket.packetData.payload=QVariant("D");
+           //dataPacket.packetData.value="{\"controlboxid\" : \""+ this->controlBoxId + "\", \"id\" : \"" + this->id + "\", \"sensortype\" : \"" + this->GetDeviceType() + "\"}";
+           dataPacket.packetData.value=this->controlBoxId + "," + this->id + "," + this->GetDeviceType() + "," + QString::number(this->value);
+           dataPacket.packetData.payload=QVariant(CommonVariables::SensorUISettingString);
            emit this->SendData(dataPacket);
        }
     }

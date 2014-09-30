@@ -148,8 +148,8 @@ QFile LogFile;
 #define SHOW4 TRUE  //data<-
 /**
 ****************************************************************************************************************
-@ description:±Ndata¼g¤JlogÀÉ
-@ param:char* string: ±ý¼g¤Jªº¸ê®Æ
+@ description:ï¿½Ndataï¿½gï¿½Jlogï¿½ï¿½
+@ param:char* string: ï¿½ï¿½ï¿½gï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 @ author: Yu-Hua Tseng
 @ date: 2010.05.22
 @ version: 1.0
@@ -169,12 +169,12 @@ void To_Log_File(char* string)
 
 /**
 ****************************************************************************************************************
-@ description:ªì©l¤ÆlogÀÉ (QFile)
+@ description:ï¿½ï¿½ï¿½lï¿½ï¿½logï¿½ï¿½ (QFile)
 @ author: Yu-Hua Tseng
 @ date: 2010.05.23
 @ version: 1.0
 @ Histroy: Initial version.
-2010.06.04: ­×¥¿logÀÉ¦s©ñ¸ô®|
+2010.06.04: ï¿½×¥ï¿½logï¿½É¦sï¿½ï¿½ï¿½ï¿½ï¿½|
 ****************************************************************************************************************
 */
 void Initial_Log_File()
@@ -285,7 +285,7 @@ void Win_QextSerialPort::init()
     _bytesToWrite = 0;
     m_defTemperatureType=0;
         m_defLutronType=2;
-    overlapThread = new Win_QextSerialThread(this);
+    overlapThread = new Win_QextSerialThread(this);    
     bytesToWriteLock = new QReadWriteLock;
     m_table1ON=0;
     m_table1OFF=0;
@@ -468,8 +468,8 @@ qint64 Win_QextSerialPort::bytesAvailable()
 {
         LOCK_MUTEX();
     if (isOpen())
-    {
-        return m_bufferlength;
+    {       
+        return m_bufferlength;       
     }
         UNLOCK_MUTEX();
     return 0;
@@ -1633,8 +1633,6 @@ void Win_QextSerialPort::StartStop(void)
 
 
 }
-
-
 
 qint64 Win_QextSerialPort::writeData(const char *data, qint64 maxSize)
 {

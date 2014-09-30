@@ -25,7 +25,8 @@
                 {
                     Qt.quit();
                 };               
-            }
+            }           
+
         </script>
         <script src="./scripts/jquery-2.1.1.min.js" type="text/javascript"></script>
     </head>
@@ -70,11 +71,21 @@
      {
         var data=Qt.NotifyEngine('StartDeviceManager');
         alert(data);
-     });
+     });   
 
-    function test(data){
-        alert(data);
-    }
+    function updateSensor(da){
+
+        var sensorinfo=da.split(",");
+
+        var sensor={
+            controlboxid:sensorinfo[0],
+            id:sensorinfo[1],
+            sensortype:sensorinfo[2],
+            value:sensorinfo[3]
+        }
+
+        $('#sensorTable tr:last').after('<tr id="' + sensor.id + '"><td>' + sensor.controlboxid + '</td><td>' + sensor.sensortype + '</td><td>' + sensor.value + '</td></tr>');
+     }
 
     </script>
     </body>

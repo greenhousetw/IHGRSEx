@@ -44,7 +44,8 @@ void Tranceiver::ReceieveData(DataPacket data)
     }
     else if(data.packetData.payload.toString()==CommonVariables::TRANCIEVERHARDWARESENDMESSAGE)
     {
-        this->SendSerialDataToHardware(data.packetData.value);
+        //this->SendSerialDataToHardware(data.packetData.value);
+        this->ReceiveDataFromHardware();
     }
     else if(data.packetData.payload.toString()==CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE)
     {
@@ -85,6 +86,7 @@ bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
     if(this->serialPort == NULL)
     {
         this->serialPort=new QextSerialPort(this->jsonObject["Port"].toString());
+        this->serialPort->setQueryMode(QextSerialPort::EventDriven);
         this->serialPort->setBaudRate(BAUD9600);
         this->serialPort->setFlowControl(FLOW_OFF);
         this->serialPort->setParity(PAR_NONE);
@@ -96,6 +98,8 @@ bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
         if(this->serialPort->open(QIODevice::ReadWrite|QIODevice::Unbuffered) == portopeningSuccessful)
         {
             qDebug()<<"Open com port=" + this->jsonObject["Port"].toString() + " is successful";
+            //this->monitorThread=new SerialPortMonitorThread(this);
+            //this->monitorThread->start();
         }
         else
         {
@@ -190,16 +194,22 @@ bool Tranceiver::ReceiveDataFromHardware()
 
     char buff[charSize];
 
+    DataPacket packet;
+    packet.packetData.value="Q01CP28H77A2990BB*";
+
+    emit SendData(packet);
+
+    /*
     int numBytes = this->serialPort->bytesAvailable();
 
-    qDebug()<<"IHGRS has read data length=" + QString::number(numBytes);
-
     if(numBytes > 0)
-    {
+    {       
         if(numBytes > charSize)
         {
           numBytes = charSize;
         }
+
+        qDebug()<<"IHGRS has read data length=" + QString::number(numBytes);
 
         int index = this->serialPort->read(buff, numBytes);
 
@@ -223,8 +233,32 @@ bool Tranceiver::ReceiveDataFromHardware()
         messageBox.clear();
         qbyteArray.clear();
     }
+    */
 
     result=true;
 
     return result;
+}
+
+SerialPortMonitorThread::SerialPortMonitorThread(Tranceiver * tranciever):
+    QThread()
+{
+    this->tranciever=tranciever;
+    this->tranciever->gterminate = false;
+}
+void SerialPortMonitorThread::stop()
+{
+    this->tranciever->gterminate = true;
+}
+void SerialPortMonitorThread::run()
+{
+    this->tranciever->gterminate = false;
+
+    int seconds=1000;
+
+    while(!this->tranciever->gterminate)
+    {
+       QThread::msleep(seconds);
+       this->tranciever->ReceiveDataFromHardware();
+    }
 }

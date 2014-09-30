@@ -136,7 +136,10 @@ bool DeviceMangerHandler::LoadConfig(QString fileName)
 
 void DeviceMangerHandler::DeviceManagerCoreSlot(DataPacket data)
 {
-
+    if(data.packetData.payload.toString()==CommonVariables::SensorUISettingString)
+    {
+        emit this->DeviceManagerUISignal(data);
+    }
 }
 
 void DeviceMangerHandler::DeviceManagerUISlot(DataPacket data)

@@ -32,6 +32,13 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../core/Core/releas
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../core/Core/debug/ -lCore
 else:unix: LIBS += -L$$OUT_PWD/../../core/Core/ -lCore
 
+INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
+DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
+
 INCLUDEPATH += $$PWD/../../core/Core
 DEPENDPATH += $$PWD/../../core/Core
 

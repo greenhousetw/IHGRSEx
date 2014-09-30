@@ -13,7 +13,8 @@ void CoreOne::CoreSensorCollectBus(DataPacket data)
 
 void CoreOne::CoreDataCollectBus(DataPacket data)
 {
-    this->CoreTrancieverBus(data);
+    qDebug()<<"CoreOne gets " + data.packetData.payload.toString() + ", CoreDataCollectBus";
+    emit this->CoreDeviceManagerSignal(data);
 }
 
 void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
@@ -29,7 +30,7 @@ void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
 
 void CoreOne::CoreTrancieverCollectBus(DataPacket data)
 {
-     qDebug()<< "CoreOne gets the value:" + data.packetData.value;
+     qDebug()<< "Tranciever sends data to CoreOne, the value:" + data.packetData.value;
 
      QString parsedData="";
      NotifyPackage package;
