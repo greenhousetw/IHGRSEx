@@ -51,4 +51,5 @@ OTHER_FILES += \
     info.json \
     config.json \
     sensorconfig.json \
-    tranceieverconfig.json
+    tranceieverconfig.json \
+    repositoryconfig.json

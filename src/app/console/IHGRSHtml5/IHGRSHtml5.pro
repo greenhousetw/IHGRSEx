@@ -200,6 +200,12 @@ SOURCEPATH=../../../app/Repository/RepositoryManager/$$BUILDTARGET/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
+# 19. copy tranceieverconfig.json
+FILENAME=repositoryconfig.json
+SOURCEPATH=../../../../../../src/app/device/DeviceManager/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
 }
 
 # Please do not modify the following two lines. Required for deployment.

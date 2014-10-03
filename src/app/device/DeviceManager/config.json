@@ -1,6 +1,8 @@
 {
     "sensorconfigfile" : "sensorconfig.json",
     "tranceieverconfigfile" : "tranceieverconfig.json",
+    "repositoryconfigfile" : "repositoryconfig.json",
     "sensorloader":"SensorPlugInLoader.dll",
-    "tranceiverloader":"TrancieverLoader.dll"
+    "tranceiverloader":"TrancieverLoader.dll",
+    "repositoryloader":"RepositoryManager.dll"
 }
