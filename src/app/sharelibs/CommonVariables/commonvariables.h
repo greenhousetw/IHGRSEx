@@ -59,6 +59,8 @@ public:
     static const QString SensorUISettingString;
 
     static const QString RepositoryConfigfilePath;
+
+    static const QString RepositoryPrefix;
 };
 
 #endif // COMMONVARIABLES_H

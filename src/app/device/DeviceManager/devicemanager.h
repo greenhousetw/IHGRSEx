@@ -7,6 +7,7 @@
 #include "../../core/Core/coreone.h"
 #include "../../device/Hardware/hardware.h"
 #include "../Tranceiver/tranceiver.h"
+#include "../../Repository/IRepositoryManager/irepositorymanager.h"
 #include "../../sharelibs/CommonVariables/commonvariables.h"
 
 class IDeviceManager : public QObject
@@ -25,6 +26,7 @@ public:
     virtual bool ReleaseCore()=0;
     virtual bool LoadSensors()=0;
     virtual bool LoadTranceievers()=0;
+    virtual bool LoadRepository()=0;
     virtual QObject* GetSensors()=0;
     virtual QObject* GetTranceievers()=0;
 

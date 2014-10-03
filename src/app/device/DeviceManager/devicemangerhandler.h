@@ -19,6 +19,7 @@ public:
     virtual bool SetCore();
     virtual bool LoadSensors();
     virtual bool LoadTranceievers();
+    virtual bool LoadRepository();
     virtual QObject* GetSensors();
     virtual QObject* GetTranceievers();
     virtual bool ReleaseCore();
@@ -41,10 +42,13 @@ private:
     QPluginLoader repositoryLoader;
     IDeviceFactory* sensorFactory=NULL;
     IDeviceFactory* tranceiverFactory=NULL;
+    IRepositoryManager* repositoryFactory=NULL;
+    IRepository* repository=NULL;
 
     QJsonObject jsonObject;
     QString tranceieverLocation;
     QString sensorConfigLocation;
+    QString repositoryConfigLocation;
     bool LoadConfig(QString);
 
     template <typename T>

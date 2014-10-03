@@ -12,7 +12,7 @@ IRepository* RepositoryManager::GetRepository(QMap<QString, QVariant> configs)
 {
     IRepository* repository=NULL;
 
-    if (configs["sensorloader"]=="SQLiter")
+    if (configs[CommonVariables::RepositoryPrefix]=="SQLiter")
     {
         repository=new SQLiter("Sqlite");
     }

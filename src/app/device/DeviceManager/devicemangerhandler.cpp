@@ -15,6 +15,12 @@ bool DeviceMangerHandler::SetCore()
         goto orz;
     }
 
+    if (!PluginHelper::GetPlugIn(this->repositoryLoader, this->jsonObject["repositoryloader"].toString()))
+    {
+      qCritical()<<"system cannot load:" + this->jsonObject["repositoryloader"].toString();
+      goto orz;
+    }
+
     if (!PluginHelper::GetPlugIn(this->loader, this->jsonObject["sensorloader"].toString()))
     {
       qCritical()<<"system cannot load:" + this->jsonObject["sensorloader"].toString();
@@ -27,9 +33,11 @@ bool DeviceMangerHandler::SetCore()
       goto orz;
     }
 
+    this->repositoryFactory= qobject_cast<IRepositoryManager *>(this->repositoryLoader.instance());
     this->sensorFactory = qobject_cast<IDeviceFactory *>(this->loader.instance());
     this->tranceiverFactory = qobject_cast<IDeviceFactory *>(this->trancieverLoader.instance());
     this->core=new CoreOne;
+    this->repositoryConfigLocation = this->jsonObject["repositoryconfigfile"].toString();
     this->tranceieverLocation= this->jsonObject["tranceieverconfigfile"].toString();
     this->sensorConfigLocation = this->jsonObject["sensorconfigfile"].toString();
 
@@ -95,6 +103,34 @@ bool DeviceMangerHandler::LoadSensors()
         qDebug()<<" count of sensor ControlBox=" + QString::number(this->controlBox.count());
     }
 
+    return result;
+}
+
+bool DeviceMangerHandler::LoadRepository()
+{
+    bool result=false;
+
+    QJsonObject jsonRepo;
+    QMap<QString, QVariant> config;
+
+    if(!PluginHelper::GetJSON(this->repositoryConfigLocation,&jsonRepo))
+    {
+        qCritical()<<"Cannnot load repository config file:" + this->repositoryConfigLocation;
+        goto orz;
+    }
+
+    config.insert(CommonVariables::RepositoryPrefix,jsonRepo["repository"].toString());
+    this->repository=this->repositoryFactory->GetRepository(config);
+
+    if(repository=NULL)
+    {
+        qCritical()<<"Cannnot load repository:" + config[CommonVariables::RepositoryPrefix].toString();
+        goto orz;
+    }
+
+    result=true;
+
+    orz:
     return result;
 }
 
