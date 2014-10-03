@@ -57,6 +57,8 @@ public:
     static const QString TRANCIEVERHARDWARERECEIEVEMESSAGE;
 
     static const QString SensorUISettingString;
+
+    static const QString RepositoryConfigfilePath;
 };
 
 #endif // COMMONVARIABLES_H

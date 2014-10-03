@@ -176,6 +176,30 @@ SOURCEPATH=../../../app/device/qextserialport/build/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
+# 14. copy IRepository.dll
+FILENAME=IRepository.dll
+SOURCEPATH=../../../app/Repository/IRepository/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 15. copy IRepositoryManager.dll
+FILENAME=IRepositoryManager.dll
+SOURCEPATH=../../../app/Repository/IRepositoryManager/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 16. copy SQLiter.dll
+FILENAME=SQLiter.dll
+SOURCEPATH=../../../app/Repository/SQLiter/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+# 17. copy RepositoryManager.dll
+FILENAME=RepositoryManager.dll
+SOURCEPATH=../../../app/Repository/RepositoryManager/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
 }
 
 # Please do not modify the following two lines. Required for deployment.

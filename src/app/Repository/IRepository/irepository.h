@@ -1,12 +1,12 @@
 #ifndef IREPOSITORY_H
 #define IREPOSITORY_H
 
-#include <QHash>
+#include <QMap>
 #include <QString>
 #include <QtSql>
-#include "irepository_global.h"
+//#include "irepository_global.h"
 
-class IREPOSITORYSHARED_EXPORT IRepository : public QObject
+class IRepository : public QObject
 {
    Q_OBJECT
 
@@ -18,7 +18,7 @@ public:
     virtual bool OpenDB()=0;
     virtual bool CloseDB()=0;
     virtual bool ChangeDataBase(QString databaseName)=0;
-    virtual bool Execute(QHash<QString, QString> command)=0;
+    virtual bool ExecuteSQLCommand(QMap<QString, QString> command)=0;
 
 protected:
 
@@ -26,4 +26,5 @@ protected:
     QSqlDatabase databaseInstance;
 };
 
+Q_DECLARE_INTERFACE(IRepository, "")
 #endif // IREPOSITORY_H

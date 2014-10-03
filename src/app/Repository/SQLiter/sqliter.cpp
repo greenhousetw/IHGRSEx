@@ -68,7 +68,7 @@ bool SQLiter::ChangeDataBase(QString databaseName)
  * @param command
  * @return true for all commands get succesul result, otherwise returns false
  */
-bool SQLiter::Execute(QHash<QString, QString> command)
+bool SQLiter::ExecuteSQLCommand(QMap<QString, QString> command)
 {
     bool result=false;
 

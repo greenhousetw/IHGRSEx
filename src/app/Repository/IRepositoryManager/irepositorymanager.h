@@ -2,32 +2,18 @@
 #define IREPOSITORYMANAGER_H
 
 #include "irepositorymanager_global.h"
-#include<QHash>
 #include<QObject>
 #include<QtPlugin>
+#include "../IRepository/irepository.h"
 
-//class IREPOSITORYMANAGERSHARED_EXPORT IRepositoryManager
-class IRepositoryManager
+class IRepositoryManager : public QObject
 {
 
 public:
 
-    enum DataBaseType{
-        SQLite
-    };
-
-    IRepositoryManager(void) {}
-    virtual ~IRepositoryManager(void) {}
-
-    virtual bool LoadDBInstance(QString dbName, IRepositoryManager::DataBaseType dbType)=0;
-    virtual bool OpenDB()=0;
-    virtual bool CloseDB()=0;
-    virtual bool ChangeDataBase(QString databaseName)=0;
-    virtual bool Execute(QHash<QString, QString> command)=0;
+    virtual IRepository* GetRepository(QMap<QString, QVariant> configs)=0;
 };
 
-#define IREPOSITORYINTERFAC_iid "product.ihgrs.plugin.repostiory.repositoryinterface"
-
-Q_DECLARE_INTERFACE(IRepositoryManager,IREPOSITORYINTERFAC_iid)
+Q_DECLARE_INTERFACE(IRepositoryManager,"{666060F9-40E5-4118-A9B4-587E92C132B7}")
 
 #endif // IREPOSITORYMANAGER_H

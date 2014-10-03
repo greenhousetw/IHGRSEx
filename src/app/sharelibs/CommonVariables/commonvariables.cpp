@@ -4,6 +4,7 @@ const QString CommonVariables::IHGRSSTOPWORKING="IHGRSSTOPWORKING";
 const QString CommonVariables::TRANCIEVERHARDWARESENDMESSAGE="TRANCIEVERHARDWARESENDMESSAGE";
 const QString CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE="TRANCIEVERHARDWARERECEIEVEMESSAGE";
 const QString CommonVariables::SensorUISettingString="SensorUISetting";
+const QString CommonVariables::RepositoryConfigfilePath="RepositoryConfig.json";
 /**
   * @brief CommonVariables::GetSensorKindFromUnitIndex
   * return sensor kind index string, like: input=CP / FP

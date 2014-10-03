@@ -2,6 +2,7 @@
 #include <QtPlugin>
 #include <QDebug>
 
+
 QString CoreOne::GetCoreName()
 {
     return QString("Core One");

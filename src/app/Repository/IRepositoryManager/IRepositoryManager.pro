@@ -3,7 +3,7 @@
 # Project created by QtCreator 2014-07-09T18:03:05
 #
 #-------------------------------------------------
-
+QT       += sql xml xmlpatterns
 QT       -= gui
 
 TARGET = IRepositoryManager

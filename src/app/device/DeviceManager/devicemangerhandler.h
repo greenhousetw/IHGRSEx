@@ -38,6 +38,7 @@ private:
 
     QPluginLoader loader;
     QPluginLoader trancieverLoader;
+    QPluginLoader repositoryLoader;
     IDeviceFactory* sensorFactory=NULL;
     IDeviceFactory* tranceiverFactory=NULL;
 

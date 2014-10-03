@@ -5,7 +5,7 @@
 #include "sqliter_global.h"
 #include "../IRepository/irepository.h"
 
-class SQLITERSHARED_EXPORT SQLiter : public IRepository
+class SQLiter : public IRepository
 {
    Q_OBJECT
 
@@ -16,7 +16,7 @@ public:
     virtual bool OpenDB();
     virtual bool CloseDB();
     virtual bool ChangeDataBase(QString databaseName);
-    virtual bool Execute(QHash<QString, QString> command);
+    virtual bool ExecuteSQLCommand(QMap<QString, QString> command);
 
 private:
 

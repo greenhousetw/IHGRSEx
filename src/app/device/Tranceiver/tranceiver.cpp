@@ -194,12 +194,13 @@ bool Tranceiver::ReceiveDataFromHardware()
 
     char buff[charSize];
 
+    /*
     DataPacket packet;
     packet.packetData.value="Q01CP28H77A2990BB*";
 
     emit SendData(packet);
+    */
 
-    /*
     int numBytes = this->serialPort->bytesAvailable();
 
     if(numBytes > 0)
@@ -233,7 +234,7 @@ bool Tranceiver::ReceiveDataFromHardware()
         messageBox.clear();
         qbyteArray.clear();
     }
-    */
+
 
     result=true;
 
