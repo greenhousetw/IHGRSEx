@@ -206,6 +206,14 @@ SOURCEPATH=../../../../../../src/app/device/DeviceManager/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
+
+# 20. copy Bosswin.db3
+FILENAME=Bosswin.db3
+SOURCEPATH=../../../../../../src/app/Repository/SQLiter/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+
 }
 
 # Please do not modify the following two lines. Required for deployment.

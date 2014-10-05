@@ -29,3 +29,6 @@ else:unix: LIBS += -L$$OUT_PWD/../IRepository/ -lIRepository
 
 INCLUDEPATH += $$PWD/../IRepository
 DEPENDPATH += $$PWD/../IRepository
+
+OTHER_FILES += \
+    Bosswin.db3
