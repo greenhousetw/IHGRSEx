@@ -5,6 +5,7 @@
 #include <QMap>
 #include "../../core/Core/core.h"
 #include "../../core/Core/datapacket.h"
+#include "../../Repository/IRepository/irepository.h"
 #include "../../sharelibs/NotifyPackage/notifypackage.h"
 
 class IHardware : public QObject

@@ -33,14 +33,22 @@ bool DeviceMangerHandler::SetCore()
       goto orz;
     }
 
+    // Create repository, sensor and tranciever factory
     this->repositoryFactory= qobject_cast<IRepositoryManager *>(this->repositoryLoader.instance());
     this->sensorFactory = qobject_cast<IDeviceFactory *>(this->loader.instance());
     this->tranceiverFactory = qobject_cast<IDeviceFactory *>(this->trancieverLoader.instance());
-    this->core=new CoreOne;
+
+    // Get configuration file's location
     this->repositoryConfigLocation = this->jsonObject["repositoryconfigfile"].toString();
     this->tranceieverLocation= this->jsonObject["tranceieverconfigfile"].toString();
     this->sensorConfigLocation = this->jsonObject["sensorconfigfile"].toString();
 
+    qDebug()<<"the location of repository configuration file=" + this->repositoryConfigLocation;
+    qDebug()<<"the location of sensor configuration file=" + this->sensorConfigLocation;
+    qDebug()<<"the location of tranciever configuration file=" + this->tranceieverLocation;
+
+    // Initialize Core
+    this->core=new CoreOne;
     connect(this, SIGNAL(DeviceManagerCoreSignal(DataPacket)), this->core, SLOT(CoreDeviceManagerCollectionBus(DataPacket)));
     connect(this->core, SIGNAL(CoreDeviceManagerSignal(DataPacket)), this, SLOT(DeviceManagerCoreSlot(DataPacket)));
 
@@ -74,6 +82,11 @@ bool DeviceMangerHandler::ReleaseCore()
         trancieverLoader.unload();
     }
 
+    if(this->repositoryLoader.isLoaded())
+    {
+        this->repositoryLoader.unload();
+    }
+
     if(this->sensorFactory)
     {
         delete this->sensorFactory;
@@ -86,7 +99,11 @@ bool DeviceMangerHandler::ReleaseCore()
         this->tranceiverFactory=NULL;
     }
 
-
+    if(this->repositoryFactory)
+    {
+        delete this->repositoryFactory;
+        this->repositoryFactory=NULL;
+    }
 
     result=true;
 
@@ -112,6 +129,7 @@ bool DeviceMangerHandler::LoadRepository()
 
     QJsonObject jsonRepo;
     QMap<QString, QVariant> config;
+    IRepository* repository=NULL;
 
     if(!PluginHelper::GetJSON(this->repositoryConfigLocation,&jsonRepo))
     {
@@ -120,9 +138,10 @@ bool DeviceMangerHandler::LoadRepository()
     }
 
     config.insert(CommonVariables::RepositoryPrefix,jsonRepo["repository"].toString());
-    this->repository=this->repositoryFactory->GetRepository(config);
 
-    if(repository=NULL)
+    repository=this->repositoryFactory->GetRepository(config);
+
+    if(!this->core->SetRepostiory(repository))
     {
         qCritical()<<"Cannnot load repository:" + config[CommonVariables::RepositoryPrefix].toString();
         goto orz;

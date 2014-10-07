@@ -15,7 +15,12 @@ bool Sensor::CoreConnector(QObject& coreIn)
     connect(core, SIGNAL(CoreSensorBus(NotifyPackage)), this, SLOT(ReceieveData(NotifyPackage)));
     connect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
 
-    result=true;
+    this->repository=core->GetRepository();
+
+    if(this->repository)
+    {
+        result=true;
+    }
 
     return result;
 }

@@ -1200,6 +1200,11 @@ bool Html5ApplicationViewerPrivate::LoadDeviceManager()
         goto orz;
     }
 
+    if(!this->deviceManager->LoadRepository())
+    {
+       goto orz;
+    }
+
     if(this->deviceManager->LoadSensors() && this->deviceManager->LoadTranceievers())
     {
         result=true;

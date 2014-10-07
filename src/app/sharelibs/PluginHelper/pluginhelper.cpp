@@ -36,8 +36,6 @@ bool PluginHelper::GetJSON(QString fileName, QJsonObject* jsonDocument)
 {
     bool result=false;
 
-    QJsonObject jsonObject;
-
     QDir dir(QCoreApplication::applicationDirPath());
 
     QFile loadFile(dir.absoluteFilePath(fileName));
@@ -47,9 +45,7 @@ bool PluginHelper::GetJSON(QString fileName, QJsonObject* jsonDocument)
         goto bye;
     }
 
-    jsonObject=QJsonDocument::fromJson(loadFile.readAll()).object();
-
-    jsonDocument=&jsonObject;
+    *jsonDocument=QJsonDocument::fromJson(loadFile.readAll()).object();
 
     result=true;
 

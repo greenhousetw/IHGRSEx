@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += sql
 CONFIG +=plugin
 TARGET = Core
 TEMPLATE = lib

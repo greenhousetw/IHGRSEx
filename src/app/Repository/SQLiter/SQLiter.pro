@@ -27,6 +27,10 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../IRepository/release
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../IRepository/debug/ -lIRepository
 else:unix: LIBS += -L$$OUT_PWD/../IRepository/ -lIRepository
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/release/ -lCommonVariables
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
+
 INCLUDEPATH += $$PWD/../IRepository
 DEPENDPATH += $$PWD/../IRepository
 

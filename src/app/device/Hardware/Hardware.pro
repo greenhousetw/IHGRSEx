@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += xml xmlpatterns
+QT       += xml xmlpatterns sql
 QT       -= gui
 
 TARGET = Hardware

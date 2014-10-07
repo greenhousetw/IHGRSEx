@@ -11,6 +11,8 @@ class CoreOne : public ICore
 public:
 
     virtual QString GetCoreName();
+    virtual IRepository* GetRepository();
+    virtual bool SetRepostiory(IRepository* repositoryInstance);
 
 public slots:
 
@@ -21,6 +23,7 @@ public slots:
 
 private:
 
+    IRepository* repository=NULL;
     bool ParseDataStream(QString, QString* realData);
     bool GetNotifyPackage(QString, NotifyPackage*);
 };

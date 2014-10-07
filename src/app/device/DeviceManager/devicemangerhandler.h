@@ -43,7 +43,6 @@ private:
     IDeviceFactory* sensorFactory=NULL;
     IDeviceFactory* tranceiverFactory=NULL;
     IRepositoryManager* repositoryFactory=NULL;
-    IRepository* repository=NULL;
 
     QJsonObject jsonObject;
     QString tranceieverLocation;

@@ -68,27 +68,30 @@ bool SQLiter::ChangeDataBase(QString databaseName)
  * @param command
  * @return true for all commands get succesul result, otherwise returns false
  */
-bool SQLiter::ExecuteSQLCommand(QMap<QString, QString> command)
+QMap<QString, QVariant>  SQLiter::ExecuteSQLCommand(QMap<QString, QString> command)
 {
-    bool result=false;
-
     QSqlQuery sqlExecutor;
     QString message="is fail";
+
+    QMap<QString, QVariant> result;
 
     foreach(QString key, command.keys())
     {
        if(sqlExecutor.exec(command[key]))
        {
            message = command[key] +" is successful";
-           result=true;
+           qDebug()<<message;
        }
        else
        {
            message=command[key] + " is fail";
-           result=false;
+           qCritical() << message;
            break;
        }
     }
+
+    result.insert(CommonVariables::SqlSelectSize, QVariant(sqlExecutor.size()));
+    result.insert(CommonVariables::SqlNonSelectSize, QVariant(sqlExecutor.numRowsAffected()));
 
     qDebug()<<message;
 

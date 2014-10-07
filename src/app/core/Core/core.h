@@ -6,6 +6,7 @@
 #include <QString>
 #include "datapacket.h"
 #include "../../sharelibs/NotifyPackage/notifypackage.h"
+#include "../../Repository/IRepository/irepository.h"
 
 class ICore : public QObject
 {    
@@ -14,6 +15,8 @@ class ICore : public QObject
 public:
 
   virtual QString GetCoreName()=0;
+  virtual IRepository* GetRepository()=0;
+  virtual bool SetRepostiory(IRepository*)=0;
 
 signals:
 

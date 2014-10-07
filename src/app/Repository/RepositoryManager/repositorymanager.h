@@ -11,7 +11,8 @@
 
 class RepositoryManager : public IRepositoryManager
 {   
-    Q_PLUGIN_METADATA(IID {943B47E7-FF39-4E0B-BCDF-C3D1FB4CB15B} FILE "RepositoryManagerPlungIn.json")
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID "{943B47E7-FF39-4E0B-BCDF-C3D1FB4CB15B}" FILE "RepositoryManagerPlungIn.json")
     Q_INTERFACES(IRepositoryManager)
 
 public:

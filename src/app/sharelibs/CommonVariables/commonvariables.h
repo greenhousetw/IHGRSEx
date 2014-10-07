@@ -61,6 +61,10 @@ public:
     static const QString RepositoryConfigfilePath;
 
     static const QString RepositoryPrefix;
+
+    static const QString SqlSelectSize;
+
+    static const QString SqlNonSelectSize;
 };
 
 #endif // COMMONVARIABLES_H

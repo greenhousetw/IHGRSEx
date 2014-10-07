@@ -4,6 +4,7 @@
 #include <QtSql>
 #include "sqliter_global.h"
 #include "../IRepository/irepository.h"
+#include "../../sharelibs/CommonVariables/commonvariables.h"
 
 class SQLiter : public IRepository
 {
@@ -16,7 +17,7 @@ public:
     virtual bool OpenDB();
     virtual bool CloseDB();
     virtual bool ChangeDataBase(QString databaseName);
-    virtual bool ExecuteSQLCommand(QMap<QString, QString> command);
+    virtual QMap<QString, QVariant> ExecuteSQLCommand(QMap<QString, QString> command);
 
 private:
 

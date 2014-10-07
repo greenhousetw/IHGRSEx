@@ -16,7 +16,8 @@ public:
 public slots:
 
     virtual void ReceieveData(DataPacket data);
-    virtual void ReceieveData(NotifyPackage data);  
+    virtual void ReceieveData(NotifyPackage data);
+
 public:
 
     virtual bool SetHardware(QMap<QString, QVariant> config);
@@ -28,6 +29,7 @@ public:
 
 private:
 
+    IRepository* repository=NULL;
     QString id="";
     QString controlBoxId="";
     CommonVariables::SensorType sensorType=CommonVariables::NotDefine;
