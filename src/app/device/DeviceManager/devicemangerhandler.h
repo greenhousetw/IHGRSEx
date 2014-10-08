@@ -42,6 +42,7 @@ private:
     QPluginLoader repositoryLoader;
     IDeviceFactory* sensorFactory=NULL;
     IDeviceFactory* tranceiverFactory=NULL;
+    IRepository* repository=NULL;
     IRepositoryManager* repositoryFactory=NULL;
 
     QJsonObject jsonObject;

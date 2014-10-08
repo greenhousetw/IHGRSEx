@@ -26,6 +26,7 @@ public:
     virtual QString GetDeviceType();
     virtual bool CoreConnector(QObject&);
     virtual bool DiconnectCoreConnector(QObject&);
+    virtual bool SetRepository(IRepository* repository);
 
 private:
 

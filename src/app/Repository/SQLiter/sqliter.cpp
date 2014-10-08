@@ -17,9 +17,13 @@ SQLiter::~SQLiter()
  */
 bool SQLiter::OpenDB()
 {
+    QStringList tablelist;
+
     bool result=false;
 
     this->databaseInstance=QSqlDatabase::addDatabase("QSQLITE");
+
+    this->dbName=QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + QDir::separator() + this->dbName);
 
     this->databaseInstance.setDatabaseName(this->dbName);
 
@@ -30,6 +34,10 @@ bool SQLiter::OpenDB()
     }
 
     qDebug()<<"Open database:" + this->dbName + " successfully";
+
+    tablelist=this->databaseInstance.tables();
+
+    qDebug() << "Table count:" + tablelist.count();
 
     result=true;
 
@@ -70,13 +78,20 @@ bool SQLiter::ChangeDataBase(QString databaseName)
  */
 QMap<QString, QVariant>  SQLiter::ExecuteSQLCommand(QMap<QString, QString> command)
 {
-    QSqlQuery sqlExecutor;
     QString message="is fail";
+
+    QSqlQuery sqlExecutor(this->databaseInstance);
 
     QMap<QString, QVariant> result;
 
-    foreach(QString key, command.keys())
+    if(!this->databaseInstance.isOpen())
     {
+        qWarning()<<"DataBase:" + this->databaseInstance.databaseName() + " is close";
+        goto orz;
+    }
+
+    foreach(QString key, command.keys())
+    {      
        if(sqlExecutor.exec(command[key]))
        {
            message = command[key] +" is successful";
@@ -84,7 +99,7 @@ QMap<QString, QVariant>  SQLiter::ExecuteSQLCommand(QMap<QString, QString> comma
        }
        else
        {
-           message=command[key] + " is fail";
+           message=command[key] + " is fail, message=" + sqlExecutor.lastError().databaseText();
            qCritical() << message;
            break;
        }
@@ -95,6 +110,7 @@ QMap<QString, QVariant>  SQLiter::ExecuteSQLCommand(QMap<QString, QString> comma
 
     qDebug()<<message;
 
+    orz:
     return result;
 }
 

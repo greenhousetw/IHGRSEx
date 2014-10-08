@@ -1,3 +1,4 @@
 {
-    "repository":"SQLiter"
+    "repository":"SQLiter",
+    "dbName":"Bosswin.db3"
 }

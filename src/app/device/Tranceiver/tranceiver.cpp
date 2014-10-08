@@ -113,6 +113,11 @@ bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
     return result;
 }
 
+bool Tranceiver::SetRepository(IRepository* repository)
+{
+   return true;
+}
+
 QString Tranceiver::GetDeviceValue()
 {
   return QString::number(this->value);

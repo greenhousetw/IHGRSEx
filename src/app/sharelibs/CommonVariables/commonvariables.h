@@ -65,6 +65,8 @@ public:
     static const QString SqlSelectSize;
 
     static const QString SqlNonSelectSize;
+
+    static const QString SqlResult;
 };
 
 #endif // COMMONVARIABLES_H

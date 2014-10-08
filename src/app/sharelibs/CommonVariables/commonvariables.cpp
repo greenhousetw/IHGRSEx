@@ -8,7 +8,7 @@ const QString CommonVariables::RepositoryConfigfilePath="RepositoryConfig.json";
 const QString CommonVariables::RepositoryPrefix="RepositoryPrefix";
 const QString CommonVariables::SqlSelectSize="SqlSelectSize";
 const QString CommonVariables::SqlNonSelectSize="SqlSelectSize";
-
+const QString CommonVariables::SqlResult="SqlResult";
 /**
   * @brief CommonVariables::GetSensorKindFromUnitIndex
   * return sensor kind index string, like: input=CP / FP

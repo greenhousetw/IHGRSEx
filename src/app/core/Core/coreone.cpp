@@ -8,25 +8,6 @@ QString CoreOne::GetCoreName()
     return QString("Core One");
 }
 
-bool CoreOne::SetRepostiory(IRepository* repositoryInstance)
-{
-    bool result=false;
-
-    if(repositoryInstance)
-    {
-        repositoryInstance->ChangeDataBase("Bosswin.db3");
-        this->repository=repositoryInstance;
-        result=true;
-    }
-
-    return result;
-}
-
-IRepository* CoreOne::GetRepository()
-{
-    return this->repository;
-}
-
 void CoreOne::CoreSensorCollectBus(DataPacket data)
 {      
 }

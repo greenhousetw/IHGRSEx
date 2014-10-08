@@ -25,6 +25,7 @@ public slots:
 public:
 
     virtual bool SetHardware(QMap<QString, QVariant> config);
+    virtual bool SetRepository(IRepository* repository);
     virtual QString GetDeviceValue();
     virtual QString GetDeviceID();
     virtual QString GetDeviceType();

@@ -11,8 +11,6 @@ class CoreOne : public ICore
 public:
 
     virtual QString GetCoreName();
-    virtual IRepository* GetRepository();
-    virtual bool SetRepostiory(IRepository* repositoryInstance);
 
 public slots:
 

@@ -23,9 +23,10 @@ public slots:
 
 public:
 
-  virtual bool CoreConnector(QObject&)=0;
+  virtual bool CoreConnector(QObject&)=0; 
   virtual bool DiconnectCoreConnector(QObject&)=0;
   virtual bool SetHardware(QMap<QString, QVariant>)=0;
+  virtual bool SetRepository(IRepository*)=0;
   virtual QString GetDeviceValue()=0;
   virtual QString GetDeviceID()=0;
   virtual QString GetDeviceType()=0;

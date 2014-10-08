@@ -129,7 +129,6 @@ bool DeviceMangerHandler::LoadRepository()
 
     QJsonObject jsonRepo;
     QMap<QString, QVariant> config;
-    IRepository* repository=NULL;
 
     if(!PluginHelper::GetJSON(this->repositoryConfigLocation,&jsonRepo))
     {
@@ -139,13 +138,15 @@ bool DeviceMangerHandler::LoadRepository()
 
     config.insert(CommonVariables::RepositoryPrefix,jsonRepo["repository"].toString());
 
-    repository=this->repositoryFactory->GetRepository(config);
+    this->repository=this->repositoryFactory->GetRepository(config);
 
-    if(!this->core->SetRepostiory(repository))
+    if(this->repository==NULL)
     {
         qCritical()<<"Cannnot load repository:" + config[CommonVariables::RepositoryPrefix].toString();
         goto orz;
     }
+
+    this->repository->ChangeDataBase(jsonRepo["dbName"].toString());
 
     result=true;
 
@@ -258,8 +259,7 @@ bool DeviceMangerHandler::SetupDevices(IDeviceFactory* factory, QMap<QString,QMa
     qDebug() << "configuration file's path:" + configurationFile;
 
     if(!this->LoadConfig(configurationFile))
-    {
-        qCritical()<<"orz! system cannot load tranceieverconfig.json";
+    {       
         goto bye;
     }
 
@@ -296,8 +296,9 @@ bool DeviceMangerHandler::SetupDevices(IDeviceFactory* factory, QMap<QString,QMa
                     info.insert(controlboxId, QVariant(innerDeviceMap[controlboxId].toString()));
 
                     T* deviceObject = (T*) factory->GetDevice(info);
-                    deviceObject->SetHardware(info);
                     deviceObject->CoreConnector(*this->core);
+                    deviceObject->SetRepository(this->repository);
+                    deviceObject->SetHardware(info);
                     internalDeviceSet.insert(innerDeviceMap[id].toString(), deviceObject);
                     info.clear();
                 }

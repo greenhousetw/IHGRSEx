@@ -15,13 +15,6 @@ bool Sensor::CoreConnector(QObject& coreIn)
     connect(core, SIGNAL(CoreSensorBus(NotifyPackage)), this, SLOT(ReceieveData(NotifyPackage)));
     connect(this, SIGNAL(SendData(DataPacket)), core, SLOT(CoreDataCollectBus(DataPacket)));
 
-    this->repository=core->GetRepository();
-
-    if(this->repository)
-    {
-        result=true;
-    }
-
     return result;
 }
 
@@ -95,7 +88,37 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
          }
      }
 
-    result=true;
+     if(this->repository)
+     {
+         QMap<QString, QString> sqlCommand;
+         sqlCommand.insert("SelectSelf", "Select * from SensorRecord where SensorRecord.SensorId='" + this->id + "'");
+
+         if(this->repository->ExecuteSQLCommand(sqlCommand)[CommonVariables::SqlSelectSize].toInt()==0)
+         {
+            qDebug()<<"No this data";
+
+            sqlCommand.clear();
+            sqlCommand.insert("GetSensorId", "Select SensorType.ID from SensorType where SensorType.Name='" + this->GetDeviceType() + "'");
+            this->repository->ExecuteSQLCommand(sqlCommand);
+         }
+
+         sqlCommand.clear();
+     }
+
+     result=true;
+
+     return result;
+}
+
+bool Sensor::SetRepository(IRepository* repository)
+{
+    bool result=false;
+
+    if(repository)
+    {
+        this->repository=repository;
+        result=true;
+    }
 
     return result;
 }
