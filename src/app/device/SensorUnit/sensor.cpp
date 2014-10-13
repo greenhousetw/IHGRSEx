@@ -7,7 +7,6 @@
  */
 Sensor::Sensor()
 {
-
 }
 
 /*!
@@ -45,20 +44,27 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
          QMap<QString, QString> sqlCommand;
          sqlCommand.insert("SelectSelf", "Select * from SensorRecord where SensorRecord.SensorId='" + this->id + "'");
 
+         // If this sensor is not in the DB
          if(!this->repository->ExecuteSQLCommand(sqlCommand).next())
          {
               sqlCommand.clear();
               sqlCommand.insert("GetSensorType", "Select SensorType.ID from SensorType where SensorType.Name='" + config[type].toString() + "'");
               QSqlQuery query=this->repository->ExecuteSQLCommand(sqlCommand);
 
+              // The given sensor type is valid
               while(query.next())
               {
                   sqlCommand.clear();
                   sqlCommand.insert("InserSensor","insert into SensorRecord (ControlBoxId, SensorTypeId, SensorId, UpdatedTime, Value, Deleted) values ('" +
                                     this->controlBoxId + "','" + query.value(0).toString() +"','" + this->id + "', '" + QDateTime::currentDateTime().toString("yyyy MM dd hh:mm:ss") + "', NULL ,0)");
-                  query=this->repository->ExecuteSQLCommand(sqlCommand);
 
+                  // insert this sensor into DB
+                  query=this->repository->ExecuteSQLCommand(sqlCommand);
               }
+         }
+         else
+         {
+             qDebug()<<"This sensor:" + this->id + " has been in the DB already";
          }
      }
 
@@ -148,6 +154,7 @@ void Sensor::ReceieveData(DataPacket data)
  */
 void Sensor::ReceieveData(NotifyPackage package)
 {
+    // incoming target is matched to this sensor's controlBoxId
     if(package.target==this->controlBoxId)
     {
        bool isMe=false;
@@ -164,14 +171,22 @@ void Sensor::ReceieveData(NotifyPackage package)
            }
        }
 
+       // update fields: Value and UpdatedTime of table: SensorRecord
        if(isMe)
        {
-           qDebug()<<"value=" + QString::number(this->value);
-           DataPacket dataPacket;
-           //dataPacket.packetData.value="{\"controlboxid\" : \""+ this->controlBoxId + "\", \"id\" : \"" + this->id + "\", \"sensortype\" : \"" + this->GetDeviceType() + "\"}";
+           QMap<QString, QString> sqlCommand;
+           sqlCommand.insert("UPDATERECORD", "update SensorRecord SET Value=" + QString::number(this->value) + ", UpdatedTime='" +
+                             QDateTime::currentDateTime().toString("yyyy MM dd hh:mm:ss") +
+                             "' where SensorId='" + this->id + "'");
+
+           //update value
+           this->repository->ExecuteSQLCommand(sqlCommand);
+
+           // send signal to UI layer
+           DataPacket dataPacket;           
            dataPacket.packetData.value=this->controlBoxId + "," + this->id + "," + this->GetDeviceType() + "," + QString::number(this->value);
            dataPacket.packetData.payload=QVariant(CommonVariables::SensorUISettingString);
-           emit this->SendData(dataPacket);
+           emit this->SendData(dataPacket);           
        }
     }
 }

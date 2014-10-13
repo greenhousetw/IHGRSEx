@@ -21,6 +21,7 @@
 #include <QGraphicsWebView>
 #include <QPluginLoader>
 #include <QWebFrame>
+#include <QSqlQuery>
 
 #include "../../../app/core/Core/core.h"
 #include "../../../app/core/Core/coreone.h"
@@ -33,6 +34,7 @@
 #include "../../../app/device/Tranceiver/tranceiver.h"
 #include "../../../app/device/TrancieverLoader/trancieverloader.h"
 #include "../../../app/sharelibs/PluginHelper/pluginhelper.h"
+#include "../../../app/sharelibs/CommonLib/commonlib.h"
 #include "../../../app/core/Core/datapacket.h"
 
 #ifdef TOUCH_OPTIMIZED_NAVIGATION
@@ -1084,6 +1086,7 @@ private:
     IDeviceManager* deviceManager;
 
     bool LoadDeviceManager();
+    QString TableToJSon(QSqlQuery);
 
 signals:
     void quitRequested();
@@ -1149,13 +1152,16 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 
     if(data=="StartDeviceManager")
     {
-        data=this->LoadDeviceManager()==true?"successfully setup device manager":"load DeviceManager fail";
+        data=this->LoadDeviceManager()==true?"true":"false";
 
         if(this->deviceManager)
         {
             connect(this, SIGNAL(UIDeviceManagerSignal(DataPacket)), this->deviceManager, SLOT(DeviceManagerUISlot(DataPacket)));
-            connect(this->deviceManager, SIGNAL(DeviceManagerUISignal(DataPacket)), this, SLOT(UIDeviceManagerSlot(DataPacket)));
+            connect(this->deviceManager, SIGNAL(DeviceManagerUISignal(DataPacket)), this, SLOT(UIDeviceManagerSlot(DataPacket)));                       
         }
+
+        QString initTable=CommonLib::TableToJSon(this->deviceManager->QueryRepository("select * from SensorRecord"));
+        qDebug()<<initTable;
     }
     else
     {

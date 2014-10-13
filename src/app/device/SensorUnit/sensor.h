@@ -35,7 +35,7 @@ private:
     QString id="";
     QString controlBoxId="";
     CommonVariables::SensorType sensorType=CommonVariables::NotDefine;
-    double value=std::numeric_limits<double>::min();      
+    double value=std::numeric_limits<double>::min();
 };
 
 #endif // SENSORUNIT_H
