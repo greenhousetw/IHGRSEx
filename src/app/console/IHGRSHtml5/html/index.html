@@ -1,15 +1,100 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />        
-        <style type="text/css">            
-            h1 { text-align: center; color: red; }
-            h1 + h1 { color: green; }
-            h1:last-child { color: blue; }
-            #quit { background-color: gray; color: white; font-weight: bold; display: block; text-align: right; }
-            #textCMD { width:700px; }
-        </style>
-        <script type="text/javascript">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<link rel="stylesheet" type="text/css" media="screen" href="./scripts/style-table/css-table.css" />      
+<style type="text/css">            
+    h1 { text-align: center; color: red; }
+    h1 + h1 { color: green; }
+    h1:last-child { color: blue; }
+    #quit { background-color: gray; color: white; font-weight: bold; display: block; text-align: right; }
+    #textCMD { width:700px; }
+	#container
+	{
+		margin: 0 auto;
+		width: 100%;
+		background: #fff;
+	}
+
+	#header
+	{
+		background: #ccc;
+		padding: 20px;
+	}
+
+	#header h1 { margin: 0; }
+
+	#navigation
+	{
+		float: left;
+		width: 100%;
+		background: #333;
+	}
+
+	#navigation ul
+	{
+		margin: 0;
+		padding: 0;
+	}
+
+	#navigation ul li
+	{
+		list-style-type: none;
+		display: inline;
+	}
+
+	#navigation li a
+	{
+		display: block;
+		float: left;
+		padding: 5px 10px;
+		color: #fff;
+		text-decoration: none;
+		border-right: 1px solid #fff;
+	}
+
+	#navigation li a:hover { background: #383; }
+
+	#content-container
+	{
+		float: left;
+		width: 100%;
+		background: #FFF url(layout-two-liquid-background.gif) repeat-y 68% 0;
+	}
+
+	#content
+	{
+		clear: left;
+		float: left;
+		width: 60%;
+		padding: 20px 0;
+		margin: 0 0 0 4%;
+		display: inline;
+	}
+
+	#content h2 { margin: 0; }
+
+	#aside
+	{
+		float: right;
+		width: 26%;
+		padding: 20px 0;
+		margin: 0 3% 0 0;
+		display: inline;
+	}
+
+	#aside h3 { margin: 0; }
+
+	#footer
+	{
+		clear: left;
+		background: #ccc;
+		text-align: right;
+		padding: 20px;
+		height: 1%;
+	}
+</style>
+<script type="text/javascript">
             var counter = 0;
             function toggleElement()
             {
@@ -24,54 +109,95 @@
                 document.getElementById("quit").onmousedown = function()
                 {
                     Qt.quit();
-                };               
-            }           
+                };         
+				
+				var data=jQuery.parseJSON(Qt.NotifyEngine('StartDeviceManager'));		
+				if(data.result=='true'){
+						$('#statusimg').attr('src','./imgs/on.jpg');
+				}				
+            }
+</script>
+<script src="./scripts/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="./scripts/style-table.js" type="text/javascript"></script>
+</head> 
+<body>
+<a id="quit">X</a>
 
-        </script>
-        <script src="./scripts/jquery-2.1.1.min.js" type="text/javascript"></script>
-    </head>
-    <body>
-    <div id="div1">
-        <a id="quit">X</a>
-    </div>
-     <div id="experimentationalDiv">
-        <table>
-	        <tr>
-	            <td>Control Menu</td>
-	            <td><input id="btnStart" type="button" value="Start"/></td>
-	            <td><input id="btnEnd" type="button" value="Stop"/></td>
-	        </tr>	      
-      <table>
-    </div>
-    <div id="centerDiv">
-    <table>
-        <tr>
-            <td>Test Command String</td>
-            <td><input id="textCMD" type="text" value='{"sensortype":"Temprature","id":"01", "value":"30"}'/></td>
-            <td><input id="btnSend" type="button" value="Send"/></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    <table>
-    </div><br>
-    <div id="sensorDiv">
-
-    </div>
-    <script language="javascript">
+<div id="container">
+	<div id="header">
+		<h1>
+			BOSSWin
+		</h1>
+	</div>
+	<div id="navigation">
+		<ul>			
+			<li><a href="#">TurnOff</a></li>
+			<li><a href="#">Chart</a></li>	
+			<li><a href="#">About</a></li>
+			<li>
+			    <a href="#">Command</a> 
+				<input id="textCMD" type="text" style="width:40%" value='{"sensortype":"Temprature","id":"01", "value":"30"}'></input>
+				<input id="btnSend" type="button" style="width:5%" value="Send"></input>
+		    </li>			
+		</ul>
+	</div>
+	<div id="content-container">
+		<div id="content">					
+			<h2>Sensor Status</h2>	
+			<P>
+			<div id="sensorDiv"  style="overflow:scroll;overflow-x:hidden;overflow-y:scroll;">
+			<Table>
+				<thead>
+					<tr>
+						<th>ControlBox Id</th>
+						<th>Sensor Type</th>						
+						<th>Sensor Id</th>
+						<th>Value</th>						
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot></tfoot>
+			</Table>
+			</div>
+			</P>	
+			<h2>Device Status</h2>	
+			<P>	
+			<div id="deviceDiv" style="overflow:scroll;overflow-x:hidden;overflow-y:scroll;">
+			<Table>
+				<thead>
+					<tr>
+						<th>ControlBox Id</th>
+						<th>Device Type</th>						
+						<th>Device Id</th>
+						<th>Status</th>						
+					</tr>
+				</thead>
+				<tbody></tbody>
+				<tfoot></tfoot>
+			</Table>	
+			</div>			
+			</P>							
+		</div>
+		<div id="aside">
+			<h3>				
+				<table id="tableStatus">
+					<tr><td valign="middle" align="left">BOSSWin status</td><td  valign="middle" align="left"><img id="statusimg" src="./imgs/off.jpg" width="32" height="32"/></td></tr>
+				</table
+			</h3>
+			<p>			
+			</p>
+		</div>
+		<div id="footer">				
+			Copyright © BOSSWin, 2014									
+		</div>
+	</div>
+</div>    
+<script language="javascript">
      $('#btnSend').click(function()
      {       
         //alert($('#textCMD').val());
         var sensor=JSON.parse(Qt.NotifyEngine($('#textCMD').val()));        
-     });
-
-     $('#btnStart').click(function()
-     {
-        var data=Qt.NotifyEngine('StartDeviceManager');
-        alert(data);
-     });   
+     });	 
 
     function updateSensor(da){
 
@@ -86,7 +212,6 @@
 
         $('#sensorTable tr:last').after('<tr id="' + sensor.id + '"><td>' + sensor.controlboxid + '</td><td>' + sensor.sensortype + '</td><td>' + sensor.value + '</td></tr>');
      }
-
-    </script>
-    </body>
+</script>
+</body>
 </html>

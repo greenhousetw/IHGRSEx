@@ -224,6 +224,16 @@ QObject* DeviceMangerHandler::GetTranceievers()
    return NULL;
 }
 
+QSqlQuery DeviceMangerHandler::QueryRepository(QString sqlString)
+{
+    QSqlQuery query;
+
+    QMap<QString, QString> command;
+    command.insert("UIQuery", sqlString);
+
+    return this->repository->ExecuteSQLCommand(command);
+}
+
 template <typename T>
 bool DeviceMangerHandler::DisconnectCore(QMap<QString,QMap<QString, IHardware*> > *controlBox)
 {

@@ -22,6 +22,7 @@ public:
     virtual bool LoadRepository();
     virtual QObject* GetSensors();
     virtual QObject* GetTranceievers();
+    virtual QSqlQuery QueryRepository(QString sqlString);
     virtual bool ReleaseCore();
 
     QMap<QString,QMap<QString, IHardware*> > controlBox;

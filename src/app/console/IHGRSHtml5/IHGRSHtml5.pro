@@ -1,4 +1,4 @@
-greaterThan(QT_MAJOR_VERSION, 4):QT += widgets webkitwidgets
+greaterThan(QT_MAJOR_VERSION, 4):QT += widgets webkitwidgets sql
 
 # Add more folders to ship with the application, here
 folder_01.source = html
@@ -74,6 +74,10 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariable
 
 INCLUDEPATH += $$PWD/../../sharelibs/CommonVariables
 DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/CommonLib/release/ -lCommonLib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../../app/sharelibs/CommonLib/debug/ -lCommonLib
+else:unix: LIBS += -L$$OUT_PWD/../../../app/sharelibs/CommonLib/ -lCommonLib
 
 #------------------------------------------------------------------------
 # copy needed dll
@@ -213,7 +217,11 @@ SOURCEPATH=../../../../../../src/app/Repository/SQLiter/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 
-
+# 21. copy CommonLib.dll
+FILENAME=CommonLib.dll
+SOURCEPATH=../../../app/sharelibs/CommonLib/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 }
 
 # Please do not modify the following two lines. Required for deployment.

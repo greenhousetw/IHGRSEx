@@ -29,6 +29,7 @@ public:
     virtual bool LoadRepository()=0;
     virtual QObject* GetSensors()=0;
     virtual QObject* GetTranceievers()=0;
+    virtual QSqlQuery QueryRepository(QString)=0;
 
 public slots:
 
