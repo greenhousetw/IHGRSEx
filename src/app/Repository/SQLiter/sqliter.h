@@ -17,7 +17,7 @@ public:
     virtual bool OpenDB();
     virtual bool CloseDB();
     virtual bool ChangeDataBase(QString databaseName);
-    virtual QMap<QString, QVariant> ExecuteSQLCommand(QMap<QString, QString> command);
+    virtual QSqlQuery ExecuteSQLCommand(QMap<QString, QString> command);
 
 private:
 

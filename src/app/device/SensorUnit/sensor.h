@@ -5,6 +5,7 @@
 #include <QMap>
 #include "../../device/Hardware/hardware.h"
 #include "../../sharelibs/CommonVariables/commonvariables.h"
+#include <QDateTime>
 
 class Sensor : public IHardware
 {

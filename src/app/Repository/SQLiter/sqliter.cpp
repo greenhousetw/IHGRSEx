@@ -76,13 +76,11 @@ bool SQLiter::ChangeDataBase(QString databaseName)
  * @param command
  * @return true for all commands get succesul result, otherwise returns false
  */
-QMap<QString, QVariant>  SQLiter::ExecuteSQLCommand(QMap<QString, QString> command)
+QSqlQuery SQLiter::ExecuteSQLCommand(QMap<QString, QString> command)
 {
     QString message="is fail";
 
-    QSqlQuery sqlExecutor(this->databaseInstance);
-
-    QMap<QString, QVariant> result;
+    QSqlQuery sqlExecutor(this->databaseInstance);    
 
     if(!this->databaseInstance.isOpen())
     {
@@ -105,13 +103,8 @@ QMap<QString, QVariant>  SQLiter::ExecuteSQLCommand(QMap<QString, QString> comma
        }
     }
 
-    result.insert(CommonVariables::SqlSelectSize, QVariant(sqlExecutor.size()));
-    result.insert(CommonVariables::SqlNonSelectSize, QVariant(sqlExecutor.numRowsAffected()));
-
-    qDebug()<<message;
-
     orz:
-    return result;
+    return sqlExecutor;
 }
 
 /**
