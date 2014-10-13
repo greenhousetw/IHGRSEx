@@ -106,14 +106,26 @@
             }
             window.onload = function()
             {
-                document.getElementById("quit").onmousedown = function()
-                {
+                document.getElementById("quit").onmousedown = function() {
                     Qt.quit();
-                };         
+                };         				
 				
-				var data=jQuery.parseJSON(Qt.NotifyEngine('StartDeviceManager'));		
-				if(data.result=='true'){
-						$('#statusimg').attr('src','./imgs/on.jpg');
+				var data=jQuery.parseJSON(Qt.NotifyEngine('StartDeviceManager'));					
+				
+				if(data.result=='true'){														
+					$(data.initable).each(function(i, val){						
+						var data="N/A"; if(val.Value!=""){
+						    data=val.Value;
+						}			
+						
+						$("#sensorTable > tbody").append("<tr>" +
+						"<td>" + val.ControlBoxId + "</td>" +
+						"<td valign=middle><img src=./imgs/sensortype" + val.SensorTypeId + ".jpg style=width:24px;height:24px;></td>" +
+						"<td>" + val.SensorId + "</td>" +
+						"<td>" + data + "</td>" +
+						"</tr>");
+					});					
+					$('#statusimg').attr('src','./imgs/on.jpg');									
 				}				
             }
 </script>
@@ -146,7 +158,7 @@
 			<h2>Sensor Status</h2>	
 			<P>
 			<div id="sensorDiv"  style="overflow:scroll;overflow-x:hidden;overflow-y:scroll;">
-			<Table>
+			<Table id="sensorTable">
 				<thead>
 					<tr>
 						<th>ControlBox Id</th>

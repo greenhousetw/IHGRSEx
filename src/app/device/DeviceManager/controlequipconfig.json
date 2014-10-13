@@ -1,0 +1,195 @@
+{
+	"ControlBox": [
+		{
+		  "controlboxid":"01",
+		  "controlequipment":
+		   [
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"coolingfan",
+				  "address":"03",
+				  "oncode":"301",
+				  "offcode":"302"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfan",
+				  "address":"03",
+				  "oncode":"303",
+				  "offcode":"304"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfanlv1",
+				  "address":"03",
+				  "oncode":"305",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfanlv2",
+				  "address":"03",
+				  "oncode":"306",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfanlv3",
+				  "address":"03",
+				  "oncode":"307",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfanlv4",
+				  "address":"03",
+				  "oncode":"308",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfanlv5",
+				  "address":"03",
+				  "oncode":"309",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"exhaustfan.lvoff.on",
+				  "address":"03",
+				  "oncode":"310",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"pump",
+				  "address":"05",
+				  "oncode":"351",
+				  "offcode":"352"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"internalantisun",
+				  "address":"05",
+				  "oncode":"353",
+				  "offcode":"354"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"externalantisun",
+				  "address":"05",
+				  "oncode":"355",
+				  "offcode":"356"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"warmingmahcine",
+				  "address":"05",
+				  "oncode":"357",
+				  "offcode":"358"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"dehumid",
+				  "address":"05",
+				  "oncode":"359",
+				  "offcode":"360"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"ultrasonic",
+				  "address":"05",
+				  "oncode":"361",
+				  "offcode":"362"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"lightingall",
+				  "address":"05",
+				  "oncode":"401",
+				  "offcode":"406"
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"lightingno1no2",
+				  "address":"05",
+				  "oncode":"402",
+				  "offcode":""
+				},
+				{
+				  "controlBoxid":"01",
+				  "id":"610990c3-2e80-4baa-833c-2648dcb6246f",
+				  "type":"lightingno1no2",
+				  "address":"05",
+				  "oncode":"402",
+				  "offcode":""
+				},
+		  ]
+		}
+
+    var controltable=
+    {                                                                                                      
+        "lightingno3no4.on": {
+               "address": "05",
+               "code": "403"
+           },
+        "lightingno1no3.on": {
+               "address": "05",
+               "code": "404"
+           },
+        "lightingno2no4.on": {
+               "address": "05",
+               "code": "405"
+           },       
+        "waterprovider.on": {
+               "address": "05",
+               "code": "451"
+           },
+        "waterprovider.off": {
+               "address": "05",
+               "code": "452"
+           },
+        "condensedliquid.on": {
+               "address": "05",
+               "code": "453"
+           },
+        "condensedliquid.off": {
+               "address": "05",
+               "code": "454"
+           },
+        "nutrient.on": {
+               "address": "05",
+               "code": "455"
+           },
+        "nutrient.off": {
+               "address": "05",
+               "code": "456"
+           },
+        "mixer.on": {
+               "address": "05",
+               "code": "457"
+           },
+        "mixer.off": {
+               "address": "05",
+               "code": "458"
+           },
+    };
+
+    return "C"+controltable[machinestatus].address + controltable[machinestatus].code;
+}
