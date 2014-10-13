@@ -1150,6 +1150,8 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 {
     //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
 
+    QString result="{\"result\":\"false\"}";
+
     if(data=="StartDeviceManager")
     {
         data=this->LoadDeviceManager()==true?"true":"false";
@@ -1161,7 +1163,8 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
         }
 
         QString initTable=CommonLib::TableToJSon(this->deviceManager->QueryRepository("select * from SensorRecord"));
-        qDebug()<<initTable;
+        data= "\"" + data + "\",\"initable\":" + initTable;
+        result="{\"result\":" + data + "}";
     }
     else
     {
@@ -1170,10 +1173,8 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
        emit  this->UIDeviceManagerSignal(packet);
     }
 
-    QString result="{\"result\":\"" + data + "\"}";
-
+    qDebug()<<"result=" + result;
     //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test(" + result + ")"));
-
     return result;
 }
 

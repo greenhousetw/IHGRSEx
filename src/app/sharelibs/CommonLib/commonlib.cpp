@@ -12,13 +12,15 @@ QString CommonLib::TableToJSon(QSqlQuery query)
 
     while(query.next())
     {
+         QJsonObject  recordObject;
+
          for(int x=0; x < query.record().count(); x++)
          {
-             QJsonObject  recordObject;
              recordObject.insert( query.record().fieldName(x),
                    QJsonValue::fromVariant(query.value(x)) );
-             recordsArray.push_back(recordObject);
          }
+
+         recordsArray.push_back(recordObject);
      }
 
     json.setArray(recordsArray);
