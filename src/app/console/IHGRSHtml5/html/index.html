@@ -109,8 +109,8 @@
             {
                 document.getElementById("quit").onmousedown = function() {
                     Qt.quit();
-                };         				
-				
+                };         
+
 				var data=jQuery.parseJSON(Qt.NotifyEngine('StartDeviceManager'));					
 				
 				if(data.result=='true'){														
@@ -139,33 +139,28 @@
 <div id="container">
 	<div id="header">
 		<h1>
-			BOSSWin
+			BOSSWiin
 		</h1>
 	</div>
 	<div id="navigation">
 		<ul>			
-			<li><a href="#">TurnOff</a></li>
-			<li><a href="#">Chart</a></li>	
-			<li><a href="#">About</a></li>
-			<li>
-			    <a href="#">Command</a> 
-				<input id="textCMD" type="text" style="width:40%" value='{"FakeCommand":"FakeSensorRequest","id":"01", "value":"Q01CP28AA*"}'></input>
-				<input id="btnSend" type="button" style="width:5%" value="Send"></input>
-		    </li>			
+			<li><a href="#">關閉系統</a></li>
+			<li><a href="#">圖表趨勢</a></li>	
+			<li><a href="#">系統資訊</a></li>					
 		</ul>
 	</div>
 	<div id="content-container">
 		<div id="content">					
-			<h2>Sensor Status</h2>	
+			<h2>感測器資訊</h2>	
 			<P>
 			<div id="sensorDiv"  style="overflow:scroll;overflow-x:hidden;overflow-y:scroll;">
 			<Table id="sensorTable">
 				<thead>
 					<tr>
-						<th>ControlBox Id</th>
-						<th>Sensor Type</th>						
-						<th>Sensor Id</th>
-						<th>Value</th>						
+						<th>感測箱編號</th>
+						<th>感測種類</th>						
+						<th>感測器編號</th>
+						<th>現值</th>						
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -173,16 +168,16 @@
 			</Table>
 			</div>
 			</P>	
-			<h2>Device Status</h2>	
+			<h2>外部控制器資訊</h2>	
 			<P>	
 			<div id="deviceDiv" style="overflow:scroll;overflow-x:hidden;overflow-y:scroll;">
 			<Table>
 				<thead>
 					<tr>
-						<th>ControlBox Id</th>
-						<th>Device Type</th>						
-						<th>Device Id</th>
-						<th>Status</th>						
+						<th>外部控制箱編號</th>
+						<th>外部控制器種類</th>						
+						<th>外部控制器編號</th>
+						<th>現狀</th>						
 					</tr>
 				</thead>
 				<tbody></tbody>
@@ -195,21 +190,41 @@
 			<h3>				
 				<table id="tableStatus">
 					<tr><td valign="middle" align="left">BOSSWin status</td><td  valign="middle" align="left"><img id="statusimg" src="./imgs/off.jpg" width="32" height="32"/></td></tr>
-				</table
+					<tr>
+					<td valign="middle" align="left" colspan="2" style="align:left;">
+					   	欲傳送資料<br/>
+					   <input id="textCMD" type="text" style="width:90%" value="Q01CP28AA*"></input>
+					</td>					
+					</tr>
+					<tr>
+					<td valign="middle" align="left" colspan="2" style="align:left;">									      													  
+				       <input id="btnSend" type="button" value="軟體模擬(不會傳送資料)"></input>
+					   <input id="btnHWSend" type="button" value="硬體傳接(透過硬體傳送)"></input>
+					</td>
+					</tr>
+				</table>
 			</h3>
 			<p>			
 			</p>
 		</div>
 		<div id="footer">				
-			Copyright © BOSSWin, 2014									
+			Copyright © BOSSWiin, 2014									
 		</div>
 	</div>
 </div>    
 <script language="javascript">
-     $('#btnSend').click(function()
-     {				       
-		var result=JSON.parse(Qt.NotifyEngine($('#textCMD').val()));
-     });	
+     
+	 $('#btnSend').click(function()
+     {	   
+	    var text="{\"FakeCommand\":\"FakeSensorRequest\", \"value\":\"" + $('#textCMD').val() + "\"}";							
+		var result=JSON.parse(Qt.NotifyEngine(text));
+     });   
+	 
+	 $('#btnHWSend').click(function()
+     {
+	    var text="{\"value\":\"" + $('#textCMD').val() + "\"}";		
+		var result=JSON.parse(Qt.NotifyEngine(text));
+     });   
 	 
 	 function test(message){
 		alert(message);
