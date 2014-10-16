@@ -200,18 +200,15 @@ void DeviceMangerHandler::DeviceManagerCoreSlot(DataPacket data)
 
 void DeviceMangerHandler::DeviceManagerUISlot(DataPacket data)
 {
-   QStringList contentList=data.packetData.value.split(';');
+   QVariantMap valueMap=CommonLib::ParseJSon(data.packetData.value);
 
-    foreach(QString content, contentList)
-    {
-        if(content.length()!=0)
-        {
-            DataPacket packet;
-            packet.packetData.payload=QVariant("ToTranciever");
-            packet.packetData.value=content;
-            emit this->DeviceManagerCoreSignal(packet);
-        }
-    }
+   foreach(QString key, valueMap.keys())
+   {
+     if(valueMap[key].toString()==CommonVariables::FakeSensorRequest)
+     {
+         emit this->DeviceManagerCoreSignal(data);
+     }
+   }
 }
 
 QObject* DeviceMangerHandler::GetSensors()

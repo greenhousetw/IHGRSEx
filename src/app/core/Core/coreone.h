@@ -2,6 +2,7 @@
 #define COREONE_H
 
 #include "./core.h"
+#include "../../sharelibs/CommonLib/commonlib.h"
 
 class CoreOne : public ICore
 {
@@ -22,6 +23,8 @@ public slots:
 private:
 
     IRepository* repository=NULL;
+
+    void EmitPackageToSensor(QString);
     bool ParseDataStream(QString, QString* realData);
     bool GetNotifyPackage(QString, NotifyPackage*);
 };

@@ -104,6 +104,7 @@
                 counter++;
                 setTimeout('toggleElement()', 1000);
             }
+						
             window.onload = function()
             {
                 document.getElementById("quit").onmousedown = function() {
@@ -148,7 +149,7 @@
 			<li><a href="#">About</a></li>
 			<li>
 			    <a href="#">Command</a> 
-				<input id="textCMD" type="text" style="width:40%" value='{"sensortype":"Temprature","id":"01", "value":"30"}'></input>
+				<input id="textCMD" type="text" style="width:40%" value='{"FakeCommand":"FakeSensorRequest","id":"01", "value":"Q01CP28AA*"}'></input>
 				<input id="btnSend" type="button" style="width:5%" value="Send"></input>
 		    </li>			
 		</ul>
@@ -206,24 +207,25 @@
 </div>    
 <script language="javascript">
      $('#btnSend').click(function()
-     {       
-        //alert($('#textCMD').val());
-        var sensor=JSON.parse(Qt.NotifyEngine($('#textCMD').val()));        
-     });	 
-
-    function updateSensor(da){
-
-        var sensorinfo=da.split(",");
-
-        var sensor={
-            controlboxid:sensorinfo[0],
-            id:sensorinfo[1],
-            sensortype:sensorinfo[2],
-            value:sensorinfo[3]
-        }
-
-        $('#sensorTable tr:last').after('<tr id="' + sensor.id + '"><td>' + sensor.controlboxid + '</td><td>' + sensor.sensortype + '</td><td>' + sensor.value + '</td></tr>');
-     }
+     {				       
+		var result=JSON.parse(Qt.NotifyEngine($('#textCMD').val()));
+     });	
+	 
+	 function test(message){
+		alert(message);
+	 }	 	
+	 
+	 function updateSensor(sensor){			
+	    $('#sensorTable tbody tr').each(function(){		 
+			var cbIdIndex=0;
+			var sensorIndex=2;
+			var valueIndex=3;
+			if($(this).find("td").eq(cbIdIndex).html()==sensor.controlBoxId && $(this).find("td").eq(sensorIndex).html() == sensor.id){
+				$(this).find("td").eq(valueIndex).html(sensor.value)
+			}
+		});		    
+	 }
+			
 </script>
 </body>
 </html>

@@ -22,10 +22,19 @@ void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
 {
     qDebug()<<"CoreOne gets data from DeviceManager";
 
-    if(data.packetData.payload.toString()=="ToTranciever")
+    QVariantMap map=CommonLib::ParseJSon(data.packetData.value);
+
+    foreach(QString key, map.keys())
     {
-        data.packetData.payload=CommonVariables::TRANCIEVERHARDWARESENDMESSAGE;
-        emit this->CoreTrancieverBus(data);
+      if(key=="FakeCommand" && map[key].toString()==CommonVariables::FakeSensorRequest)
+      {
+          this->EmitPackageToSensor(map["value"].toString());
+      }
+      else if(map[key].toString()==CommonVariables::TRANCIEVERHARDWARESENDMESSAGE)
+      {
+          data.packetData.payload=CommonVariables::TRANCIEVERHARDWARESENDMESSAGE;
+          emit this->CoreTrancieverBus(data);
+      }
     }
 }
 
@@ -45,6 +54,24 @@ void CoreOne::CoreTrancieverCollectBus(DataPacket data)
      }
 }
 
+void CoreOne::EmitPackageToSensor(QString inputStream)
+{
+    QString realData="";
+    QStringList inputStreamList=inputStream.split('*');
+
+    foreach(QString input, inputStreamList)
+    {
+        realData="";
+
+        if(this->ParseDataStream(input, &realData))
+        {
+          NotifyPackage notifyPacket;
+          this->GetNotifyPackage(realData, &notifyPacket);
+          emit this->CoreSensorBus(notifyPacket);
+        }
+    }
+}
+
 bool CoreOne::ParseDataStream(QString dataStream, QString* realData)
 {
     bool result=false;
@@ -55,54 +82,58 @@ bool CoreOne::ParseDataStream(QString dataStream, QString* realData)
           QStringList dataList=dataStream.split(endingChar);
           QRegExp regExpression;
 
-          for (int i = 0; i < dataList.size(); ++i)
+          if(dataStream.length() != 0)
           {
-              if(dataList[i].length()==0)
+              for (int i = 0; i < dataList.size(); ++i)
               {
-                  continue;
+                  if(dataList[i].length()==0)
+                  {
+                      continue;
+                  }
+
+                  dataList[i]=dataList[i]+endingChar;
+                  qDebug()<<"will process the string=" + dataList[i];
+
+                  QString paritySize="2";
+                  QString patternForSearchEnd="[A-Za-z|0-9]{" + paritySize + "}\\*";
+                  regExpression.setPattern(patternForSearchEnd);
+                  int pos=dataList[i].indexOf(regExpression);
+
+                  if(pos<0)
+                  {
+                      continue;
+                  }
+
+                  // Get parity string
+                  QString parityString="";
+
+                  for(int index=0;index<regExpression.matchedLength()-1;index++)
+                  {
+                      parityString=parityString+regExpression.cap(index);
+                  }
+
+                  parityString=parityString.left(parityString.length()-1);
+
+                  qDebug()<<"parity string=" + parityString;
+
+                  if(dataList[i].split(parityString).count()!=2)
+                  {
+                      qDebug()<<dataList[i] + " is not a legal string";
+                      continue;
+                  }
+
+                  *realData=dataList[i].split(parityString)[0].remove(regExpression);
               }
 
-              dataList[i]=dataList[i]+endingChar;
-              qDebug()<<"will process the string=" + dataList[i];
-
-              QString paritySize="2";
-              QString patternForSearchEnd="[A-Za-z|0-9]{" + paritySize + "}\\*";
-              regExpression.setPattern(patternForSearchEnd);
-              int pos=dataList[i].indexOf(regExpression);
-
-              if(pos<0)
-              {
-                  continue;
-              }
-
-              // Get parity string
-              QString parityString="";
-
-              for(int index=0;index<regExpression.matchedLength()-1;index++)
-              {
-                  parityString=parityString+regExpression.cap(index);
-              }
-
-              parityString=parityString.left(parityString.length()-1);
-
-              qDebug()<<"parity string=" + parityString;
-
-              if(dataList[i].split(parityString).count()!=2)
-              {
-                  qDebug()<<dataList[i] + " is not a legal string";
-                  continue;
-              }
-
-              *realData=dataList[i].split(parityString)[0].remove(regExpression);
+              result=true;
           }
-
-          result=true;
       }
       catch(std::exception& err)
       {
           qCritical()<<err.what();
       }
 
+    orz:
     return result;
 }
 

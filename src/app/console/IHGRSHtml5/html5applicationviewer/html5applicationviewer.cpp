@@ -1084,6 +1084,7 @@ private slots:
 private:
 
     IDeviceManager* deviceManager;
+    QWebPage* currentPage;
 
     bool LoadDeviceManager();
     QString TableToJSon(QSqlQuery);
@@ -1148,7 +1149,7 @@ QString Html5ApplicationViewerPrivate::adjustPath(const QString &path)
 
 QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
 {
-    //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test()"));
+    this->currentPage=this->m_webView->page();
 
     QString result="{\"result\":\"false\"}";
 
@@ -1169,21 +1170,24 @@ QString Html5ApplicationViewerPrivate::NotifyEngine(QString data)
     else
     {
        DataPacket packet;
-       packet.packetData.value=data;
+       packet.packetData.value=data;       
        emit  this->UIDeviceManagerSignal(packet);
+       result="true";
     }
 
-    qDebug()<<"result=" + result;
-    //this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("test(" + result + ")"));
+    qDebug()<<"result=" + result;    
     return result;
 }
 
 void Html5ApplicationViewerPrivate::UIDeviceManagerSlot(DataPacket packet)
 {
-    if(packet.packetData.payload.toString()==CommonVariables::SensorUISettingString)
+    if(this->currentPage != NULL)
     {
-        QVariant variant=this->m_webView->page()->mainFrame()->evaluateJavaScript(QString("updateSensor(\"" + packet.packetData.value + "\")"));
-        qDebug()<<variant.toString();
+        if(packet.packetData.payload.toString()==CommonVariables::SensorUISettingString)
+        {
+            this->currentPage->mainFrame()->evaluateJavaScript(QString("updateSensor("+ packet.packetData.value +")"));
+            qDebug()<<"UISlot:" + packet.packetData.value;
+        }
     }
 }
 

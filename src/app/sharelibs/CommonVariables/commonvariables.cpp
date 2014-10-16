@@ -9,6 +9,7 @@ const QString CommonVariables::RepositoryPrefix="RepositoryPrefix";
 const QString CommonVariables::SqlSelectSize="SqlSelectSize";
 const QString CommonVariables::SqlNonSelectSize="SqlSelectSize";
 const QString CommonVariables::SqlResult="SqlResult";
+const QString CommonVariables::FakeSensorRequest="FakeSensorRequest";
 /**
   * @brief CommonVariables::GetSensorKindFromUnitIndex
   * return sensor kind index string, like: input=CP / FP

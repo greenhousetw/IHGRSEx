@@ -42,6 +42,13 @@ else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariable
 INCLUDEPATH += $$PWD/../../core/Core
 DEPENDPATH += $$PWD/../../core/Core
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonLib/release/ -lCommonLib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonLib/debug/ -lCommonLib
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonLib/ -lCommonLib
+
+INCLUDEPATH += $$PWD/../../sharelibs/CommonLib
+DEPENDPATH += $$PWD/../../sharelibs/CommonLib
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

@@ -26,3 +26,19 @@ QString CommonLib::TableToJSon(QSqlQuery query)
     json.setArray(recordsArray);
     return json.toJson();
 }
+
+QVariantMap CommonLib::ParseJSon(QString jsonContent)
+{
+    QVariantMap map;
+
+    if(jsonContent.length()==0)
+    {
+        qWarning()<<"There is no JSON content";
+        goto orz;
+    }
+
+    map=QJsonDocument::fromJson(jsonContent.toUtf8()).object().toVariantMap();
+
+    orz:
+    return map;
+}

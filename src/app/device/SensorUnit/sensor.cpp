@@ -182,9 +182,16 @@ void Sensor::ReceieveData(NotifyPackage package)
            //update value
            this->repository->ExecuteSQLCommand(sqlCommand);
 
-           // send signal to UI layer
+           // Prepare data for json transformation
+           QMap<QString, QVariant> jsonData;
+           jsonData.insert("controlBoxId", this->controlBoxId);
+           jsonData.insert("id", this->id);
+           jsonData.insert("sensorType", this->GetDeviceType());
+           jsonData.insert("value", QString::number(this->value));
+
+           // Send data back to UI layer
            DataPacket dataPacket;           
-           dataPacket.packetData.value=this->controlBoxId + "," + this->id + "," + this->GetDeviceType() + "," + QString::number(this->value);
+           dataPacket.packetData.value=QString(QJsonDocument::fromVariant(QVariant(jsonData)).toJson());
            dataPacket.packetData.payload=QVariant(CommonVariables::SensorUISettingString);
            emit this->SendData(dataPacket);           
        }

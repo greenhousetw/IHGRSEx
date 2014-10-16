@@ -67,6 +67,8 @@ public:
     static const QString SqlNonSelectSize;
 
     static const QString SqlResult;
+
+    static const QString FakeSensorRequest;
 };
 
 #endif // COMMONVARIABLES_H

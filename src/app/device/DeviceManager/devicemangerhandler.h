@@ -3,8 +3,9 @@
 
 #include "./devicemanager.h"
 #include <QMap>
-
+#include <QVariantMap>
 #include "../../sharelibs/PluginHelper/pluginhelper.h"
+#include "../../sharelibs/CommonLib/commonlib.h"
 #include "../IDeviceFactory/idevicefactory.h"
 #include "../SensorUnit/sensor.h"
 
