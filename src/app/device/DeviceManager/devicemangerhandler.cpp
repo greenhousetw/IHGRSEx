@@ -204,10 +204,12 @@ void DeviceMangerHandler::DeviceManagerUISlot(DataPacket data)
 
    foreach(QString key, valueMap.keys())
    {
-     if(valueMap[key].toString()==CommonVariables::FakeSensorRequest)
+     QString keyContent=valueMap[key].toString();
+
+     if(keyContent==CommonVariables::FakeSensorRequest || keyContent==CommonVariables::HWRequest)
      {
-         emit this->DeviceManagerCoreSignal(data);
-     }
+         emit this->DeviceManagerCoreSignal(data);        
+     }    
    }
 }
 

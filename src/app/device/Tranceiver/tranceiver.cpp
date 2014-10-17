@@ -1,10 +1,22 @@
 #include "tranceiver.h"
 
-
+/*!
+ * @brief  constructor of Tranceiver
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 Tranceiver::Tranceiver()
 {   
 }
 
+/*!
+ * @brief  purpose of this method is to establish connection between Tranceiver and core
+ * @param  none NULL ICore instance
+ * @return use boolean value to indicate connection establishment is successful or not
+ * @retval true or false
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 bool Tranceiver::CoreConnector(QObject& coreIn)
 {
     bool result=false;
@@ -19,6 +31,14 @@ bool Tranceiver::CoreConnector(QObject& coreIn)
     return result;
 }
 
+/*!
+ * @brief  purpose of this method is to do disconnect between Tranceiver and core
+ * @param  none NULL ICore instance
+ * @return use boolean value to indicate connection establishment is successful or not
+ * @retval true or false
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
 {
     bool result=false;
@@ -32,8 +52,15 @@ bool Tranceiver::DiconnectCoreConnector(QObject& coreIn)
     return result;
 }
 
+/*!
+ * @brief  this is a slot, which parses DataPacket incoming data to get right action
+ * @param  none NULL DataPacket instance
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 void Tranceiver::ReceieveData(DataPacket data)
-{        
+{
+    // close serial port
     if(data.packetData.payload.toString()==CommonVariables::IHGRSSTOPWORKING)
     {
         if(this->serialPort)
@@ -43,21 +70,34 @@ void Tranceiver::ReceieveData(DataPacket data)
         }
     }
     else if(data.packetData.payload.toString()==CommonVariables::TRANCIEVERHARDWARESENDMESSAGE)
-    {
-        //this->SendSerialDataToHardware(data.packetData.value);
-        this->ReceiveDataFromHardware();
+    {        
+       this->SendSerialDataToHardware(data.packetData.value);
     }
     else if(data.packetData.payload.toString()==CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE)
     {
-        this->SendSerialDataToHardware(data.packetData.value);
+       this->ReceiveDataFromHardware();
     }
 }
 
+/*!
+ * @brief  this is a slot, which parses NotifyPackage incoming data to get right action
+ * @param  none NULL NotifyPackage instance
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 void Tranceiver::ReceieveData(NotifyPackage data)
 {
     qDebug()<<"will not use this method";
 }
 
+/*!
+ * @brief  to initialize Tranceiver internal data
+ * @param  this collection stores values, which has id, controlBoxid
+ * @return use boolean value to indicate initialization result
+ * @retval true or false
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
 {
     bool result=false;
@@ -118,16 +158,37 @@ bool Tranceiver::SetRepository(IRepository* repository)
    return true;
 }
 
+/*!
+ * @brief  to get current Tranceiver value
+ * @return return value
+ * @retval QString type
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 QString Tranceiver::GetDeviceValue()
 {
   return QString::number(this->value);
 }
 
+/*!
+ * @brief  to get id of this Tranceiver
+ * @return return id of this Tranceiver
+ * @retval QString type
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 QString Tranceiver::GetDeviceID()
 {
   return this->id;
 }
 
+/*!
+ * @brief  to get Tranceiver type of this sensor
+ * @return return sensor type
+ * @retval QString type
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
+ */
 QString Tranceiver::GetDeviceType()
 {
   QString deviceType="";
@@ -181,7 +242,7 @@ bool Tranceiver::SendSerialDataToHardware(QString data)
         goto orz;
     }
 
-    qDebug()<< "Data:" + data +" has been sent";
+    qDebug()<< "QSerialPort has sent data:" + data;
 
     result=true;
 
@@ -197,14 +258,7 @@ bool Tranceiver::ReceiveDataFromHardware()
 
     const int checkReadLenght=-1;
 
-    char buff[charSize];
-
-    /*
-    DataPacket packet;
-    packet.packetData.value="Q01CP28H77A2990BB*";
-
-    emit SendData(packet);
-    */
+    char buff[charSize];   
 
     int numBytes = this->serialPort->bytesAvailable();
 
@@ -239,7 +293,6 @@ bool Tranceiver::ReceiveDataFromHardware()
         messageBox.clear();
         qbyteArray.clear();
     }
-
 
     result=true;
 

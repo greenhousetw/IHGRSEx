@@ -69,6 +69,8 @@ public:
     static const QString SqlResult;
 
     static const QString FakeSensorRequest;
+
+    static const QString HWRequest;
 };
 
 #endif // COMMONVARIABLES_H

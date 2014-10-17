@@ -214,32 +214,28 @@
 </div>    
 <script language="javascript">
      
-	 $('#btnSend').click(function()
-     {	   
-	    var text="{\"FakeCommand\":\"FakeSensorRequest\", \"value\":\"" + $('#textCMD').val() + "\"}";							
-		var result=JSON.parse(Qt.NotifyEngine(text));
-     });   
+$('#btnSend').click(function()
+{
+   var text="{\"Command\":\"FakeSensorRequest\", \"value\":\"" + $('#textCMD').val() + "\"}";
+   var result=JSON.parse(Qt.NotifyEngine(text));
+});
 	 
-	 $('#btnHWSend').click(function()
-     {
-	    var text="{\"value\":\"" + $('#textCMD').val() + "\"}";		
-		var result=JSON.parse(Qt.NotifyEngine(text));
-     });   
-	 
-	 function test(message){
-		alert(message);
-	 }	 	
-	 
-	 function updateSensor(sensor){			
-	    $('#sensorTable tbody tr').each(function(){		 
-			var cbIdIndex=0;
-			var sensorIndex=2;
-			var valueIndex=3;
-			if($(this).find("td").eq(cbIdIndex).html()==sensor.controlBoxId && $(this).find("td").eq(sensorIndex).html() == sensor.id){
-				$(this).find("td").eq(valueIndex).html(sensor.value)
-			}
-		});		    
-	 }
+$('#btnHWSend').click(function()
+{
+    var text="{\"Command\":\"HWRequest\", \"value\":\"" + $('#textCMD').val() + "\"}";
+    var result=JSON.parse(Qt.NotifyEngine(text));
+});
+	 	
+function updateSensor(sensor){
+    $('#sensorTable tbody tr').each(function(){
+                var cbIdIndex=0;
+                var sensorIndex=2;
+                var valueIndex=3;
+                if($(this).find("td").eq(cbIdIndex).html()==sensor.controlBoxId && $(this).find("td").eq(sensorIndex).html() == sensor.id){
+                        $(this).find("td").eq(valueIndex).html(sensor.value)
+                }
+    });
+}
 			
 </script>
 </body>
