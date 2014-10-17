@@ -132,14 +132,16 @@ bool Tranceiver::SetHardware(QMap<QString, QVariant> config)
         this->serialPort->setParity(PAR_NONE);
         this->serialPort->setDataBits(DATA_8);
         this->serialPort->setStopBits(STOP_1);
+        this->serialPort->setTimeout(1000);
 
         int portopeningSuccessful=1;
 
         if(this->serialPort->open(QIODevice::ReadWrite|QIODevice::Unbuffered) == portopeningSuccessful)
         {
             qDebug()<<"Open com port=" + this->jsonObject["Port"].toString() + " is successful";
-            //this->monitorThread=new SerialPortMonitorThread(this);
-            //this->monitorThread->start();
+            this->monitorThread=new SerialPortMonitorThread;
+            connect(this->monitorThread, SIGNAL(TriggerReceieveMethod()), this, SLOT(GetSeiralReceieveData()));
+            this->monitorThread->start();
         }
         else
         {
@@ -232,7 +234,7 @@ bool Tranceiver::SendSerialDataToHardware(QString data)
 {
     bool result=false;
 
-    int returnLength = -1;
+    int returnLength = -1;        
 
     int realReturnLength=this->serialPort->write(data.toLatin1(),data.toLatin1().length());
 
@@ -242,12 +244,18 @@ bool Tranceiver::SendSerialDataToHardware(QString data)
         goto orz;
     }
 
+
     qDebug()<< "QSerialPort has sent data:" + data;
 
     result=true;
 
     orz:
     return result;
+}
+
+bool Tranceiver::GetSeiralReceieveData()
+{
+    this->ReceiveDataFromHardware();
 }
 
 bool Tranceiver::ReceiveDataFromHardware()
@@ -260,7 +268,7 @@ bool Tranceiver::ReceiveDataFromHardware()
 
     char buff[charSize];   
 
-    int numBytes = this->serialPort->bytesAvailable();
+    int numBytes = this->serialPort->sizeSukon();
 
     if(numBytes > 0)
     {       
@@ -282,7 +290,7 @@ bool Tranceiver::ReceiveDataFromHardware()
           buff[0] = '\0';
         }
 
-        QString messageBox = QString::fromLatin1(buff);
+        QString messageBox = QString::fromLocal8Bit(buff);
         QByteArray qbyteArray=messageBox.toLatin1();
 
         DataPacket packet;
@@ -299,25 +307,18 @@ bool Tranceiver::ReceiveDataFromHardware()
     return result;
 }
 
-SerialPortMonitorThread::SerialPortMonitorThread(Tranceiver * tranciever):
-    QThread()
-{
-    this->tranciever=tranciever;
-    this->tranciever->gterminate = false;
-}
+
 void SerialPortMonitorThread::stop()
 {
-    this->tranciever->gterminate = true;
 }
-void SerialPortMonitorThread::run()
-{
-    this->tranciever->gterminate = false;
 
+void SerialPortMonitorThread::run()
+{    
     int seconds=1000;
 
-    while(!this->tranciever->gterminate)
+    while(1)
     {
        QThread::msleep(seconds);
-       this->tranciever->ReceiveDataFromHardware();
+       emit this->TriggerReceieveMethod();
     }
 }

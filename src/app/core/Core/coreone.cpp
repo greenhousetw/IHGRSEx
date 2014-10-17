@@ -33,6 +33,7 @@ void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
       else if(map[key].toString()==CommonVariables::HWRequest)
       {
           data.packetData.payload=CommonVariables::TRANCIEVERHARDWARESENDMESSAGE;
+          data.packetData.value=map["value"].toString();
           emit this->CoreTrancieverBus(data);
       }
     }

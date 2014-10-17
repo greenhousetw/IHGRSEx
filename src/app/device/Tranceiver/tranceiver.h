@@ -12,6 +12,7 @@ class SerialPortMonitorThread;
 
 class Tranceiver : public IHardware
 {
+    Q_OBJECT
 
 public:
 
@@ -21,6 +22,7 @@ public slots:
 
     virtual void ReceieveData(DataPacket data);
     virtual void ReceieveData(NotifyPackage data);
+    bool GetSeiralReceieveData();
 
 public:
 
@@ -51,12 +53,15 @@ private:
  */
 class SerialPortMonitorThread: public QThread
 {
-    Tranceiver* tranciever;
+    Q_OBJECT
 
     public:
 
-        SerialPortMonitorThread(Tranceiver* tranciever);
         void stop();
+
+    signals:
+
+        bool TriggerReceieveMethod();
 
     protected:
         //overriden
