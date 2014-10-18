@@ -26,7 +26,7 @@ void CoreOne::CoreDeviceManagerCollectionBus(DataPacket data)
 
     foreach(QString key, map.keys())
     {
-      if(key=="FakeCommand" && map[key].toString()==CommonVariables::FakeSensorRequest)
+      if(map[key].toString()==CommonVariables::FakeSensorRequest)
       {
           this->EmitPackageToSensor(map["value"].toString());
       }

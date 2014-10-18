@@ -56,6 +56,7 @@ void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QS
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+
     qInstallMessageHandler(myMessageOutput);
     applicationPath=QCoreApplication::applicationDirPath();
     Html5ApplicationViewer viewer;
