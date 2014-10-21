@@ -47,16 +47,16 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
          QString loaderName=algorithmList[0];
          QString algorithmName=algorithmList[1];
 
-         if(loaderName.length() > 0 && loaderName!="None")
+         if(loaderName!="None")
          {
              if(PluginHelper::GetPlugIn(this->algorithmLoader, loaderName))
              {
-                 this->algorithmLoaderFactory= qobject_cast<IAlgorithmFactory *>(this->algorithmLoader.instance());
+                 this->algorithmLoaderFactory = qobject_cast<IAlgorithmFactory *>(this->algorithmLoader.instance());
              }
 
              if(this->algorithmLoaderFactory!=NULL && !this->algorithmLoaderFactory->GetIAlgorithm(algorithmName, this->algorithm))
              {
-                 qCritical()<<"algorithm load fail";
+                 qCritical()<<"algorithm load successfully";
                  goto orz;
              }
          }

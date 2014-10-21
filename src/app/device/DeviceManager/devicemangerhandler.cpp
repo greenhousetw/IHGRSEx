@@ -312,6 +312,7 @@ bool DeviceMangerHandler::SetupDevices(IDeviceFactory* factory, QMap<QString,QMa
 
                     if(innerDeviceMap.contains(algorithmString))
                     {
+                        qDebug()<<"algorithm string=" + innerDeviceMap[algorithmString].toString();
                         info.insert(algorithmString, QVariant(innerDeviceMap[algorithmString].toString()));
                     }
 
