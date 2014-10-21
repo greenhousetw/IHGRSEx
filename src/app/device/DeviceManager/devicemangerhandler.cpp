@@ -31,7 +31,7 @@ bool DeviceMangerHandler::SetCore()
     {
       qCritical()<<"system cannot load:" + this->jsonObject["tranceiverloader"].toString();
       goto orz;
-    }
+    }      
 
     // Create repository, sensor and tranciever factory
     this->repositoryFactory= qobject_cast<IRepositoryManager *>(this->repositoryLoader.instance());
@@ -167,6 +167,11 @@ bool DeviceMangerHandler::LoadTranceievers()
     return result;
 }
 
+bool DeviceMangerHandler::LoadAlgorithmLoader()
+{
+   return false;
+}
+
 bool DeviceMangerHandler::LoadConfig(QString fileName)
 {
     bool result=false;
@@ -299,10 +304,16 @@ bool DeviceMangerHandler::SetupDevices(IDeviceFactory* factory, QMap<QString,QMa
                     QString id="id";
                     QString type="type";
                     QString controlboxId="controlBoxid";
+                    QString algorithmString="algorithm";
 
                     info.insert(id, QVariant(innerDeviceMap[id].toString()));
                     info.insert(type, QVariant(innerDeviceMap[type].toString()));
                     info.insert(controlboxId, QVariant(innerDeviceMap[controlboxId].toString()));
+
+                    if(innerDeviceMap.contains(algorithmString))
+                    {
+                        info.insert(algorithmString, QVariant(innerDeviceMap[algorithmString].toString()));
+                    }
 
                     T* deviceObject = (T*) factory->GetDevice(info);
                     deviceObject->CoreConnector(*this->core);

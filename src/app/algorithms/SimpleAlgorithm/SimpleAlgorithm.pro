@@ -52,7 +52,8 @@ DEPENDPATH += $$PWD/../../sharelibs/CommonVariables
 
 OTHER_FILES += \
     Algorithm.Simple.Setup.xml \
-    tomato.js
+    tomato.js \
+    info.json
 
 
 BUILDTARGET=debug

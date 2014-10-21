@@ -1,5 +1,5 @@
 /********************************************************************************************
-Copyright (C) %YEAR% by IHGRS
+Copyright (C) %YEAR% by Yu-Hua Tseng
 
 simplealgorithm.cpp
 Purpose:
@@ -12,127 +12,157 @@ and real jugment source is from xxx.js, which based on what profile you use.
 ********************************************************************************************/
 #include "simplealgorithm.h"
 
+/**
+ * @brief Constructor of SimpleAlgorithm
+ */
 SimpleAlgorithm::SimpleAlgorithm()
-{
-    this->scriptIDKeyword="id";
-
-    this->isChangeDevice=false;
-
-    QMetaObject metaObject = CommonVariables::staticMetaObject;
-    QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
-
-     for (int i=0; i < m.keyCount(); ++i)
-     {
-         this->sensorTypeList.append(QString(m.valueToKey(i)));
-     }         
-
-     this->section="";
+{      
 }
 
 /**
- * @brief SimpleAlgorithm::~SimpleAlgorithm
+ * @brief Deconstructor of SimpleAlgorithm
  */
 SimpleAlgorithm::~SimpleAlgorithm()
 {    
 }
 
-/**
- * @brief SimpleAlgorithm::PreSetup
- * @return true for setup successfully and false for fail
+/*!
+ * @brief  to initialize algorithm
+ * @return use boolean value to indicate initialization result
+ * @retval true or false
+ * @author Yu-Hua Tseng
+ * @date 2014/10/21
  */
-bool SimpleAlgorithm::PreSetup()
+bool SimpleAlgorithm::PreSetup(QMap<QString, QVariant> initData)
 {
     bool result=false;
 
     QString algorithmSetupFile="./Algorithm.Simple.Setup.xml";
 
-    if(this->xmlDoc==NULL)
+    int retryTimes=5;
+
+    if(initData.size()==0 || initData[CommonVariables::SensorTypeString].toString().length()==0)
     {
-        this->xmlDoc=XmlHelper::LoadXMLDocument(algorithmSetupFile);
-        result=true;
+        qCritical()<<"orz! There is no any data for initialization";
+        goto orz;
     }
 
-    qDebug()<<"❤ " + algorithmSetupFile + " has been loaded!";
+    this->sensorType=initData[CommonVariables::SensorTypeString].toString();
+
+    qDebug()<<"This algorithm is for sensor type=" + this->sensorType;
+
+    while(retryTimes > 0)
+    {
+        this->xmlDoc=XmlHelper::LoadXMLDocument(algorithmSetupFile);
+
+        if(this->xmlDoc)
+        {
+            qDebug()<<"❤ " + algorithmSetupFile + " has been loaded!";
+            result=true;
+            break;
+        }
+
+        retryTimes--;
+    }
+
+    if(!result)
+    {
+        qCritical()<<":( " + algorithmSetupFile + " fail load algorithm setting file:" + algorithmSetupFile;
+        goto orz;
+    }
+
+    orz:
     return result;
 }
 
 /**
- * @brief SimpleAlgorithm::ExecuteOperation
+ * @brief SimpleAlgorithm::OperateDataReceiever
  * @param data
- * @return true for successful execution and false for fail
+ */
+void SimpleAlgorithm::AlgorithmSlot(QMap<QString, QVariant> data)
+{
+    foreach(QString key, data.keys())
+    {
+        if(key==CommonVariables::SensorIncomingValue)
+        {
+
+        }
+    }
+}
+
+/*!
+ * @brief  to start algorithm execution
+ * @return use boolean value to indicate initialization result
+ * @retval true or false
+ * @author Yu-Hua Tseng
+ * @date 2014/10/21
  */
 bool SimpleAlgorithm::ExecuteOperation()
 {  
     bool result=false;
-    QString id=this->scriptIDKeyword;
-    QString xmlPath="//config/portfolios/set[@id=\""+id+"\"]/@script/string()";
-    QString scriptFilePath="";
-    QString data="";
-    qDebug()<<"Use Algorithm.Simple.Setup.xml's xpath=" + xmlPath + " to locate execution script";
 
-    this->PreSetup();
+    QString xPathForProfolio[]={"//config/portfolios/@useSet/string()","//config/portfolios/set[@id=\""+this->currentSetOfProfolio+"\"]/@script/string()"};
+    QString useSet="", scriptFilePath="", data="", strScript="";
 
-    if(!this->SetSensorType(&data))
+    // To get current using set
+    if(XmlHelper::GetAttributeValueInType<QString>(xmlDoc, xPathForProfolio[0],&useSet) && (useSet.length()!=0))
     {
-        qCritical()<<"SimpleAlgorithm cannot get sensor type";
-        goto bye;
-    }
-
-    if(!this->CheckRequirements())
-    {       
-        qCritical()<< "orz! Needed data cannot be setup";
-        goto bye;
-    }
-
-    if(!XmlHelper::GetAttributeValueInType<QString>(xmlDoc, xmlPath,&scriptFilePath))
-    {        
-        qCritical()<<"too bad, get script file fail";
-    }
-    else
-    {
-        QFile scriptFile(scriptFilePath);
-
-        if (!scriptFile.open(QIODevice::ReadOnly))
+        // to get real algorithm java script  of current using set
+        if(XmlHelper::GetAttributeValueInType<QString>(xmlDoc, xPathForProfolio[1],&scriptFilePath) && (scriptFilePath.length()!=0))
         {
-            qCritical()<<"failed to open file=" + scriptFilePath;
+            qDebug()<<"Use Algorithm.Simple.Setup.xml's xpath=" + scriptFilePath + " to locate execution script";
+
+            QFile scriptFile(scriptFilePath);
+
+            // open xxx.js, which xxx is real algorithm name
+            if (scriptFile.open(QIODevice::ReadOnly))
+            {
+                try
+                {
+
+                  QTextStream stream(&scriptFile);
+                  strScript = stream.readAll();
+                  scriptFile.close();
+
+                  QScriptEngine jsEngine;
+                  QScriptValue entireJavaScript = jsEngine.evaluate(strScript);
+                  QScriptValue function=jsEngine.globalObject().property(this->sensorType);
+                  QScriptValueList args;
+                  args << QScriptValue(data);
+                  QString scriptReturnValue=function.call(QScriptValue(), args).toString();
+                  qDebug()<<"Script returns value=" + scriptReturnValue;
+                  result=this->ProcessScriptData(scriptReturnValue);
+                }
+                catch(const QString& msg)
+                {
+                    qCritical()<< "orz!" + msg;
+                }
+            }
+            else
+            {
+                qCritical()<<"failed to open file=" + scriptFilePath;
+            }
         }
         else
         {
-            try
-            {
-              QTextStream stream(&scriptFile);
-              QString strScript;
-              strScript = stream.readAll();
-              scriptFile.close();
-              qDebug()<<"Use id of set = " + this->dataStore[scriptIDKeyword].toString() + " sensor type=" + this->dataStore["sensortype"].toString();
-
-              QScriptEngine jsEngine;
-              QScriptValue entireJavaScript = jsEngine.evaluate(strScript);
-              QScriptValue function=jsEngine.globalObject().property(this->dataStore["sensortype"].toString());
-              QScriptValueList args;
-              args << QScriptValue(data);
-              QString scriptReturnValue=function.call(QScriptValue(), args).toString();
-              qDebug()<<"Script returns value=" + scriptReturnValue;
-              result=this->ProcessScriptData(scriptReturnValue);
-            }
-            catch(const QString& msg)
-            {
-                qCritical()<< "orz!" + msg;
-            }
+            qCritical()<<"orz! get script file fail";
         }
     }
+    else
+    {
+        qCritical()<<"orz! get current using set fail";
+    }
 
-    this->dataStore.clear();
-    this->dataStore.insert(this->scriptIDKeyword, id);
-
-    bye:
     return result;
 }
 
-/**
- * @brief ProcessScriptData
- * @param value
- * @return
+/*!
+ * @brief  to initialize sensor internal data
+ * @param  this collection stores values, which has id, controlBoxid
+ * @return use boolean value to indicate initialization result
+ * @retval true or false
+ * @author Yu-Hua Tseng
+ * @date 2014/07/01
  */
 bool SimpleAlgorithm::ProcessScriptData(QString value)
 {
@@ -159,29 +189,23 @@ bool SimpleAlgorithm::ProcessScriptData(QString value)
 
                 if(passMinutes==minuteDiff)
                 {
-                    if(!this->isChangeDevice)
-                    {
-                        qDebug() << "---------------------------change device's status---------------------------";
-                        QList<QString> machinestatus;
-                        foreach (QVariant device, result["equipments"].toList())
-                        {
-                            QMap<QString, QVariant> deviceNode=device.toMap();
-                            qDebug()<<"Device=" + deviceNode.keys()[0]+  ", status=" + deviceNode[deviceNode.keys()[0]].toString();
-                            machinestatus.append(deviceNode[deviceNode.keys()[0]].toString());
-                        }
-                        emit this->EmitDeviceControlCode(machinestatus);
-                        qDebug() << "---------------------------------------------------------------------------";
-                        this->isChangeDevice=true;
-                    }
-
-                    this->lastTime=QDateTime::currentDateTime();
+                  qDebug() << "---------------------------change device's status---------------------------";
+                  QList<QString> machinestatus;
+                  foreach (QVariant device, result["equipments"].toList())
+                  {
+                      QMap<QString, QVariant> deviceNode=device.toMap();
+                      qDebug()<<"Device=" + deviceNode.keys()[0]+  ", status=" + deviceNode[deviceNode.keys()[0]].toString();
+                      machinestatus.append(deviceNode[deviceNode.keys()[0]].toString());
+                  }
+                  emit this->EmitDeviceControlCode(machinestatus);
+                  qDebug() << "---------------------------------------------------------------------------";
+                  this->lastTime=QDateTime::currentDateTime();
                 }
             }
             else
             {
                 this->lastTime=QDateTime::currentDateTime();
-                this->section=result["section"].toString();
-                this->isChangeDevice=false;
+                this->section=result["section"].toString();                
             }
 
             /*QString format = "ddd,dd MMM yyyy HH:mm:ss";
@@ -207,95 +231,13 @@ bool SimpleAlgorithm::StopExecution()
 {
    bool result=false;
 
-   delete this->xmlDoc;
-   this->xmlDoc=NULL;
+   if(this->xmlDoc)
+   {
+       delete this->xmlDoc;
+       this->xmlDoc=NULL;
+   }
+
+   result=true;
 
    return result;
-}
-
-/**
- * @brief SimpleAlgorithm::OperateDataReceiever
- * @param data
- */
-void SimpleAlgorithm::OperateDataReceiever(QVariant data)
-{
-    this->scriptIDKeyword=data.toString();
-}
-/**
- * @brief SimpleAlgorithm::SetSensorType
- * Get current sensor type, for trigger rleated algorithm
- */
-bool SimpleAlgorithm::SetSensorType(QString* data)
-{
-    bool result=false;
-
-    foreach(QString key, this->dataStore.keys())
-    {
-        bool isSensor=false;
-
-        foreach(QString sensor, this->sensorTypeList)
-        {
-            if(key==sensor)
-            {
-                this->dataStore.insert("sensortype", QVariant(sensor));
-                *data=this->dataStore[key].toString();
-                qDebug()<< sensor + "'s value=" + this->dataStore[key].toString();
-                isSensor=true;
-                break;
-            }
-        }
-
-        if(isSensor)
-        {
-            result=true;
-            break;
-        }      
-    }
-
-    if(!result)
-    {
-       qDebug()<< "Unknown sensor type";
-    }
-
-    return result;
-}
-
-/**
- * @brief SimpleAlgorithm::CheckRequirements
- * @return true for all pre requirements setup successfully and false for fail
- */
-bool SimpleAlgorithm::CheckRequirements()
-{
-    bool result=false;
-
-    QString data=this->scriptIDKeyword;
-
-    if(this->IsNullOrEmpty(data))
-    {
-        qCritical()<<"orz, It has no script id";
-        goto orz;
-    }
-
-    result=true;
-
-    orz:
-    return result;
-}
-
-/**
- * @brief SimpleAlgorithm::IsNullOrEmpty
- * @param key, which is name for data store dictionary
- * @return true for is null or empty, false for none null or empty
- */
-bool SimpleAlgorithm::IsNullOrEmpty(QString key)
-{
-    bool result=false;   
-
-    if(NULL==key || 0==key.length())
-    {
-        qCritical()<<"orz! Requirement data:" + key + " is null or empty";
-        result=true;
-    }
-
-    return result;
 }

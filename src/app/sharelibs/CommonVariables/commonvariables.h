@@ -58,6 +58,10 @@ public:
 
     static const QString SensorUISettingString;
 
+    static const QString SensorIncomingValue;
+
+    static const QString SensorTypeString;
+
     static const QString RepositoryConfigfilePath;
 
     static const QString RepositoryPrefix;

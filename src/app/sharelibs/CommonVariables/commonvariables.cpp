@@ -4,6 +4,7 @@ const QString CommonVariables::IHGRSSTOPWORKING="IHGRSSTOPWORKING";
 const QString CommonVariables::TRANCIEVERHARDWARESENDMESSAGE="TRANCIEVERHARDWARESENDMESSAGE";
 const QString CommonVariables::TRANCIEVERHARDWARERECEIEVEMESSAGE="TRANCIEVERHARDWARERECEIEVEMESSAGE";
 const QString CommonVariables::SensorUISettingString="SensorUISetting";
+const QString CommonVariables::SensorTypeString="SensorType";
 const QString CommonVariables::RepositoryConfigfilePath="RepositoryConfig.json";
 const QString CommonVariables::RepositoryPrefix="RepositoryPrefix";
 const QString CommonVariables::SqlSelectSize="SqlSelectSize";
@@ -11,6 +12,7 @@ const QString CommonVariables::SqlNonSelectSize="SqlSelectSize";
 const QString CommonVariables::SqlResult="SqlResult";
 const QString CommonVariables::FakeSensorRequest="FakeSensorRequest";
 const QString CommonVariables::HWRequest="HWRequest";
+const QString CommonVariables::SensorIncomingValue="SensorIncomingValue";
 /**
   * @brief CommonVariables::GetSensorKindFromUnitIndex
   * return sensor kind index string, like: input=CP / FP
@@ -57,21 +59,17 @@ const QString CommonVariables::HWRequest="HWRequest";
      return sensorKind;
  }
 
-
-
  /**
    * @brief CommonVariables::GetSensorKindFromUnitIndex
-   * return sensor kind index string, like: input=CP / FP
-   * you will get temprature, if input=H, you will get humid
+   * return Tranciever type
+   * you will get SerialPort or else value which defined in TranceiverType enum
    * @param unitIndex
    * @return tranciever kind string
    */
  CommonVariables::TranceiverType CommonVariables::GetTrancieverByIndex(QString unitIndex)
  {
      CommonVariables::TranceiverType trancieverKind=CommonVariables::NotDefineDevice;
-
      CommonVariables::TranceiverType serialPort=CommonVariables::SerialPort;
-
      QHash<QString,  CommonVariables::TranceiverType>  hash;
      hash.insert("SerialPort", serialPort);
 

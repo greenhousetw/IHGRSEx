@@ -5,6 +5,9 @@
 #include <QMap>
 #include "../../device/Hardware/hardware.h"
 #include "../../sharelibs/CommonVariables/commonvariables.h"
+#include "../../algorithms/IAlgorithm/ialgorithm.h"
+#include "../../algorithms/IAlgorithmFactory/ialgorithmfactory.h"
+#include "../../algorithms/AlgorithmLoader/algorithmloader.h"
 #include <QDateTime>
 
 class Sensor : public IHardware
@@ -31,6 +34,9 @@ public:
 
 private:
 
+    QPluginLoader algorithmLoader;
+    IAlgorithmFactory* algorithmLoaderFactory=NULL;
+    IAlgorithm* algorithm=NULL;
     IRepository* repository=NULL;
     QString id="";
     QString controlBoxId="";

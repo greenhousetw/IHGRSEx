@@ -16,7 +16,7 @@ the value of id cannot be duplicated~
 ********************************************************************************************/
 -->
 <config name="SimpleSection">
-<portfolios>
+<portfolios useSet="1">
 <set name="Tomato" id="1" script="tomato.js"/>
 <set name="Orange" id="2" script="orange.js"/>
 <set name="Guava " id="3" script="Guava.js"/>

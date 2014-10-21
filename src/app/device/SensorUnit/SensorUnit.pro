@@ -41,9 +41,30 @@ win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/Common
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/debug/ -lCommonVariables
 else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lCommonVariables
 
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/release/ -lPluginHelper
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/debug/ -lPluginHelper
+else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/PluginHelper/ -lPluginHelper
+
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/release/ -lNotifyPackage
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../sharelibs/NotifyPackage/debug/ -lNotifyPackage
 else:unix: LIBS += -L$$OUT_PWD/../../sharelibs/CommonVariables/ -lNotifyPackage
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/AlgorithmLoader/release/ -lAlgorithmLoader
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/AlgorithmLoader/debug/ -lAlgorithmLoader
+else:unix: LIBS += -L$$OUT_PWD/../../algorithms/AlgorithmLoader/ -lAlgorithmLoader
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithmFactory/release/ -lIAlgorithmFactory
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithmFactory/debug/ -lIAlgorithmFactory
+else:unix: LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithmFactory/ -lIAlgorithmFactory
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithm/release/ -lIAlgorithm
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithm/debug/ -lIAlgorithm
+else:unix: LIBS += -L$$OUT_PWD/../../algorithms/IAlgorithm/ -lIAlgorithm
+
+INCLUDEPATH += $$PWD/../../algorithms/AlgorithmLoader
+DEPENDPATH += $$PWD/../../algorithms/AlgorithmLoader
+
+
 
 unix {
     target.path = /usr/lib

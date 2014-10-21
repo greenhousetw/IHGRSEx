@@ -6,7 +6,7 @@
  * @date 2014/07/01
  */
 Sensor::Sensor()
-{
+{    
 }
 
 /*!
@@ -28,6 +28,7 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
     QMetaEnum m=metaObject.enumerator(metaObject.indexOfEnumerator("SensorType"));
 
     QString type="type";
+    QString algorithmString="algorithm";
 
      for (int i=0; i < m.keyCount(); ++i)
      {
@@ -37,6 +38,26 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
             qDebug()<<"This device type=" + config[type].toString() + ", its index=" + QString::number(i);
             break;
          }
+     }
+
+     // get algorithm loader
+     if(config.contains(algorithmString))
+     {
+         QStringList algorithmList=config[algorithmString].toString().split(';');
+         QString loaderName=algorithmList[0];
+         QString algorithmName=algorithmList[1];
+
+         if(PluginHelper::GetPlugIn(this->algorithmLoader, loaderName))
+         {
+             this->algorithmLoaderFactory= qobject_cast<IAlgorithmFactory *>(algloader.instance());
+         }
+
+         if(!this->algorithmLoaderFactory->GetIAlgorithm(algorithmName, this->algorithm))
+         {
+             goto orz;
+         }                 
+
+         this->algorithmLoader.unload();
      }
 
      if(this->repository)
@@ -70,6 +91,7 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
 
      result=true;
 
+     orz:
      return result;
 }
 

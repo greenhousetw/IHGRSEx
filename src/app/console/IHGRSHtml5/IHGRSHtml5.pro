@@ -222,6 +222,34 @@ FILENAME=CommonLib.dll
 SOURCEPATH=../../../app/sharelibs/CommonLib/$$BUILDTARGET/$$FILENAME
 DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
 QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+
+# 22. copy IAlgorithm.dll
+FILENAME=IAlgorithm.dll
+SOURCEPATH=../../../app/algorithms/IAlgorithm/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+
+# 23. copy IAlgorithmFactory.dll
+FILENAME=IAlgorithmFactory.dll
+SOURCEPATH=../../../app/algorithms/IAlgorithmFactory/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+
+# 24. copy SimpleAlgorithm.dll
+FILENAME=SimpleAlgorithm.dll
+SOURCEPATH=../../../app/algorithms/SimpleAlgorithm/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
+
+
+# 25. copy AlgorithmLoader.dll
+FILENAME=AlgorithmLoader.dll
+SOURCEPATH=../../../app/algorithms/AlgorithmLoader/$$BUILDTARGET/$$FILENAME
+DESTIDATAPATH=$$OUT_PWD/$$BUILDTARGET/$$FILENAME
+QMAKE_POST_LINK +=$$QMAKE_COPY $$shell_path($$SOURCEPATH) $$shell_path($$DESTIDATAPATH) $$escape_expand(\\n\\t)
 }
 
 # Please do not modify the following two lines. Required for deployment.

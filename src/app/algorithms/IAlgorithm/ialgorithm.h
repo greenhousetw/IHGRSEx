@@ -2,22 +2,19 @@
 #define IALGORITHM_H
 
 #include "ialgorithm_global.h"
-#include <QHash>
 #include <QObject>
-#include <QVariant>
+#include <QMap>
 #include "../../sharelibs/CommonVariables/commonvariables.h"
 
-class IALGORITHMSHARED_EXPORT IAlgorithm : public QObject
+class IAlgorithm : public QObject
 {
     Q_OBJECT
 
 public:
 
-    virtual bool PreSetup()=0;
+    virtual bool PreSetup(QMap<QString, QVariant> initData)=0;
     virtual bool ExecuteOperation()=0;
     virtual bool StopExecution()=0;
-
-    QHash<QString, QVariant> dataStore;    
 
 signals:
 
@@ -25,8 +22,10 @@ signals:
 
 public slots:
 
-    virtual void OperateDataReceiever(QVariant data)=0;
+    virtual void AlgorithmSlot(QMap<QString, QVariant> data)=0;
 };
+
+Q_DECLARE_INTERFACE(IAlgorithm, "{8a762b0f-be9c-418b-a154-e91a622ba7f3}")
 
 #endif // IALGORITHM_H
 

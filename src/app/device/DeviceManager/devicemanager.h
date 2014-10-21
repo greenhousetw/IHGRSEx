@@ -27,6 +27,7 @@ public:
     virtual bool LoadSensors()=0;
     virtual bool LoadTranceievers()=0;
     virtual bool LoadRepository()=0;
+    virtual bool LoadAlgorithmLoader()=0;
     virtual QObject* GetSensors()=0;
     virtual QObject* GetTranceievers()=0;
     virtual QSqlQuery QueryRepository(QString)=0;

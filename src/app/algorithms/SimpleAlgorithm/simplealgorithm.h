@@ -12,32 +12,33 @@
 #include "../IAlgorithm/ialgorithm.h"
 #include "../../../app/sharelibs/XmlHelper/xmlhelper.h"
 
-class SIMPLEALGORITHMSHARED_EXPORT SimpleAlgorithm : public IAlgorithm
+class SimpleAlgorithm : public IAlgorithm
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "{e36e50cc-9a18-421d-af33-2402667d31c6}" FILE "info.json")
+    Q_INTERFACES(IAlgorithm)
 
 public:
     SimpleAlgorithm();
     ~SimpleAlgorithm();
-    virtual bool PreSetup();
+    virtual bool PreSetup(QMap<QString, QVariant> initData);
     virtual bool ExecuteOperation();
     virtual bool StopExecution();
 
 public slots:
 
-    virtual void OperateDataReceiever(QVariant data);
+    virtual void AlgorithmSlot(QMap<QString, QVariant> data);
 
 private:
+
     QXmlQuery* xmlDoc=NULL;
-    bool CheckRequirements();
-    bool SetSensorType(QString*);
-    bool IsNullOrEmpty(QString key);
-    QString scriptIDKeyword;
-    QString section;
-    int timeDiff;
-    bool isChangeDevice;
-    QList<QString> sensorTypeList;
+    QString sensorType="";
+    QString currentSetOfProfolio;
+    QString section;    
     QDateTime lastTime;
+
+    int timeDiff;
+    QString idOfSet="";
     bool ProcessScriptData(QString value);
 };
 

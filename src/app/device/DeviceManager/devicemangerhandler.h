@@ -21,6 +21,7 @@ public:
     virtual bool LoadSensors();
     virtual bool LoadTranceievers();
     virtual bool LoadRepository();
+    virtual bool LoadAlgorithmLoader();
     virtual QObject* GetSensors();
     virtual QObject* GetTranceievers();
     virtual QSqlQuery QueryRepository(QString sqlString);
