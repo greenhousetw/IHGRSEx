@@ -49,10 +49,10 @@ bool Sensor::SetHardware(QMap<QString, QVariant> config)
 
          if(PluginHelper::GetPlugIn(this->algorithmLoader, loaderName))
          {
-             this->algorithmLoaderFactory= qobject_cast<IAlgorithmFactory *>(algloader.instance());
+             this->algorithmLoaderFactory= qobject_cast<IAlgorithmFactory *>(this->algorithmLoader.instance());
          }
 
-         if(!this->algorithmLoaderFactory->GetIAlgorithm(algorithmName, this->algorithm))
+         if(this->algorithmLoaderFactory!=NULL && !this->algorithmLoaderFactory->GetIAlgorithm(algorithmName, this->algorithm))
          {
              goto orz;
          }                 
